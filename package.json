@@ -1,0 +1,24 @@
+{
+  "name": "feedy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "vp config",
+    "dev:widget": "vp run widget#dev"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.8.0",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": ">=26",
+      "onFail": "download"
+    }
+  }
+}
