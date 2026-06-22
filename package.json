@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config",
+    "dev:api": "vp run api#dev",
     "dev:widget": "vp run widget#dev"
   },
   "devDependencies": {
