@@ -1,21 +1,14 @@
-declare global {
-  interface Window {
-    Widget?: WidgetOptions
-  }
+export interface WidgetConfig {
+  launcher: WidgetLauncherOptions
 }
 
-export interface WidgetOptions {
-  appId: string
-  trigger: WidgetTriggerOptions
-}
-
-export interface WidgetTriggerOptions {
+export interface WidgetLauncherOptions {
   enabled: boolean
-  container: WidgetTriggerContainerConfig
-  button: WidgetTriggerButtonConfig
+  container: WidgetLauncherContainerConfig
+  button: WidgetLauncherButtonConfig
 }
 
-export interface WidgetTriggerContainerConfig {
+export interface WidgetLauncherContainerConfig {
   styles: {
     position: string
     top?: string
@@ -26,12 +19,12 @@ export interface WidgetTriggerContainerConfig {
   }
 }
 
-export interface WidgetTriggerButtonConfig {
-  styles: WidgetTriggerButtonStyles
-  content: WidgetTriggerButtonContent
+export interface WidgetLauncherButtonConfig {
+  styles: WidgetLauncherButtonStyles
+  content: WidgetLauncherButtonContent
 }
 
-export interface WidgetTriggerButtonStyles {
+export interface WidgetLauncherButtonStyles {
   size: string
   padding: string
   border: string
@@ -47,7 +40,7 @@ export interface WidgetTriggerButtonStyles {
   }
 }
 
-export type WidgetTriggerButtonContent =
+export type WidgetLauncherButtonContent =
   | {
       type: 'text'
       label: string
@@ -60,4 +53,4 @@ export type WidgetTriggerButtonContent =
       styles: { width: string; height: string; fill: string }
     }
 
-export type WidgetTriggerButtonContentIcon = Extract<WidgetTriggerButtonContent, { type: 'icon' }>
+export type WidgetLauncherButtonContentIcon = Extract<WidgetLauncherButtonContent, { type: 'icon' }>

@@ -1,15 +1,16 @@
 import type {
-  WidgetTriggerButtonConfig,
-  WidgetTriggerButtonContentIcon,
-  WidgetTriggerContainerConfig,
-  WidgetTriggerOptions,
+  WidgetLauncherButtonConfig,
+  WidgetLauncherButtonContentIcon,
+  WidgetLauncherContainerConfig,
+  WidgetLauncherOptions,
 } from '../types'
+import type { WidgetLauncherController } from './types'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const SYSTEM_FONT_FAMILY = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-const TRIGGER_ROOT_ID = 'widget'
+const LAUNCHER_ROOT_ID = 'feedy-launcher'
 
-function createTriggerIcon(content: WidgetTriggerButtonContentIcon): SVGSVGElement {
+function createLauncherIcon(content: WidgetLauncherButtonContentIcon): SVGSVGElement {
   const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
   svg.setAttribute('xmlns', SVG_NAMESPACE)
   svg.setAttribute('width', content.styles.width)
@@ -27,7 +28,7 @@ function createTriggerIcon(content: WidgetTriggerButtonContentIcon): SVGSVGEleme
   return svg
 }
 
-function createContainerStyles(container: WidgetTriggerContainerConfig): string {
+function createContainerStyles(container: WidgetLauncherContainerConfig): string {
   return [
     `position: ${container.styles.position};`,
     container.styles.top ? `top: ${container.styles.top};` : '',
@@ -40,7 +41,7 @@ function createContainerStyles(container: WidgetTriggerContainerConfig): string 
     .join('\n')
 }
 
-function createButtonContentStyles(content: WidgetTriggerButtonConfig['content']): string {
+function createButtonContentStyles(content: WidgetLauncherButtonConfig['content']): string {
   if (content.type !== 'text') {
     return ''
   }
@@ -53,7 +54,7 @@ function createButtonContentStyles(content: WidgetTriggerButtonConfig['content']
   ].join('\n')
 }
 
-function createTriggerStyles(options: WidgetTriggerOptions): HTMLStyleElement {
+function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement {
   const style = document.createElement('style')
   const buttonStyles = options.button.styles
 
@@ -63,14 +64,14 @@ function createTriggerStyles(options: WidgetTriggerOptions): HTMLStyleElement {
   display: block !important;
 }
 
-.widget-trigger {
+.widget-launcher {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   ${createContainerStyles(options.container)}
 }
 
-.widget-trigger-btn {
+.widget-launcher-btn {
   appearance: none;
   display: flex;
   align-items: center;
@@ -87,16 +88,16 @@ function createTriggerStyles(options: WidgetTriggerOptions): HTMLStyleElement {
   ${createButtonContentStyles(options.button.content)}
 }
 
-.widget-trigger-btn:hover {
+.widget-launcher-btn:hover {
   background: ${buttonStyles.hover.background};
 }
 
-.widget-trigger-btn:focus-visible {
+.widget-launcher-btn:focus-visible {
   outline: ${buttonStyles.focus.outline};
   outline-offset: ${buttonStyles.focus.outlineOffset};
 }
 
-.widget-trigger-btn svg {
+.widget-launcher-btn svg {
   display: block;
   flex-shrink: 0;
 }
@@ -105,18 +106,34 @@ function createTriggerStyles(options: WidgetTriggerOptions): HTMLStyleElement {
   return style
 }
 
-export function renderWidgetTrigger(options: WidgetTriggerOptions, onClick: () => void) {
-  if (document.getElementById(TRIGGER_ROOT_ID) || !HTMLElement.prototype.attachShadow) {
+export function renderWidgetLauncher(
+  options: WidgetLauncherOptions,
+  onClick: () => void
+): WidgetLauncherController | undefined {
+  const existingRoot = document.getElementById(LAUNCHER_ROOT_ID)
+
+  if (existingRoot) {
+    return {
+      show: () => {
+        existingRoot.hidden = false
+      },
+      hide: () => {
+        existingRoot.hidden = true
+      },
+    }
+  }
+
+  if (!HTMLElement.prototype.attachShadow) {
     return
   }
 
   const content = options.button.content
 
   const root = document.createElement('div')
-  root.id = TRIGGER_ROOT_ID
+  root.id = LAUNCHER_ROOT_ID
 
   const button = document.createElement('button')
-  button.className = 'widget-trigger-btn'
+  button.className = 'widget-launcher-btn'
   button.type = 'button'
 
   if (content.type === 'text') {
@@ -125,19 +142,28 @@ export function renderWidgetTrigger(options: WidgetTriggerOptions, onClick: () =
 
   if (content.type === 'icon') {
     button.setAttribute('aria-label', content.ariaLabel)
-    button.append(createTriggerIcon(content))
+    button.append(createLauncherIcon(content))
   }
 
   button.addEventListener('click', onClick)
 
   const container = document.createElement('div')
-  container.className = 'widget-trigger'
+  container.className = 'widget-launcher'
   container.append(button)
 
   const shadowRoot = root.attachShadow({
     mode: 'open',
   })
 
-  shadowRoot.append(createTriggerStyles(options), container)
+  shadowRoot.append(createLauncherStyles(options), container)
   document.body.append(root)
+
+  return {
+    show: () => {
+      root.hidden = false
+    },
+    hide: () => {
+      root.hidden = true
+    },
+  }
 }

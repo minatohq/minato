@@ -3,16 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Widget</title>
+    <title>Feedy Widget</title>
   </head>
 
   <body>
     <script>
-      window.Widget = {
-        appId: 'pid_nGbOdbF9Kw2dk6dwc05QMuYX',
-      }
+      window.Feedy =
+        window.Feedy ||
+        function (...args) {
+          ;(window.Feedy.q = window.Feedy.q || []).push(args)
+        }
+
+      Feedy('init', {
+        projectId: 'project_123',
+      })
     </script>
-    <script type="module" src="/src/launcher/main.ts"></script>
-    <script type="module" src="/src/launcher/main.ts?duplicate-load"></script>
+    <script type="module" src="/src/bootstrap/index.ts"></script>
+    <script type="module" src="/src/bootstrap/index.ts?duplicate-load"></script>
   </body>
 </html>

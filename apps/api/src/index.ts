@@ -13,7 +13,7 @@ app.use(
 
 app.get('/', (c) => {
   return c.json({
-    trigger: {
+    launcher: {
       enabled: true,
       container: {
         styles: {
