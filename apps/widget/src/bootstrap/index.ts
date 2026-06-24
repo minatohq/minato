@@ -1,7 +1,14 @@
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
 import { renderWidgetLauncher } from './launcher'
-import type { WidgetApi, WidgetCommand, WidgetInitOptions, WidgetLauncherController } from './types'
+import type {
+  WidgetApi,
+  WidgetCommand,
+  WidgetEventHandler,
+  WidgetEventName,
+  WidgetInitOptions,
+  WidgetLauncherController,
+} from './types'
 
 interface BootstrapWindow extends Window {
   __feedyRuntimeState?: RuntimeState
@@ -9,6 +16,7 @@ interface BootstrapWindow extends Window {
 
 interface RuntimeState {
   commandChain: Promise<void>
+  eventListeners: Map<WidgetEventName, Set<WidgetEventHandler>>
   launcher?: WidgetLauncherController
   isWidgetOpen: boolean
   isInitialized: boolean
@@ -23,6 +31,7 @@ function getState() {
 
   bootstrapWindow.__feedyRuntimeState ??= {
     commandChain: Promise.resolve(),
+    eventListeners: new Map(),
     isWidgetOpen: false,
     isInitialized: false,
   }
@@ -45,11 +54,21 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
 }
 
 function openWidget(state: RuntimeState) {
+  if (state.isWidgetOpen) {
+    return
+  }
+
   state.isWidgetOpen = true
+  emitEvent(state, 'open')
 }
 
 function closeWidget(state: RuntimeState) {
+  if (!state.isWidgetOpen) {
+    return
+  }
+
   state.isWidgetOpen = false
+  emitEvent(state, 'close')
 }
 
 function showLauncher(state: RuntimeState) {
@@ -58,6 +77,19 @@ function showLauncher(state: RuntimeState) {
 
 function hideLauncher(state: RuntimeState) {
   state.launcher?.hide()
+}
+
+function on(state: RuntimeState, eventName: WidgetEventName, handler: WidgetEventHandler) {
+  const eventListeners = state.eventListeners.get(eventName) ?? new Set()
+
+  eventListeners.add(handler)
+  state.eventListeners.set(eventName, eventListeners)
+}
+
+function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
+  for (const handler of state.eventListeners.get(eventName) ?? []) {
+    handler()
+  }
 }
 
 async function executeCommand(state: RuntimeState, command: WidgetCommand) {
@@ -80,6 +112,10 @@ async function executeCommand(state: RuntimeState, command: WidgetCommand) {
 
     case 'hideLauncher':
       hideLauncher(state)
+      break
+
+    case 'on':
+      on(state, command[1], command[2])
       break
   }
 }
@@ -105,11 +141,12 @@ function start() {
     return
   }
 
+  // Capture queued command calls before replacing `window.Feedy`
+  const queuedCommands = getQueuedCommands(window.Feedy)
+
   window.Feedy = createWidgetApi(state)
 
   state.isInitialized = true
-
-  const queuedCommands = getQueuedCommands(window.Feedy)
 
   for (const command of queuedCommands) {
     enqueueCommand(state, command)

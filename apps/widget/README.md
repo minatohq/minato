@@ -8,11 +8,9 @@ Public API = window.Feedy
 
 ```html
 <script>
-  window.Feedy =
-    window.Feedy ||
-    function (...args) {
-      ;(window.Feedy.q = window.Feedy.q || []).push(args)
-    }
+  window.Feedy = window.Feedy || function (...args) {
+    ;(window.Feedy.q = window.Feedy.q || []).push(args)
+  }
 
   Feedy('init', {
     projectId: 'project_123',
@@ -27,3 +25,8 @@ Supported commands:
 - `Feedy('close')`
 - `Feedy('showLauncher')`
 - `Feedy('hideLauncher')`
+
+Event API:
+
+- `Feedy('on', 'open', handler)`
+- `Feedy('on', 'close', handler)`

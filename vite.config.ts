@@ -5,6 +5,7 @@ export default defineConfig({
     cache: true,
   },
   fmt: {
+    ignorePatterns: ['**/*.md'],
     semi: false,
     singleQuote: true,
     trailingComma: 'es5',

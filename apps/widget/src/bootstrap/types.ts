@@ -9,6 +9,11 @@ export type WidgetCommand =
   | ['close']
   | ['showLauncher']
   | ['hideLauncher']
+  | ['on', WidgetEventName, WidgetEventHandler]
+
+export type WidgetEventName = 'open' | 'close'
+
+export type WidgetEventHandler = () => void
 
 export interface WidgetInitOptions {
   projectId: string

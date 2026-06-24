@@ -17,6 +17,14 @@
       Feedy('init', {
         projectId: 'project_123',
       })
+
+      Feedy('on', 'open', () => {
+        console.log('Feedy widget opened')
+      })
+
+      Feedy('on', 'close', () => {
+        console.log('Feedy widget closed')
+      })
     </script>
     <script type="module" src="/src/bootstrap/index.ts"></script>
     <script type="module" src="/src/bootstrap/index.ts?duplicate-load"></script>
