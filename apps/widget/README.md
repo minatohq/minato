@@ -9,7 +9,20 @@ Public API = window.Feedy
 ```html
 <script>
   window.Feedy = window.Feedy || function (...args) {
-    ;(window.Feedy.q = window.Feedy.q || []).push(args)
+    window.Feedy.q = window.Feedy.q || []
+    window.Feedy.subscriptionCount = window.Feedy.subscriptionCount || 0
+
+    if (args[0] === 'on') {
+      const subscriptionId = `subscription_${++window.Feedy.subscriptionCount}`
+
+      window.Feedy.q.push(['on', subscriptionId, args[1], args[2]])
+
+      return function unsubscribe() {
+        window.Feedy('off', subscriptionId)
+      }
+    }
+
+    window.Feedy.q.push(args)
   }
 
   Feedy('init', {
@@ -28,5 +41,7 @@ Supported commands:
 
 Event API:
 
-- `Feedy('on', 'open', handler)`
-- `Feedy('on', 'close', handler)`
+- `const unsubscribe = Feedy('on', 'open', handler)`
+- `const unsubscribe = Feedy('on', 'close', handler)`
+
+Call the returned `unsubscribe` function to remove that listener.

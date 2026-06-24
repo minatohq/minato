@@ -3,11 +3,13 @@ import { loadConfig } from './config'
 import { renderWidgetLauncher } from './launcher'
 import type {
   WidgetApi,
-  WidgetCommand,
-  WidgetEventHandler,
+  WidgetEventSubscription,
+  WidgetEventSubscriptionId,
   WidgetEventName,
   WidgetInitOptions,
   WidgetLauncherController,
+  WidgetPublicCommand,
+  WidgetQueuedCommand,
 } from './types'
 
 interface BootstrapWindow extends Window {
@@ -16,8 +18,9 @@ interface BootstrapWindow extends Window {
 
 interface RuntimeState {
   commandChain: Promise<void>
-  eventListeners: Map<WidgetEventName, Set<WidgetEventHandler>>
+  eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
   launcher?: WidgetLauncherController
+  subscriptionCount: number
   isWidgetOpen: boolean
   isInitialized: boolean
 }
@@ -31,7 +34,8 @@ function getState() {
 
   bootstrapWindow.__feedyRuntimeState ??= {
     commandChain: Promise.resolve(),
-    eventListeners: new Map(),
+    eventSubscriptions: new Map(),
+    subscriptionCount: 0,
     isWidgetOpen: false,
     isInitialized: false,
   }
@@ -79,20 +83,45 @@ function hideLauncher(state: RuntimeState) {
   state.launcher?.hide()
 }
 
-function on(state: RuntimeState, eventName: WidgetEventName, handler: WidgetEventHandler) {
-  const eventListeners = state.eventListeners.get(eventName) ?? new Set()
+function createSubscriptionId(state: RuntimeState) {
+  state.subscriptionCount += 1
 
-  eventListeners.add(handler)
-  state.eventListeners.set(eventName, eventListeners)
+  return `subscription_${state.subscriptionCount}`
+}
+
+function on(
+  state: RuntimeState,
+  subscriptionId: WidgetEventSubscriptionId,
+  eventName: WidgetEventName,
+  handler: WidgetEventSubscription['handler']
+) {
+  state.eventSubscriptions.set(subscriptionId, {
+    eventName,
+    handler,
+  })
+}
+
+function off(state: RuntimeState, subscriptionId: WidgetEventSubscriptionId) {
+  state.eventSubscriptions.delete(subscriptionId)
 }
 
 function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
-  for (const handler of state.eventListeners.get(eventName) ?? []) {
-    handler()
+  const subscriptions = [...state.eventSubscriptions.values()].filter(
+    (subscription) => subscription.eventName === eventName
+  )
+
+  for (const { handler } of subscriptions) {
+    try {
+      handler()
+    } catch (error) {
+      setTimeout(() => {
+        throw error
+      })
+    }
   }
 }
 
-async function executeCommand(state: RuntimeState, command: WidgetCommand) {
+async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand) {
   switch (command[0]) {
     case 'init':
       await init(state, command[1])
@@ -115,7 +144,11 @@ async function executeCommand(state: RuntimeState, command: WidgetCommand) {
       break
 
     case 'on':
-      on(state, command[1], command[2])
+      on(state, command[1], command[2], command[3])
+      break
+
+    case 'off':
+      off(state, command[1])
       break
   }
 }
@@ -124,14 +157,30 @@ function getQueuedCommands(widgetApi: WidgetApi | undefined) {
   return widgetApi?.q ?? []
 }
 
-function enqueueCommand(state: RuntimeState, command: WidgetCommand) {
+function getSubscriptionCount(widgetApi: WidgetApi | undefined) {
+  return widgetApi?.subscriptionCount ?? 0
+}
+
+function enqueueCommand(state: RuntimeState, command: WidgetQueuedCommand) {
   state.commandChain = state.commandChain.then(() => executeCommand(state, command)).catch(() => {})
 }
 
 function createWidgetApi(state: RuntimeState): WidgetApi {
-  return (...args: WidgetCommand) => {
+  return ((...args: WidgetPublicCommand | ['off', WidgetEventSubscriptionId]) => {
+    if (args[0] === 'on') {
+      const subscriptionId = createSubscriptionId(state)
+
+      enqueueCommand(state, ['on', subscriptionId, args[1], args[2]])
+
+      return () => {
+        enqueueCommand(state, ['off', subscriptionId])
+      }
+    }
+
     enqueueCommand(state, args)
-  }
+
+    return undefined
+  }) as WidgetApi
 }
 
 function start() {
@@ -143,6 +192,7 @@ function start() {
 
   // Capture queued command calls before replacing `window.Feedy`
   const queuedCommands = getQueuedCommands(window.Feedy)
+  state.subscriptionCount = getSubscriptionCount(window.Feedy)
 
   window.Feedy = createWidgetApi(state)
 
