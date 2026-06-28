@@ -1,6 +1,6 @@
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
-import { renderWidgetLauncher } from './launcher'
+import { renderWidgetLauncher } from '../launcher'
 import { APP_NAME, RUNTIME_STATE_KEY } from './constants'
 import type {
   WidgetApi,
@@ -45,6 +45,11 @@ function getState() {
 }
 
 async function init(state: RuntimeState, options: WidgetInitOptions) {
+  if (!options.projectId) {
+    console.error(`[${APP_NAME}] Missing required "projectId" initialization option`)
+    return
+  }
+
   const config = await loadConfig(options.projectId)
 
   if (!config.launcher.enabled) {

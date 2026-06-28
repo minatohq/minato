@@ -37,7 +37,7 @@ export interface WidgetEventSubscription {
 }
 
 export interface WidgetInitOptions {
-  projectId: string
+  projectId?: string
 }
 
 export interface WidgetLauncherController {
