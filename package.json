@@ -5,7 +5,8 @@
   "scripts": {
     "prepare": "vp config",
     "dev:api": "vp run api#dev",
-    "dev:widget": "vp run widget#dev"
+    "dev:widget": "vp run widget#dev",
+    "build:widget": "vp run widget#build"
   },
   "devDependencies": {
     "vite-plus": "catalog:"

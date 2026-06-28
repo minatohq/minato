@@ -111,13 +111,17 @@ function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
     (subscription) => subscription.eventName === eventName
   )
 
+  if (import.meta.env.DEV) {
+    console.log(
+      `[${APP_NAME}] Emitting "${eventName}" event with ${subscriptions.length} subscription(s)`
+    )
+  }
+
   for (const { handler } of subscriptions) {
     try {
       handler()
-    } catch (error) {
-      setTimeout(() => {
-        throw error
-      })
+    } catch (error: unknown) {
+      console.error(`[${APP_NAME}] Error in "${eventName}" event handler:`, error)
     }
   }
 }
@@ -191,7 +195,7 @@ function start() {
     return
   }
 
-  // Capture queued command calls before replacing the public widget API.
+  // Capture queued command calls and subscriptions count before replacing the public widget API.
   const queuedCommands = getQueuedCommands(window[APP_NAME])
   state.subscriptionCount = getSubscriptionCount(window[APP_NAME])
 

@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vp dev"
+    "dev": "vp dev",
+    "build": "vp build"
   },
   "devDependencies": {
     "typescript": "catalog:",
