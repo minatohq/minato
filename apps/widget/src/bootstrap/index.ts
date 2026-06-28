@@ -1,6 +1,7 @@
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
 import { renderWidgetLauncher } from './launcher'
+import { APP_NAME, RUNTIME_STATE_KEY } from './constants'
 import type {
   WidgetApi,
   WidgetEventSubscription,
@@ -13,7 +14,7 @@ import type {
 } from './types'
 
 interface BootstrapWindow extends Window {
-  __feedyRuntimeState?: RuntimeState
+  [RUNTIME_STATE_KEY]?: RuntimeState
 }
 
 interface RuntimeState {
@@ -32,7 +33,7 @@ function getBootstrapWindow() {
 function getState() {
   const bootstrapWindow = getBootstrapWindow()
 
-  bootstrapWindow.__feedyRuntimeState ??= {
+  bootstrapWindow[RUNTIME_STATE_KEY] ??= {
     commandChain: Promise.resolve(),
     eventSubscriptions: new Map(),
     subscriptionCount: 0,
@@ -40,7 +41,7 @@ function getState() {
     isInitialized: false,
   }
 
-  return bootstrapWindow.__feedyRuntimeState
+  return bootstrapWindow[RUNTIME_STATE_KEY]
 }
 
 async function init(state: RuntimeState, options: WidgetInitOptions) {
@@ -190,11 +191,11 @@ function start() {
     return
   }
 
-  // Capture queued command calls before replacing `window.Feedy`
-  const queuedCommands = getQueuedCommands(window.Feedy)
-  state.subscriptionCount = getSubscriptionCount(window.Feedy)
+  // Capture queued command calls before replacing the public widget API.
+  const queuedCommands = getQueuedCommands(window[APP_NAME])
+  state.subscriptionCount = getSubscriptionCount(window[APP_NAME])
 
-  window.Feedy = createWidgetApi(state)
+  window[APP_NAME] = createWidgetApi(state)
 
   state.isInitialized = true
 

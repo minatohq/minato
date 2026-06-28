@@ -1,3 +1,7 @@
+import type { APP_NAME } from './constants'
+
+export type RuntimeStateKey = `__${Lowercase<typeof APP_NAME>}RuntimeState`
+
 export interface WidgetApi {
   (...args: WidgetOnCommand): WidgetEventUnsubscribe
   (...args: WidgetVoidCommand): void
