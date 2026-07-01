@@ -6,6 +6,10 @@
     "dev": "vp dev",
     "build": "vp build"
   },
+  "dependencies": {
+    "@t3-oss/env-core": "catalog:",
+    "zod": "catalog:"
+  },
   "devDependencies": {
     "typescript": "catalog:",
     "vite": "catalog:",

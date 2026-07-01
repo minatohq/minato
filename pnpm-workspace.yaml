@@ -2,13 +2,15 @@ packages:
   - apps/*
   - packages/*
 
-catalogMode: prefer
+catalogMode: manual
 
 catalog:
+  '@t3-oss/env-core': ^0.13.11
   typescript: ^6.0.3
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: 4.1.9
   vite-plus: latest
+  zod: ^4.4.3
 
 overrides:
   vite: 'catalog:'

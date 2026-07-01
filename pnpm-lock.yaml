@@ -205,12 +205,18 @@ settings:
 
 catalogs:
   default:
+    '@t3-oss/env-core':
+      specifier: ^0.13.11
+      version: 0.13.11
     typescript:
       specifier: ^6.0.3
       version: 6.0.3
     vite-plus:
       specifier: latest
       version: 0.2.1
+    zod:
+      specifier: ^4.4.3
+      version: 4.4.3
 
 overrides:
   vite: npm:@voidzero-dev/vite-plus-core@latest
@@ -247,6 +253,13 @@ importers:
         version: 6.0.3
 
   apps/widget:
+    dependencies:
+      '@t3-oss/env-core':
+        specifier: 'catalog:'
+        version: 0.13.11(typescript@6.0.3)(zod@4.4.3)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       typescript:
         specifier: 'catalog:'
@@ -846,6 +859,23 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
+
+  '@t3-oss/env-core@0.13.11':
+    resolution: {integrity: sha512-sM7GYY+KL7H/Hl0BE0inWfk3nRHZOLhmVn7sHGxaZt9FAR6KqREXAE+6TqKfiavfXmpRxO/OZ2QgKRd+oiBYRQ==}
+    peerDependencies:
+      arktype: ^2.1.0
+      typescript: '>=5.0.0'
+      valibot: ^1.0.0-beta.7 || ^1.0.0
+      zod: ^3.24.0 || ^4.0.0
+    peerDependenciesMeta:
+      arktype:
+        optional: true
+      typescript:
+        optional: true
+      valibot:
+        optional: true
+      zod:
+        optional: true
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -1543,6 +1573,9 @@ packages:
       utf-8-validate:
         optional: true
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
 snapshots:
 
   '@babel/code-frame@7.29.7':
@@ -1859,6 +1892,11 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
+  '@t3-oss/env-core@0.13.11(typescript@6.0.3)(zod@4.4.3)':
+    optionalDependencies:
+      typescript: 6.0.3
+      zod: 4.4.3
+
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.29.7
@@ -1894,12 +1932,12 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@vitest/browser-preview@4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)))':
+  '@vitest/browser-preview@4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)':
     dependencies:
       '@testing-library/dom': 10.4.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
-      '@vitest/browser': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)))
-      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4))
+      '@vitest/browser': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)
+      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -1918,7 +1956,7 @@ snapshots:
       - utf-8-validate
       - vite
 
-  '@vitest/browser@4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)))':
+  '@vitest/browser@4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)':
     dependencies:
       '@blazediff/core': 1.9.1
       '@vitest/mocker': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
@@ -1927,7 +1965,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.1.0
-      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4))
+      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
       ws: 8.21.0
     transitivePeerDependencies:
       - bufferutil
@@ -2365,8 +2403,8 @@ snapshots:
     dependencies:
       '@oxc-project/types': 0.136.0
       '@oxlint/plugins': 1.68.0
-      '@vitest/browser': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)))
-      '@vitest/browser-preview': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)))
+      '@vitest/browser': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)
+      '@vitest/browser-preview': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)
       '@vitest/expect': 4.1.9
       '@vitest/mocker': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
       '@vitest/pretty-format': 4.1.9
@@ -2378,7 +2416,7 @@ snapshots:
       oxfmt: 0.55.0(vite-plus@0.2.1(@types/node@20.19.43)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
       oxlint: 1.70.0(oxlint-tsgolint@0.23.0)(vite-plus@0.2.1(@types/node@20.19.43)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
       oxlint-tsgolint: 0.23.0
-      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4))(vitest@4.1.9))(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
+      vitest: 4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
     optionalDependencies:
       '@voidzero-dev/vite-plus-darwin-arm64': 0.2.1
       '@voidzero-dev/vite-plus-darwin-x64': 0.2.1
@@ -2494,7 +2532,7 @@ snapshots:
       fsevents: 2.3.3
       tsx: 4.22.4
 
-  vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4))(vitest@4.1.9))(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3)):
+  vitest@4.1.9(@types/node@20.19.43)(@vitest/browser-preview@4.1.9)(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3)):
     dependencies:
       '@vitest/expect': 4.1.9
       '@vitest/mocker': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))
@@ -2518,7 +2556,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.19.43
-      '@vitest/browser-preview': 4.1.9(vite@8.0.16(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4))(vitest@4.1.9)
+      '@vitest/browser-preview': 4.1.9(@voidzero-dev/vite-plus-core@0.2.1(@types/node@20.19.43)(esbuild@0.28.1)(tsx@4.22.4)(typescript@6.0.3))(vitest@4.1.9)
     transitivePeerDependencies:
       - msw
 
@@ -2556,3 +2594,5 @@ snapshots:
       stackback: 0.0.2
 
   ws@8.21.0: {}
+
+  zod@4.4.3: {}

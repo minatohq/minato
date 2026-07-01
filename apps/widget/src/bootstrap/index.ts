@@ -1,3 +1,4 @@
+import { env } from '../env'
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
 import {
@@ -76,7 +77,7 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
   }
 
   const launcher = createFrame({
-    scriptSrc: import.meta.env.VITE_LAUNCHER_URL!,
+    scriptSrc: env.VITE_LAUNCHER_URL,
     title: LAUNCHER_FRAME_TITLE,
     className: LAUNCHER_FRAME_CLASS,
   })
