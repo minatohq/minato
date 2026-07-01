@@ -1,5 +1,5 @@
-import type { WidgetConfig } from '../types'
 import { logError } from './helpers'
+import type { WidgetConfig } from '../types'
 
 export async function loadConfig(_projectId: string) {
   try {

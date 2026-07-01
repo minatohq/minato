@@ -1,11 +1,10 @@
+import { loadConfig } from '../bootstrap/config'
 import type {
   WidgetLauncherButtonConfig,
   WidgetLauncherButtonContentIcon,
   WidgetLauncherButtonStyles,
-  WidgetLauncherContainerConfig,
   WidgetLauncherOptions,
 } from '../types'
-import type { WidgetLauncherController } from '../bootstrap/types'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const SYSTEM_FONT_FAMILY = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
@@ -29,26 +28,6 @@ function createLauncherIcon(content: WidgetLauncherButtonContentIcon): SVGSVGEle
   return svg
 }
 
-function createHostStyles(): string {
-  return [`all: initial!important;`, `display: block!important;`].filter(Boolean).join('\n')
-}
-
-function createContainerStyles(container: WidgetLauncherContainerConfig): string {
-  return [
-    `box-sizing: border-box;`,
-    `position: ${container.styles.position};`,
-    container.styles.top ? `top: ${container.styles.top};` : '',
-    container.styles.right ? `right: ${container.styles.right};` : '',
-    container.styles.bottom ? `bottom: ${container.styles.bottom};` : '',
-    container.styles.left ? `left: ${container.styles.left};` : '',
-    `z-index: ${container.styles.zIndex};`,
-    `-webkit-font-smoothing: antialiased;`,
-    `-moz-osx-font-smoothing: grayscale;`,
-  ]
-    .filter(Boolean)
-    .join('\n')
-}
-
 function createButtonContentStyles(
   buttonStyles: WidgetLauncherButtonStyles,
   content: WidgetLauncherButtonConfig['content']
@@ -58,26 +37,12 @@ function createButtonContentStyles(
   }
 
   return [
-    `appearance: none;`,
-    `display: flex;`,
-    `align-items: center;`,
-    `justify-content: center;`,
-    `margin: 0;`,
     `padding: ${buttonStyles.padding};`,
-    `min-width: ${buttonStyles.size};`,
-    `height: ${buttonStyles.size};`,
-    `background: ${buttonStyles.background};`,
-    `border: ${buttonStyles.border};`,
-    `border-radius: ${buttonStyles.borderRadius};`,
-    `box-shadow: ${buttonStyles.boxShadow};`,
-    `cursor: pointer;`,
     `color: ${content.styles.color};`,
     `font-family: ${SYSTEM_FONT_FAMILY};`,
     `font-size: ${content.styles.fontSize};`,
     `font-weight: ${content.styles.fontWeight};`,
-  ]
-    .filter(Boolean)
-    .join('\n')
+  ].join('\n')
 }
 
 function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement {
@@ -85,11 +50,29 @@ function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement 
   const buttonStyles = options.button.styles
 
   style.textContent = `
-:host {${createHostStyles()}}
+html, body {
+  margin: 0;
+  width: max-content;
+  height: max-content;
+  overflow: hidden;
+}
 
-.widget-launcher {${createContainerStyles(options.container)}}
-
-.widget-launcher-btn {${createButtonContentStyles(options.button.styles, options.button.content)}}
+.widget-launcher-btn {
+  box-sizing: border-box;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  min-width: ${buttonStyles.size};
+  height: ${buttonStyles.size};
+  background: ${buttonStyles.background};
+  border: ${buttonStyles.border};
+  border-radius: ${buttonStyles.borderRadius};
+  box-shadow: ${buttonStyles.boxShadow};
+  cursor: pointer;
+  ${createButtonContentStyles(buttonStyles, options.button.content)}
+}
 
 .widget-launcher-btn:hover {
   background: ${buttonStyles.hover.background};
@@ -109,64 +92,37 @@ function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement 
   return style
 }
 
-export function renderWidgetLauncher(
-  options: WidgetLauncherOptions,
-  onClick: () => void
-): WidgetLauncherController | undefined {
-  const existingRoot = document.getElementById(LAUNCHER_ROOT_ID)
-
-  if (existingRoot) {
-    return {
-      show: () => {
-        existingRoot.hidden = false
-      },
-      hide: () => {
-        existingRoot.hidden = true
-      },
-    }
-  }
-
-  if (!HTMLElement.prototype.attachShadow) {
+export function renderLauncher(options: WidgetLauncherOptions) {
+  if (document.getElementById(LAUNCHER_ROOT_ID)) {
     return
   }
 
   const content = options.button.content
-
   const root = document.createElement('div')
-  root.id = LAUNCHER_ROOT_ID
-
   const button = document.createElement('button')
+
+  root.id = LAUNCHER_ROOT_ID
   button.className = 'widget-launcher-btn'
   button.type = 'button'
 
   if (content.type === 'text') {
     button.textContent = content.label
-  }
-
-  if (content.type === 'icon') {
+  } else {
     button.setAttribute('aria-label', content.ariaLabel)
     button.append(createLauncherIcon(content))
   }
 
-  button.addEventListener('click', onClick)
-
-  const container = document.createElement('div')
-  container.className = 'widget-launcher'
-  container.append(button)
-
-  const shadowRoot = root.attachShadow({
-    mode: 'open',
-  })
-
-  shadowRoot.append(createLauncherStyles(options), container)
+  root.append(button)
+  document.head.append(createLauncherStyles(options))
   document.body.append(root)
+}
 
-  return {
-    show: () => {
-      root.hidden = false
-    },
-    hide: () => {
-      root.hidden = true
-    },
+async function start() {
+  const config = await loadConfig('')
+
+  if (config?.launcher.enabled) {
+    renderLauncher(config.launcher)
   }
 }
+
+void start()

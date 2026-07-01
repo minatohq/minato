@@ -39,8 +39,3 @@ export interface WidgetEventSubscription {
 export interface WidgetInitOptions {
   projectId?: string
 }
-
-export interface WidgetLauncherController {
-  show: () => void
-  hide: () => void
-}

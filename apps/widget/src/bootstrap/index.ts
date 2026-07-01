@@ -1,16 +1,21 @@
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
+import {
+  APP_NAME,
+  LAUNCHER_FRAME_CLASS,
+  LAUNCHER_FRAME_TITLE,
+  RUNTIME_STATE_KEY,
+} from './constants'
 import { createRootContainer } from './dom'
+import { createFrame } from './frame'
 import { logError } from './helpers'
-import { renderWidgetLauncher } from '../launcher'
-import { APP_NAME, RUNTIME_STATE_KEY } from './constants'
+import type { FrameController } from './frame'
 import type {
   WidgetApi,
   WidgetEventSubscription,
   WidgetEventSubscriptionId,
   WidgetEventName,
   WidgetInitOptions,
-  WidgetLauncherController,
   WidgetPublicCommand,
   WidgetQueuedCommand,
 } from './types'
@@ -22,7 +27,7 @@ interface BootstrapWindow extends Window {
 interface RuntimeState {
   commandChain: Promise<void>
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
-  launcher?: WidgetLauncherController
+  launcher?: FrameController
   subscriptionCount: number
   isWidgetOpen: boolean
   isInitialized: boolean
@@ -47,6 +52,10 @@ function getState() {
 }
 
 async function init(state: RuntimeState, options: WidgetInitOptions) {
+  if (state.launcher) {
+    return
+  }
+
   if (!options.projectId) {
     logError('Missing required "projectId" initialization option')
     return
@@ -66,7 +75,15 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     return
   }
 
-  state.launcher = renderWidgetLauncher(config.launcher, () => openWidget(state))
+  const launcher = createFrame({
+    scriptSrc: import.meta.env.VITE_LAUNCHER_URL!,
+    title: LAUNCHER_FRAME_TITLE,
+    className: LAUNCHER_FRAME_CLASS,
+  })
+
+  state.launcher = launcher
+
+  launcher.mount()
 }
 
 function openWidget(state: RuntimeState) {
@@ -88,11 +105,15 @@ function closeWidget(state: RuntimeState) {
 }
 
 function showLauncher(state: RuntimeState) {
-  state.launcher?.show()
+  if (state.launcher) {
+    state.launcher.element.hidden = false
+  }
 }
 
 function hideLauncher(state: RuntimeState) {
-  state.launcher?.hide()
+  if (state.launcher) {
+    state.launcher.element.hidden = true
+  }
 }
 
 function createSubscriptionId(state: RuntimeState) {

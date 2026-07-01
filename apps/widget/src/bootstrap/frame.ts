@@ -2,13 +2,13 @@ import { ROOT_CONTAINER_ID } from './constants'
 import { getRootContainer } from './dom'
 import { logError } from './helpers'
 
-interface FrameOptions {
+export interface FrameOptions {
   scriptSrc: string
   title: string
   className: string
 }
 
-interface FrameController {
+export interface FrameController {
   readonly element: HTMLIFrameElement
   mount: () => void
   destroy: () => void
@@ -52,7 +52,7 @@ export function createFrame(options: FrameOptions): FrameController {
         script.type = 'module'
       }
 
-      frameDocument.head.append(script)
+      frameDocument.body.append(script)
       initializedDocument = frameDocument
     },
     destroy: () => {
