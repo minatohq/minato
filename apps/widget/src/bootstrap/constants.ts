@@ -1,5 +1,9 @@
 import type { RuntimeStateKey } from './types'
 
 export const APP_NAME = 'Feedy'
+export const APP_NAME_LOWERCASE = APP_NAME.toLowerCase() as Lowercase<typeof APP_NAME>
 
-export const RUNTIME_STATE_KEY = `__${APP_NAME.toLowerCase()}RuntimeState` as RuntimeStateKey
+export const ROOT_CONTAINER_ID = `${APP_NAME_LOWERCASE}-container`
+export const ROOT_STYLES_ID = `${APP_NAME_LOWERCASE}-styles`
+
+export const RUNTIME_STATE_KEY = `__${APP_NAME_LOWERCASE}RuntimeState` as RuntimeStateKey

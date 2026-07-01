@@ -1,5 +1,6 @@
 import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
+import { createRootContainer } from './dom'
 import { logError } from './helpers'
 import { renderWidgetLauncher } from '../launcher'
 import { APP_NAME, RUNTIME_STATE_KEY } from './constants'
@@ -60,6 +61,10 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
   // We wait for `interactive` instead of `DOMContentLoaded` so the widget
   // can be rendered as early as possible.
   await waitForDocumentInteractive()
+
+  if (!createRootContainer()) {
+    return
+  }
 
   state.launcher = renderWidgetLauncher(config.launcher, () => openWidget(state))
 }
