@@ -7,9 +7,9 @@ import {
   LAUNCHER_FRAME_TITLE,
   RUNTIME_STATE_KEY,
 } from './constants'
-import { createRootContainer } from './dom'
+import { createRootContainer, destroyRootContainer } from './dom'
 import { createFrame } from './frame'
-import { logError } from './helpers'
+import { logError, logWarning } from './helpers'
 import type { FrameController } from './frame'
 import type {
   WidgetApi,
@@ -30,9 +30,9 @@ interface RuntimeState {
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
   launcher?: FrameController
   subscriptionCount: number
-  isWidgetOpen: boolean
+  isBootstrapInitialized: boolean
   isReady: boolean
-  isInitialized: boolean
+  isWidgetOpen: boolean
 }
 
 function getBootstrapWindow() {
@@ -46,9 +46,9 @@ function getState() {
     commandChain: Promise.resolve(),
     eventSubscriptions: new Map(),
     subscriptionCount: 0,
-    isWidgetOpen: false,
+    isBootstrapInitialized: false,
     isReady: false,
-    isInitialized: false,
+    isWidgetOpen: false,
   }
 
   return bootstrapWindow[RUNTIME_STATE_KEY]
@@ -130,6 +130,24 @@ function hideLauncher(state: RuntimeState) {
   emitEvent(state, 'hideLauncher')
 }
 
+function resetWidgetState(state: RuntimeState) {
+  delete state.launcher
+  state.eventSubscriptions.clear()
+  state.isWidgetOpen = false
+  state.isReady = false
+}
+
+function destroy(state: RuntimeState) {
+  if (!state.isReady) {
+    logWarning('Ignoring "destroy" command: widget is not ready')
+    return
+  }
+
+  state.launcher?.destroy()
+  destroyRootContainer()
+  resetWidgetState(state)
+}
+
 function createSubscriptionId(state: RuntimeState) {
   state.subscriptionCount += 1
 
@@ -205,6 +223,10 @@ async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand)
       hideLauncher(state)
       break
 
+    case 'destroy':
+      destroy(state)
+      break
+
     case 'on':
       on(state, command[1], command[2], command[3])
       break
@@ -248,7 +270,7 @@ function createWidgetApi(state: RuntimeState): WidgetApi {
 function start() {
   const state = getState()
 
-  if (state.isInitialized) {
+  if (state.isBootstrapInitialized) {
     return
   }
 
@@ -258,7 +280,7 @@ function start() {
 
   window[APP_NAME] = createWidgetApi(state)
 
-  state.isInitialized = true
+  state.isBootstrapInitialized = true
 
   for (const command of queuedCommands) {
     enqueueCommand(state, command)

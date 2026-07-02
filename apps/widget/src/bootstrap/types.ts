@@ -15,6 +15,7 @@ export type WidgetVoidCommand =
   | ['close']
   | ['showLauncher']
   | ['hideLauncher']
+  | ['destroy']
 
 export type WidgetOnCommand = ['on', WidgetEventName, WidgetEventHandler]
 

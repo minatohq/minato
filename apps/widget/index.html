@@ -7,6 +7,11 @@
   </head>
 
   <body>
+    <button onclick="Feedy('init', { projectId: 'project_123' })">Init widget</button>
+    <button onclick="Feedy('showLauncher')">Show launcher</button>
+    <button onclick="Feedy('hideLauncher')">Hide launcher</button>
+    <button onclick="Feedy('destroy')">Destroy widget</button>
+
     <script>
       window.Feedy =
         window.Feedy ||
@@ -26,20 +31,6 @@
 
           window.Feedy.q.push(args)
         }
-
-      Feedy('init', {
-        projectId: 'project_123',
-      })
-
-      const unsubscribeFromOpen = Feedy('on', 'open', () => {
-        console.log('Feedy widget opened')
-      })
-
-      Feedy('on', 'close', () => {
-        console.log('Feedy widget closed')
-      })
-
-      unsubscribeFromOpen()
     </script>
     <script type="module" src="/src/bootstrap/index.ts"></script>
     <script type="module" src="/src/bootstrap/index.ts?duplicate-load"></script>

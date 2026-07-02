@@ -2,10 +2,6 @@ import { ROOT_CONTAINER_ID, ROOT_STYLES_ID } from './constants'
 import { logError } from './helpers'
 import { rootStyles } from './styles'
 
-export function getRootContainer() {
-  return document.getElementById(ROOT_CONTAINER_ID) as HTMLDivElement | null
-}
-
 export function createRootContainer(): HTMLDivElement | null {
   const hasContainerIdCollision = document.getElementById(ROOT_CONTAINER_ID) !== null
   const hasStylesIdCollision = document.getElementById(ROOT_STYLES_ID) !== null
@@ -32,4 +28,13 @@ export function createRootContainer(): HTMLDivElement | null {
   document.body.append(styles, container)
 
   return container
+}
+
+export function getRootContainer() {
+  return document.getElementById(ROOT_CONTAINER_ID) as HTMLDivElement | null
+}
+
+export function destroyRootContainer() {
+  document.getElementById(ROOT_CONTAINER_ID)?.remove()
+  document.getElementById(ROOT_STYLES_ID)?.remove()
 }
