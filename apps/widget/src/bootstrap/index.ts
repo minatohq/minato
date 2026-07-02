@@ -1,5 +1,4 @@
 import { env } from '../env'
-import { isBrowserEnvironment, waitForDocumentInteractive } from './browser'
 import { loadConfig } from './config'
 import {
   APP_NAME,
@@ -8,11 +7,16 @@ import {
   RUNTIME_STATE_KEY,
   SUBSCRIPTION_ID_PREFIX,
 } from './constants'
-import { createRootContainer, destroyRootContainer } from './dom'
-import { createFrame } from './frame'
+import {
+  createFrame,
+  createRootContainer,
+  destroyRootContainer,
+  isBrowserEnvironment,
+  waitForDocumentInteractive,
+} from './dom'
 import { logError, logWarning } from './helpers'
 import { WidgetCommand, WidgetEvent } from './types'
-import type { FrameController } from './frame'
+import type { FrameController } from './dom'
 import type {
   WidgetApi,
   WidgetEventSubscription,
