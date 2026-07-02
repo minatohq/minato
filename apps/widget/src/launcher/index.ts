@@ -1,4 +1,9 @@
-import { createLauncherReadyMessage, LauncherMessageType, WIDGET_MESSAGE_SOURCE } from '../messages'
+import {
+  createLauncherClickMessage,
+  createLauncherReadyMessage,
+  LauncherMessageType,
+  WIDGET_MESSAGE_SOURCE,
+} from '../messages'
 import { getLauncherStyles } from './styles'
 import type { LauncherMessage } from '../messages'
 import type { WidgetLauncherOptions } from '../types'
@@ -52,6 +57,9 @@ function renderLauncher(options: WidgetLauncherOptions) {
   button.type = 'button'
   button.setAttribute('aria-label', 'Open feedback widget')
   button.append(createLauncherIcon())
+  button.addEventListener('click', () => {
+    window.parent.postMessage(createLauncherClickMessage(), PARENT_ORIGIN)
+  })
 
   root.append(button)
   document.head.append(createLauncherStyles(options))

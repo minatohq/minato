@@ -6,6 +6,7 @@ export const WIDGET_MESSAGE_SOURCE = APP_NAME_LOWERCASE
 export enum LauncherMessageType {
   Ready = 'launcher:ready',
   Init = 'launcher:init',
+  Click = 'launcher:click',
 }
 
 export interface LauncherReadyMessage {
@@ -19,7 +20,12 @@ export interface LauncherInitMessage {
   payload: WidgetLauncherOptions
 }
 
-export type LauncherMessage = LauncherReadyMessage | LauncherInitMessage
+export interface LauncherClickMessage {
+  source: typeof WIDGET_MESSAGE_SOURCE
+  type: LauncherMessageType.Click
+}
+
+export type LauncherMessage = LauncherReadyMessage | LauncherInitMessage | LauncherClickMessage
 
 export function createLauncherReadyMessage(): LauncherReadyMessage {
   return {
@@ -33,5 +39,12 @@ export function createLauncherInitMessage(payload: WidgetLauncherOptions): Launc
     source: WIDGET_MESSAGE_SOURCE,
     type: LauncherMessageType.Init,
     payload,
+  }
+}
+
+export function createLauncherClickMessage(): LauncherClickMessage {
+  return {
+    source: WIDGET_MESSAGE_SOURCE,
+    type: LauncherMessageType.Click,
   }
 }

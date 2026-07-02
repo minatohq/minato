@@ -244,6 +244,14 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
   if (event.data.type === LauncherMessageType.Ready) {
     launcherWindow.postMessage(createLauncherInitMessage(state.config.launcher), event.origin)
   }
+
+  if (event.data.type === LauncherMessageType.Click) {
+    if (state.isWidgetOpen) {
+      closeWidget(state)
+    } else {
+      openWidget(state)
+    }
+  }
 }
 
 async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand) {
