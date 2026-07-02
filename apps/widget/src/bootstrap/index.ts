@@ -6,6 +6,7 @@ import {
   LAUNCHER_FRAME_CLASS,
   LAUNCHER_FRAME_TITLE,
   RUNTIME_STATE_KEY,
+  SUBSCRIPTION_ID_PREFIX,
 } from './constants'
 import { createRootContainer, destroyRootContainer } from './dom'
 import { createFrame } from './frame'
@@ -157,7 +158,7 @@ function destroy(state: RuntimeState) {
 function createSubscriptionId(state: RuntimeState) {
   state.subscriptionCount += 1
 
-  return `subscription_${state.subscriptionCount}`
+  return `${SUBSCRIPTION_ID_PREFIX}${state.subscriptionCount}`
 }
 
 function invokeEventHandler(

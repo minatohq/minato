@@ -11,7 +11,7 @@ This is a piece of code that customers manually add on their websites.
     window.Feedy.subscriptionCount = window.Feedy.subscriptionCount || 0
 
     if (args[0] === 'on') {
-      const subscriptionId = `subscription_${++window.Feedy.subscriptionCount}`
+      const subscriptionId = `s_${++window.Feedy.subscriptionCount}`
 
       window.Feedy.q.push(['on', subscriptionId, args[1], args[2]])
 
