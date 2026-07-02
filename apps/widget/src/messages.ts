@@ -7,6 +7,7 @@ export enum LauncherMessageType {
   Ready = 'launcher:ready',
   Init = 'launcher:init',
   Click = 'launcher:click',
+  State = 'launcher:state',
 }
 
 export interface LauncherReadyMessage {
@@ -25,7 +26,19 @@ export interface LauncherClickMessage {
   type: LauncherMessageType.Click
 }
 
-export type LauncherMessage = LauncherReadyMessage | LauncherInitMessage | LauncherClickMessage
+export interface LauncherStateMessage {
+  source: typeof WIDGET_MESSAGE_SOURCE
+  type: LauncherMessageType.State
+  payload: {
+    isOpen: boolean
+  }
+}
+
+export type LauncherMessage =
+  | LauncherReadyMessage
+  | LauncherInitMessage
+  | LauncherClickMessage
+  | LauncherStateMessage
 
 export function createLauncherReadyMessage(): LauncherReadyMessage {
   return {
@@ -46,5 +59,13 @@ export function createLauncherClickMessage(): LauncherClickMessage {
   return {
     source: WIDGET_MESSAGE_SOURCE,
     type: LauncherMessageType.Click,
+  }
+}
+
+export function createLauncherStateMessage(isOpen: boolean): LauncherStateMessage {
+  return {
+    source: WIDGET_MESSAGE_SOURCE,
+    type: LauncherMessageType.State,
+    payload: { isOpen },
   }
 }

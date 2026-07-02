@@ -1,5 +1,10 @@
 import { env } from '../env'
-import { createLauncherInitMessage, LauncherMessageType, WIDGET_MESSAGE_SOURCE } from '../messages'
+import {
+  createLauncherInitMessage,
+  createLauncherStateMessage,
+  LauncherMessageType,
+  WIDGET_MESSAGE_SOURCE,
+} from '../messages'
 import { loadConfig } from './config'
 import {
   APP_NAME,
@@ -111,12 +116,20 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
   emitEvent(state, WidgetEvent.Ready)
 }
 
+function sendLauncherState(state: RuntimeState) {
+  state.launcher?.element.contentWindow?.postMessage(
+    createLauncherStateMessage(state.isWidgetOpen),
+    window.location.origin
+  )
+}
+
 function openWidget(state: RuntimeState) {
   if (state.isWidgetOpen) {
     return
   }
 
   state.isWidgetOpen = true
+  sendLauncherState(state)
   emitEvent(state, WidgetEvent.Open)
 }
 
@@ -126,6 +139,7 @@ function closeWidget(state: RuntimeState) {
   }
 
   state.isWidgetOpen = false
+  sendLauncherState(state)
   emitEvent(state, WidgetEvent.Close)
 }
 
@@ -243,6 +257,7 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
 
   if (event.data.type === LauncherMessageType.Ready) {
     launcherWindow.postMessage(createLauncherInitMessage(state.config.launcher), event.origin)
+    sendLauncherState(state)
   }
 
   if (event.data.type === LauncherMessageType.Click) {

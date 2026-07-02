@@ -43,7 +43,7 @@ It does these things:
 4. Replays the queued calls in order. New calls are added to the same command chain so asynchronous commands, such as `init`, finish before later commands run.
 5. When processing `init`, validates the project ID and loads the project's widget configuration.
 6. Waits until the document is interactive, then adds the widget's root container and styles to the page.
-7. If the launcher is enabled, creates an iframe inside the root container and loads the launcher script in it. The launcher announces when it is ready through `postMessage`, the bootstrap responds with the launcher configuration it already loaded, and launcher clicks are sent back to the bootstrap to toggle the widget.
+7. If the launcher is enabled, creates an iframe inside the root container and loads the launcher script in it. The launcher announces when it is ready through `postMessage`, the bootstrap responds with the launcher configuration and current widget state, and launcher clicks are sent back to the bootstrap to toggle the widget. Bootstrap sends subsequent open-state changes to the launcher so it can switch between the launcher and close icons.
 8. Marks the widget as ready and emits the `ready` event.
 
 ## Widget API

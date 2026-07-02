@@ -14,8 +14,11 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const LAUNCHER_ROOT_ID = 'feedy-launcher'
 const LAUNCHER_ICON_PATH =
   'M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719'
+const CLOSE_ICON_PATHS = ['M18 6 6 18', 'm6 6 12 12']
 
-function createLauncherIcon(): SVGSVGElement {
+let isWidgetOpen = false
+
+function createLauncherIcon(paths: Array<string>): SVGSVGElement {
   const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
   svg.setAttribute('xmlns', SVG_NAMESPACE)
   svg.setAttribute('width', '24')
@@ -29,12 +32,18 @@ function createLauncherIcon(): SVGSVGElement {
   svg.setAttribute('aria-hidden', 'true')
   svg.setAttribute('focusable', 'false')
 
-  const path = document.createElementNS(SVG_NAMESPACE, 'path')
-  path.setAttribute('d', LAUNCHER_ICON_PATH)
-
-  svg.append(path)
+  for (const pathData of paths) {
+    const path = document.createElementNS(SVG_NAMESPACE, 'path')
+    path.setAttribute('d', pathData)
+    svg.append(path)
+  }
 
   return svg
+}
+
+function updateLauncherButton(button: HTMLButtonElement) {
+  button.setAttribute('aria-label', isWidgetOpen ? 'Close feedback widget' : 'Open feedback widget')
+  button.replaceChildren(createLauncherIcon(isWidgetOpen ? CLOSE_ICON_PATHS : [LAUNCHER_ICON_PATH]))
 }
 
 function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement {
@@ -55,8 +64,7 @@ function renderLauncher(options: WidgetLauncherOptions) {
   root.id = LAUNCHER_ROOT_ID
   button.className = 'widget-launcher-btn'
   button.type = 'button'
-  button.setAttribute('aria-label', 'Open feedback widget')
-  button.append(createLauncherIcon())
+  updateLauncherButton(button)
   button.addEventListener('click', () => {
     window.parent.postMessage(createLauncherClickMessage(), PARENT_ORIGIN)
   })
@@ -77,6 +85,16 @@ function handleMessage(event: MessageEvent<LauncherMessage>) {
 
   if (event.data.type === LauncherMessageType.Init) {
     renderLauncher(event.data.payload)
+  }
+
+  if (event.data.type === LauncherMessageType.State) {
+    isWidgetOpen = event.data.payload.isOpen
+
+    const button = document.querySelector<HTMLButtonElement>(`#${LAUNCHER_ROOT_ID} button`)
+
+    if (button) {
+      updateLauncherButton(button)
+    }
   }
 }
 
