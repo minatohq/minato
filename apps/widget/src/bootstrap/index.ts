@@ -106,15 +106,21 @@ function closeWidget(state: RuntimeState) {
 }
 
 function showLauncher(state: RuntimeState) {
-  if (state.launcher) {
-    state.launcher.element.hidden = false
+  if (!state.launcher?.element.hidden) {
+    return
   }
+
+  state.launcher.element.hidden = false
+  emitEvent(state, 'showLauncher')
 }
 
 function hideLauncher(state: RuntimeState) {
-  if (state.launcher) {
-    state.launcher.element.hidden = true
+  if (!state.launcher?.element.hidden) {
+    return
   }
+
+  state.launcher.element.hidden = true
+  emitEvent(state, 'hideLauncher')
 }
 
 function createSubscriptionId(state: RuntimeState) {

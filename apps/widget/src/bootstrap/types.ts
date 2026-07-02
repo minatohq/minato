@@ -25,7 +25,7 @@ export type WidgetQueuedCommand =
   | ['on', WidgetEventSubscriptionId, WidgetEventName, WidgetEventHandler]
   | ['off', WidgetEventSubscriptionId]
 
-export type WidgetEventName = 'open' | 'close'
+export type WidgetEventName = 'open' | 'close' | 'showLauncher' | 'hideLauncher'
 export type WidgetEventHandler = () => void
 export type WidgetEventUnsubscribe = () => void
 
