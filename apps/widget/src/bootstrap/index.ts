@@ -31,6 +31,7 @@ interface RuntimeState {
   launcher?: FrameController
   subscriptionCount: number
   isWidgetOpen: boolean
+  isReady: boolean
   isInitialized: boolean
 }
 
@@ -46,6 +47,7 @@ function getState() {
     eventSubscriptions: new Map(),
     subscriptionCount: 0,
     isWidgetOpen: false,
+    isReady: false,
     isInitialized: false,
   }
 
@@ -53,7 +55,7 @@ function getState() {
 }
 
 async function init(state: RuntimeState, options: WidgetInitOptions) {
-  if (state.launcher) {
+  if (state.isReady) {
     return
   }
 
@@ -64,7 +66,7 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
 
   const config = await loadConfig(options.projectId)
 
-  if (!config?.launcher.enabled) {
+  if (!config) {
     return
   }
 
@@ -76,15 +78,20 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     return
   }
 
-  const launcher = createFrame({
-    scriptSrc: env.VITE_LAUNCHER_URL,
-    title: LAUNCHER_FRAME_TITLE,
-    className: LAUNCHER_FRAME_CLASS,
-  })
+  if (config.launcher.enabled) {
+    const launcher = createFrame({
+      scriptSrc: env.VITE_LAUNCHER_URL,
+      title: LAUNCHER_FRAME_TITLE,
+      className: LAUNCHER_FRAME_CLASS,
+    })
 
-  state.launcher = launcher
+    state.launcher = launcher
 
-  launcher.mount()
+    launcher.mount()
+  }
+
+  state.isReady = true
+  emitEvent(state, 'ready')
 }
 
 function openWidget(state: RuntimeState) {
@@ -106,7 +113,7 @@ function closeWidget(state: RuntimeState) {
 }
 
 function showLauncher(state: RuntimeState) {
-  if (!state.launcher?.element.hidden) {
+  if (!state.launcher || !state.launcher.element.hidden) {
     return
   }
 
@@ -115,7 +122,7 @@ function showLauncher(state: RuntimeState) {
 }
 
 function hideLauncher(state: RuntimeState) {
-  if (!state.launcher?.element.hidden) {
+  if (!state.launcher || state.launcher.element.hidden) {
     return
   }
 
@@ -129,6 +136,17 @@ function createSubscriptionId(state: RuntimeState) {
   return `subscription_${state.subscriptionCount}`
 }
 
+function invokeEventHandler(
+  eventName: WidgetEventName,
+  handler: WidgetEventSubscription['handler']
+) {
+  try {
+    handler()
+  } catch (error: unknown) {
+    logError(`Error in "${eventName}" event handler:`, error)
+  }
+}
+
 function on(
   state: RuntimeState,
   subscriptionId: WidgetEventSubscriptionId,
@@ -139,6 +157,10 @@ function on(
     eventName,
     handler,
   })
+
+  if (eventName === 'ready' && state.isReady) {
+    invokeEventHandler(eventName, handler)
+  }
 }
 
 function off(state: RuntimeState, subscriptionId: WidgetEventSubscriptionId) {
@@ -157,11 +179,7 @@ function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
   }
 
   for (const { handler } of subscriptions) {
-    try {
-      handler()
-    } catch (error: unknown) {
-      logError(`Error in "${eventName}" event handler:`, error)
-    }
+    invokeEventHandler(eventName, handler)
   }
 }
 
