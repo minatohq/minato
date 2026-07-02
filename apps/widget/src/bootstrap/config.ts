@@ -1,17 +1,17 @@
+import { env } from '../env'
 import { logError } from './helpers'
 import type { WidgetConfig } from '../types'
 
-export async function loadConfig(_projectId: string) {
+export async function loadConfig(projectId: string) {
   try {
-    const response = await fetch('http://localhost:3001')
+    const response = await fetch(`${env.VITE_API_BASE_URL}/widget/config/${projectId}`)
 
     if (!response.ok) {
-      logError(`Failed to load widget config: ${response.status}`)
-      return
+      throw new Error(`HTTP ${response.status}`)
     }
 
     return (await response.json()) as WidgetConfig
   } catch (error: unknown) {
-    logError('Failed to load widget config:', error)
+    logError('Failed to load widget config', error)
   }
 }

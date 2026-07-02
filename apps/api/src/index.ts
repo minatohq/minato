@@ -11,7 +11,9 @@ app.use(
   })
 )
 
-app.get('/', (c) => {
+app.get('/widget/config/:projectId', async (c) => {
+  const _projectId = c.req.param('projectId')
+
   return c.json({
     launcher: {
       enabled: true,
