@@ -1,6 +1,9 @@
-import { loadConfig } from '../bootstrap/config'
+import { createLauncherReadyMessage, LauncherMessageType, WIDGET_MESSAGE_SOURCE } from '../messages'
 import { getLauncherStyles } from './styles'
+import type { LauncherMessage } from '../messages'
 import type { WidgetLauncherOptions } from '../types'
+
+const PARENT_ORIGIN = window.parent.location.origin
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const LAUNCHER_ROOT_ID = 'feedy-launcher'
@@ -36,7 +39,7 @@ function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement 
   return style
 }
 
-export function renderLauncher(options: WidgetLauncherOptions) {
+function renderLauncher(options: WidgetLauncherOptions) {
   if (document.getElementById(LAUNCHER_ROOT_ID)) {
     return
   }
@@ -55,12 +58,23 @@ export function renderLauncher(options: WidgetLauncherOptions) {
   document.body.append(root)
 }
 
-async function start() {
-  const config = await loadConfig('')
+function handleMessage(event: MessageEvent<LauncherMessage>) {
+  if (
+    event.source !== window.parent ||
+    event.origin !== PARENT_ORIGIN ||
+    event.data.source !== WIDGET_MESSAGE_SOURCE
+  ) {
+    return
+  }
 
-  if (config?.launcher.enabled) {
-    renderLauncher(config.launcher)
+  if (event.data.type === LauncherMessageType.Init) {
+    renderLauncher(event.data.payload)
   }
 }
 
-void start()
+function start() {
+  window.addEventListener('message', handleMessage)
+  window.parent.postMessage(createLauncherReadyMessage(), PARENT_ORIGIN)
+}
+
+start()

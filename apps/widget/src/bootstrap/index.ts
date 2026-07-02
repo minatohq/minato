@@ -1,4 +1,5 @@
 import { env } from '../env'
+import { createLauncherInitMessage, LauncherMessageType, WIDGET_MESSAGE_SOURCE } from '../messages'
 import { loadConfig } from './config'
 import {
   APP_NAME,
@@ -16,6 +17,8 @@ import {
 } from './dom'
 import { logError, logWarning } from './helpers'
 import { WidgetCommand, WidgetEvent } from './types'
+import type { LauncherMessage } from '../messages'
+import type { WidgetConfig } from '../types'
 import type { FrameController } from './dom'
 import type {
   WidgetApi,
@@ -33,6 +36,7 @@ interface BootstrapWindow extends Window {
 
 interface RuntimeState {
   commandChain: Promise<void>
+  config?: WidgetConfig
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
   launcher?: FrameController
   subscriptionCount: number
@@ -80,6 +84,8 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
   if (!config) {
     return
   }
+
+  state.config = config
 
   // We wait for `interactive` instead of `DOMContentLoaded` so the widget
   // can be rendered as early as possible.
@@ -142,6 +148,7 @@ function hideLauncher(state: RuntimeState) {
 }
 
 function resetWidgetState(state: RuntimeState) {
+  delete state.config
   delete state.launcher
   state.eventSubscriptions.clear()
   state.isWidgetOpen = false
@@ -218,6 +225,24 @@ function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
 
   for (const { handler } of subscriptions) {
     invokeEventHandler(eventName, handler)
+  }
+}
+
+function handleLauncherMessage(state: RuntimeState, event: MessageEvent<LauncherMessage>) {
+  const launcherWindow = state.launcher?.element.contentWindow
+
+  if (
+    !launcherWindow ||
+    !state.config ||
+    event.source !== launcherWindow ||
+    event.origin !== window.location.origin ||
+    event.data.source !== WIDGET_MESSAGE_SOURCE
+  ) {
+    return
+  }
+
+  if (event.data.type === LauncherMessageType.Ready) {
+    launcherWindow.postMessage(createLauncherInitMessage(state.config.launcher), event.origin)
   }
 }
 
@@ -306,6 +331,7 @@ function start() {
   state.subscriptionCount = getSubscriptionCount(window[APP_NAME])
 
   window[APP_NAME] = createWidgetApi(state)
+  window.addEventListener('message', (event) => handleLauncherMessage(state, event))
 
   state.isBootstrapInitialized = true
 
