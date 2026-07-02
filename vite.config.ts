@@ -4,10 +4,14 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  staged: {
+    '*': 'vp check --fix',
+  },
   fmt: {
     ignorePatterns: ['**/*.md'],
     semi: false,
     singleQuote: true,
+    trailingComma: 'es5',
     sortImports: {
       internalPattern: ['@/'],
       newlinesBetween: false,
@@ -41,7 +45,6 @@ export default defineConfig({
         'type-index',
       ],
     },
-    trailingComma: 'es5',
   },
   lint: {
     jsPlugins: [
@@ -57,8 +60,5 @@ export default defineConfig({
       typeAware: true,
       typeCheck: true,
     },
-  },
-  staged: {
-    '*': 'vp check --fix',
   },
 })
