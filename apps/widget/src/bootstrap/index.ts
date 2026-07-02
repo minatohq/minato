@@ -10,6 +10,7 @@ import {
 import { createRootContainer, destroyRootContainer } from './dom'
 import { createFrame } from './frame'
 import { logError, logWarning } from './helpers'
+import { WidgetCommand, WidgetEvent } from './types'
 import type { FrameController } from './frame'
 import type {
   WidgetApi,
@@ -34,6 +35,11 @@ interface RuntimeState {
   isReady: boolean
   isWidgetOpen: boolean
 }
+
+const supportedCommandNames = Object.values(WidgetCommand)
+const supportedEventNames = Object.values(WidgetEvent)
+const supportedCommands = supportedCommandNames.join(', ')
+const supportedEvents = supportedEventNames.join(', ')
 
 function getBootstrapWindow() {
   return window as BootstrapWindow
@@ -91,7 +97,7 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
   }
 
   state.isReady = true
-  emitEvent(state, 'ready')
+  emitEvent(state, WidgetEvent.Ready)
 }
 
 function openWidget(state: RuntimeState) {
@@ -100,7 +106,7 @@ function openWidget(state: RuntimeState) {
   }
 
   state.isWidgetOpen = true
-  emitEvent(state, 'open')
+  emitEvent(state, WidgetEvent.Open)
 }
 
 function closeWidget(state: RuntimeState) {
@@ -109,7 +115,7 @@ function closeWidget(state: RuntimeState) {
   }
 
   state.isWidgetOpen = false
-  emitEvent(state, 'close')
+  emitEvent(state, WidgetEvent.Close)
 }
 
 function showLauncher(state: RuntimeState) {
@@ -118,7 +124,7 @@ function showLauncher(state: RuntimeState) {
   }
 
   state.launcher.element.hidden = false
-  emitEvent(state, 'showLauncher')
+  emitEvent(state, WidgetEvent.ShowLauncher)
 }
 
 function hideLauncher(state: RuntimeState) {
@@ -127,7 +133,7 @@ function hideLauncher(state: RuntimeState) {
   }
 
   state.launcher.element.hidden = true
-  emitEvent(state, 'hideLauncher')
+  emitEvent(state, WidgetEvent.HideLauncher)
 }
 
 function resetWidgetState(state: RuntimeState) {
@@ -168,17 +174,26 @@ function invokeEventHandler(
 function on(
   state: RuntimeState,
   subscriptionId: WidgetEventSubscriptionId,
-  eventName: WidgetEventName,
+  eventName: unknown,
   handler: WidgetEventSubscription['handler']
 ) {
+  if (!isWidgetEventName(eventName)) {
+    logWarning(`Unrecognized event "${String(eventName)}". Supported events: ${supportedEvents}`)
+    return
+  }
+
   state.eventSubscriptions.set(subscriptionId, {
     eventName,
     handler,
   })
 
-  if (eventName === 'ready' && state.isReady) {
+  if (eventName === WidgetEvent.Ready && state.isReady) {
     invokeEventHandler(eventName, handler)
   }
+}
+
+function isWidgetEventName(eventName: unknown): eventName is WidgetEventName {
+  return supportedEventNames.some((supportedEventName) => supportedEventName === eventName)
 }
 
 function off(state: RuntimeState, subscriptionId: WidgetEventSubscriptionId) {
@@ -202,38 +217,45 @@ function emitEvent(state: RuntimeState, eventName: WidgetEventName) {
 }
 
 async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand) {
-  switch (command[0]) {
-    case 'init':
+  const commandName = command[0]
+
+  switch (commandName) {
+    case WidgetCommand.Init:
       await init(state, command[1])
       break
 
-    case 'open':
+    case WidgetCommand.Open:
       openWidget(state)
       break
 
-    case 'close':
+    case WidgetCommand.Close:
       closeWidget(state)
       break
 
-    case 'showLauncher':
+    case WidgetCommand.ShowLauncher:
       showLauncher(state)
       break
 
-    case 'hideLauncher':
+    case WidgetCommand.HideLauncher:
       hideLauncher(state)
       break
 
-    case 'destroy':
+    case WidgetCommand.Destroy:
       destroy(state)
       break
 
-    case 'on':
+    case WidgetCommand.On:
       on(state, command[1], command[2], command[3])
       break
 
     case 'off':
       off(state, command[1])
       break
+
+    default:
+      logWarning(
+        `Unrecognized command "${String(commandName)}". Supported commands: ${supportedCommands}`
+      )
   }
 }
 
@@ -251,10 +273,10 @@ function enqueueCommand(state: RuntimeState, command: WidgetQueuedCommand) {
 
 function createWidgetApi(state: RuntimeState): WidgetApi {
   return ((...args: WidgetPublicCommand | ['off', WidgetEventSubscriptionId]) => {
-    if (args[0] === 'on') {
+    if (args[0] === WidgetCommand.On) {
       const subscriptionId = createSubscriptionId(state)
 
-      enqueueCommand(state, ['on', subscriptionId, args[1], args[2]])
+      enqueueCommand(state, [WidgetCommand.On, subscriptionId, args[1], args[2]])
 
       return () => {
         enqueueCommand(state, ['off', subscriptionId])

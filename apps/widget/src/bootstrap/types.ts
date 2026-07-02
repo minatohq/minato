@@ -1,5 +1,23 @@
 import type { APP_NAME } from './constants'
 
+export enum WidgetCommand {
+  Init = 'init',
+  Open = 'open',
+  Close = 'close',
+  ShowLauncher = 'showLauncher',
+  HideLauncher = 'hideLauncher',
+  Destroy = 'destroy',
+  On = 'on',
+}
+
+export enum WidgetEvent {
+  Ready = 'ready',
+  Open = 'open',
+  Close = 'close',
+  ShowLauncher = 'showLauncher',
+  HideLauncher = 'hideLauncher',
+}
+
 export type RuntimeStateKey = `__${Lowercase<typeof APP_NAME>}RuntimeState`
 
 export interface WidgetApi {
@@ -10,23 +28,23 @@ export interface WidgetApi {
 }
 
 export type WidgetVoidCommand =
-  | ['init', WidgetInitOptions]
-  | ['open']
-  | ['close']
-  | ['showLauncher']
-  | ['hideLauncher']
-  | ['destroy']
+  | [`${WidgetCommand.Init}`, WidgetInitOptions]
+  | [`${WidgetCommand.Open}`]
+  | [`${WidgetCommand.Close}`]
+  | [`${WidgetCommand.ShowLauncher}`]
+  | [`${WidgetCommand.HideLauncher}`]
+  | [`${WidgetCommand.Destroy}`]
 
-export type WidgetOnCommand = ['on', WidgetEventName, WidgetEventHandler]
+export type WidgetOnCommand = [`${WidgetCommand.On}`, WidgetEventName, WidgetEventHandler]
 
 export type WidgetPublicCommand = WidgetVoidCommand | WidgetOnCommand
 
 export type WidgetQueuedCommand =
   | WidgetVoidCommand
-  | ['on', WidgetEventSubscriptionId, WidgetEventName, WidgetEventHandler]
+  | [`${WidgetCommand.On}`, WidgetEventSubscriptionId, WidgetEventName, WidgetEventHandler]
   | ['off', WidgetEventSubscriptionId]
 
-export type WidgetEventName = 'ready' | 'open' | 'close' | 'showLauncher' | 'hideLauncher'
+export type WidgetEventName = `${WidgetEvent}`
 export type WidgetEventHandler = () => void
 export type WidgetEventUnsubscribe = () => void
 

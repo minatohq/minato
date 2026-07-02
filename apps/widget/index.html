@@ -7,10 +7,64 @@
   </head>
 
   <body>
-    <button onclick="Feedy('init', { projectId: 'project_123' })">Init widget</button>
-    <button onclick="Feedy('showLauncher')">Show launcher</button>
-    <button onclick="Feedy('hideLauncher')">Hide launcher</button>
-    <button onclick="Feedy('destroy')">Destroy widget</button>
+    <div style="margin-bottom: 1rem">
+      <button onclick="Feedy('init', { projectId: 'project_123' })">Init widget</button>
+      <button onclick="Feedy('open')">Open widget</button>
+      <button onclick="Feedy('close')">Close widget</button>
+      <button onclick="Feedy('showLauncher')">Show launcher</button>
+      <button onclick="Feedy('hideLauncher')">Hide launcher</button>
+      <button onclick="Feedy('destroy')">Destroy widget</button>
+      <button onclick="Feedy('TEST')">Unknown command</button>
+    </div>
+
+    <div>
+      <button onclick="Feedy('on', 'TEST', () => {})">Unknown event</button>
+      <button
+        onclick="
+          Feedy('on', 'ready', () => {
+            console.log('ready event handler')
+          })
+        "
+      >
+        `ready` event
+      </button>
+      <button
+        onclick="
+          Feedy('on', 'open', () => {
+            console.log('open event handler')
+          })
+        "
+      >
+        `open` event
+      </button>
+      <button
+        onclick="
+          Feedy('on', 'close', () => {
+            console.log('close event handler')
+          })
+        "
+      >
+        `close` event
+      </button>
+      <button
+        onclick="
+          Feedy('on', 'showLauncher', () => {
+            console.log('showLauncher event handler')
+          })
+        "
+      >
+        `showLauncher` event
+      </button>
+      <button
+        onclick="
+          Feedy('on', 'hideLauncher', () => {
+            console.log('hideLauncher event handler')
+          })
+        "
+      >
+        `hideLauncher` event
+      </button>
+    </div>
 
     <script>
       window.Feedy =
