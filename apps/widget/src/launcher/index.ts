@@ -16,7 +16,7 @@ const LAUNCHER_ICON_PATH =
   'M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719'
 const CLOSE_ICON_PATHS = ['M18 6 6 18', 'm6 6 12 12']
 
-let isWidgetOpen = false
+let isPopupOpen = false
 
 function createLauncherIcon(paths: Array<string>): SVGSVGElement {
   const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
@@ -42,8 +42,8 @@ function createLauncherIcon(paths: Array<string>): SVGSVGElement {
 }
 
 function updateLauncherButton(button: HTMLButtonElement) {
-  button.setAttribute('aria-label', isWidgetOpen ? 'Close widget' : 'Open widget')
-  button.replaceChildren(createLauncherIcon(isWidgetOpen ? CLOSE_ICON_PATHS : [LAUNCHER_ICON_PATH]))
+  button.setAttribute('aria-label', isPopupOpen ? 'Close popup' : 'Open popup')
+  button.replaceChildren(createLauncherIcon(isPopupOpen ? CLOSE_ICON_PATHS : [LAUNCHER_ICON_PATH]))
 }
 
 function createLauncherStyles(options: WidgetLauncherOptions): HTMLStyleElement {
@@ -88,7 +88,7 @@ function handleMessage(event: MessageEvent<LauncherMessage>) {
   }
 
   if (event.data.type === LauncherMessageType.State) {
-    isWidgetOpen = event.data.payload.isOpen
+    isPopupOpen = event.data.payload.isOpen
 
     const button = document.querySelector<HTMLButtonElement>(`#${LAUNCHER_ROOT_ID} button`)
 

@@ -51,7 +51,7 @@ interface RuntimeState {
   subscriptionCount: number
   isBootstrapInitialized: boolean
   isReady: boolean
-  isWidgetOpen: boolean
+  isPopupOpen: boolean
 }
 
 const supportedCommandNames = Object.values(WidgetCommand)
@@ -72,7 +72,7 @@ function getState() {
     subscriptionCount: 0,
     isBootstrapInitialized: false,
     isReady: false,
-    isWidgetOpen: false,
+    isPopupOpen: false,
   }
 
   return bootstrapWindow[RUNTIME_STATE_KEY]
@@ -131,39 +131,39 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
 
 function sendLauncherState(state: RuntimeState) {
   state.launcher?.element.contentWindow?.postMessage(
-    createLauncherStateMessage(state.isWidgetOpen),
+    createLauncherStateMessage(state.isPopupOpen),
     window.location.origin
   )
 }
 
-function openWidget(state: RuntimeState) {
-  if (state.isWidgetOpen) {
+function openPopup(state: RuntimeState) {
+  if (state.isPopupOpen) {
     return
   }
 
-  state.isWidgetOpen = true
+  state.isPopupOpen = true
 
   if (state.popup) {
     state.popup.element.hidden = false
   }
 
   sendLauncherState(state)
-  emitEvent(state, WidgetEvent.Open)
+  emitEvent(state, WidgetEvent.PopupOpened)
 }
 
-function closeWidget(state: RuntimeState) {
-  if (!state.isWidgetOpen) {
+function closePopup(state: RuntimeState) {
+  if (!state.isPopupOpen) {
     return
   }
 
-  state.isWidgetOpen = false
+  state.isPopupOpen = false
 
   if (state.popup) {
     state.popup.element.hidden = true
   }
 
   sendLauncherState(state)
-  emitEvent(state, WidgetEvent.Close)
+  emitEvent(state, WidgetEvent.PopupClosed)
 }
 
 function showLauncher(state: RuntimeState) {
@@ -189,7 +189,7 @@ function resetWidgetState(state: RuntimeState) {
   delete state.popup
   delete state.launcher
   state.eventSubscriptions.clear()
-  state.isWidgetOpen = false
+  state.isPopupOpen = false
   state.isReady = false
 }
 
@@ -286,10 +286,10 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
   }
 
   if (event.data.type === LauncherMessageType.Click) {
-    if (state.isWidgetOpen) {
-      closeWidget(state)
+    if (state.isPopupOpen) {
+      closePopup(state)
     } else {
-      openWidget(state)
+      openPopup(state)
     }
   }
 }
@@ -307,7 +307,7 @@ function handlePopupMessage(state: RuntimeState, event: MessageEvent<PopupMessag
   }
 
   if (event.data.type === PopupMessageType.Close) {
-    closeWidget(state)
+    closePopup(state)
   }
 }
 
@@ -319,12 +319,12 @@ async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand)
       await init(state, command[1])
       break
 
-    case WidgetCommand.Open:
-      openWidget(state)
+    case WidgetCommand.OpenPopup:
+      openPopup(state)
       break
 
-    case WidgetCommand.Close:
-      closeWidget(state)
+    case WidgetCommand.ClosePopup:
+      closePopup(state)
       break
 
     case WidgetCommand.ShowLauncher:

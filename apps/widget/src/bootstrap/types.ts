@@ -2,8 +2,8 @@ import type { APP_NAME } from './constants'
 
 export enum WidgetCommand {
   Init = 'init',
-  Open = 'open',
-  Close = 'close',
+  OpenPopup = 'openPopup',
+  ClosePopup = 'closePopup',
   ShowLauncher = 'showLauncher',
   HideLauncher = 'hideLauncher',
   Destroy = 'destroy',
@@ -12,8 +12,8 @@ export enum WidgetCommand {
 
 export enum WidgetEvent {
   Ready = 'ready',
-  Open = 'open',
-  Close = 'close',
+  PopupOpened = 'popupOpened',
+  PopupClosed = 'popupClosed',
   ShowLauncher = 'showLauncher',
   HideLauncher = 'hideLauncher',
 }
@@ -29,8 +29,8 @@ export interface WidgetApi {
 
 export type WidgetVoidCommand =
   | [`${WidgetCommand.Init}`, WidgetInitOptions]
-  | [`${WidgetCommand.Open}`]
-  | [`${WidgetCommand.Close}`]
+  | [`${WidgetCommand.OpenPopup}`]
+  | [`${WidgetCommand.ClosePopup}`]
   | [`${WidgetCommand.ShowLauncher}`]
   | [`${WidgetCommand.HideLauncher}`]
   | [`${WidgetCommand.Destroy}`]
