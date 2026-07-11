@@ -1,3 +1,4 @@
+import { WIDGET_POPUP_TRIGGER_ATTRIBUTE } from '@repo/constants/widget'
 import { env } from '../env'
 import {
   createLauncherInitMessage,
@@ -13,7 +14,6 @@ import {
   LAUNCHER_FRAME_TITLE,
   POPUP_FRAME_CLASS,
   POPUP_FRAME_TITLE,
-  POPUP_TRIGGER_ATTRIBUTE,
   RUNTIME_STATE_KEY,
   SUBSCRIPTION_ID_PREFIX,
 } from './constants'
@@ -162,7 +162,7 @@ function open(state: RuntimeState, target: WidgetTarget) {
 function handlePopupTriggerClick(state: RuntimeState, event: MouseEvent) {
   // oxfmt-ignore
   const trigger = event.target instanceof Element
-    ? event.target.closest(`[${POPUP_TRIGGER_ATTRIBUTE}]`)
+    ? event.target.closest(`[${WIDGET_POPUP_TRIGGER_ATTRIBUTE}]`)
     : null
 
   if (trigger) {

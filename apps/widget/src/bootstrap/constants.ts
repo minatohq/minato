@@ -9,7 +9,6 @@ export const POPUP_FRAME_CLASS = `${APP_NAME_LOWERCASE}-popup-frame`
 export const POPUP_FRAME_TITLE = `${APP_NAME} popup`
 export const LAUNCHER_FRAME_CLASS = `${APP_NAME_LOWERCASE}-launcher-frame`
 export const LAUNCHER_FRAME_TITLE = `${APP_NAME} launcher`
-export const POPUP_TRIGGER_ATTRIBUTE = `data-${APP_NAME_LOWERCASE}-popup-trigger`
 
 export const SUBSCRIPTION_ID_PREFIX = 's_'
 
