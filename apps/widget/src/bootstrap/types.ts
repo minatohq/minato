@@ -18,6 +18,10 @@ export enum WidgetEvent {
   LauncherHidden = 'launcherHidden',
 }
 
+export enum WidgetTarget {
+  Popup = 'popup',
+}
+
 export type RuntimeStateKey = `__${Lowercase<typeof APP_NAME>}RuntimeState`
 
 export interface WidgetApi {

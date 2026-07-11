@@ -4,10 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minato Widget</title>
+    <style>
+      body {
+        display: grid;
+        gap: 1rem;
+      }
+
+      section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    </style>
   </head>
 
   <body>
-    <div style="margin-bottom: 1rem">
+    <!-- Commands -->
+    <section>
       <button onclick="Minato('init', { projectId: 'project_123' })">Init widget</button>
       <button onclick="Minato('openPopup')">Open popup</button>
       <button onclick="Minato('closePopup')">Close popup</button>
@@ -15,9 +28,10 @@
       <button onclick="Minato('hideLauncher')">Hide launcher</button>
       <button onclick="Minato('destroy')">Destroy widget</button>
       <button onclick="Minato('TEST')">Unknown command</button>
-    </div>
+    </section>
 
-    <div>
+    <!-- Events -->
+    <section>
       <button onclick="Minato('on', 'TEST', () => {})">Unknown event</button>
       <button
         onclick="
@@ -64,7 +78,15 @@
       >
         `launcherHidden` event
       </button>
-    </div>
+    </section>
+
+    <!-- Declarative triggers -->
+    <section>
+      <button data-minato-popup-trigger>Popup trigger</button>
+      <button data-minato-popup-trigger="ignored">
+        <span>Nested popup trigger</span>
+      </button>
+    </section>
 
     <script>
       window.Minato =
