@@ -3,25 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Feedy Widget</title>
+    <title>Minato Widget</title>
   </head>
 
   <body>
     <div style="margin-bottom: 1rem">
-      <button onclick="Feedy('init', { projectId: 'project_123' })">Init widget</button>
-      <button onclick="Feedy('openPopup')">Open popup</button>
-      <button onclick="Feedy('closePopup')">Close popup</button>
-      <button onclick="Feedy('showLauncher')">Show launcher</button>
-      <button onclick="Feedy('hideLauncher')">Hide launcher</button>
-      <button onclick="Feedy('destroy')">Destroy widget</button>
-      <button onclick="Feedy('TEST')">Unknown command</button>
+      <button onclick="Minato('init', { projectId: 'project_123' })">Init widget</button>
+      <button onclick="Minato('openPopup')">Open popup</button>
+      <button onclick="Minato('closePopup')">Close popup</button>
+      <button onclick="Minato('showLauncher')">Show launcher</button>
+      <button onclick="Minato('hideLauncher')">Hide launcher</button>
+      <button onclick="Minato('destroy')">Destroy widget</button>
+      <button onclick="Minato('TEST')">Unknown command</button>
     </div>
 
     <div>
-      <button onclick="Feedy('on', 'TEST', () => {})">Unknown event</button>
+      <button onclick="Minato('on', 'TEST', () => {})">Unknown event</button>
       <button
         onclick="
-          Feedy('on', 'ready', () => {
+          Minato('on', 'ready', () => {
             console.log('ready event handler')
           })
         "
@@ -30,7 +30,7 @@
       </button>
       <button
         onclick="
-          Feedy('on', 'popupOpened', () => {
+          Minato('on', 'popupOpened', () => {
             console.log('popupOpened event handler')
           })
         "
@@ -39,8 +39,8 @@
       </button>
       <button
         onclick="
-          Feedy('on', 'popupClosed', () => {
-            console.log('popupClosed event handler')
+          Minato('on', 'popupClosed', () => {
+            console.log('close event handler')
           })
         "
       >
@@ -48,7 +48,7 @@
       </button>
       <button
         onclick="
-          Feedy('on', 'showLauncher', () => {
+          Minato('on', 'showLauncher', () => {
             console.log('showLauncher event handler')
           })
         "
@@ -57,7 +57,7 @@
       </button>
       <button
         onclick="
-          Feedy('on', 'hideLauncher', () => {
+          Minato('on', 'hideLauncher', () => {
             console.log('hideLauncher event handler')
           })
         "
@@ -67,23 +67,23 @@
     </div>
 
     <script>
-      window.Feedy =
-        window.Feedy ||
+      window.Minato =
+        window.Minato ||
         function (...args) {
-          window.Feedy.q = window.Feedy.q || []
-          window.Feedy.subscriptionCount = window.Feedy.subscriptionCount || 0
+          window.Minato.q = window.Minato.q || []
+          window.Minato.subscriptionCount = window.Minato.subscriptionCount || 0
 
           if (args[0] === 'on') {
-            const subscriptionId = `s_${++window.Feedy.subscriptionCount}`
+            const subscriptionId = `s_${++window.Minato.subscriptionCount}`
 
-            window.Feedy.q.push(['on', subscriptionId, args[1], args[2]])
+            window.Minato.q.push(['on', subscriptionId, args[1], args[2]])
 
             return function unsubscribe() {
-              window.Feedy('off', subscriptionId)
+              window.Minato('off', subscriptionId)
             }
           }
 
-          window.Feedy.q.push(args)
+          window.Minato.q.push(args)
         }
     </script>
     <script type="module" src="/src/bootstrap/index.ts"></script>

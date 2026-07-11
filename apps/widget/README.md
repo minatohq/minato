@@ -6,29 +6,29 @@ This is a piece of code that customers manually add on their websites.
 
 ```html
 <script>
-  window.Feedy = window.Feedy || function (...args) {
-    window.Feedy.q = window.Feedy.q || []
-    window.Feedy.subscriptionCount = window.Feedy.subscriptionCount || 0
+  window.Minato = window.Minato || function (...args) {
+    window.Minato.q = window.Minato.q || []
+    window.Minato.subscriptionCount = window.Minato.subscriptionCount || 0
 
     if (args[0] === 'on') {
-      const subscriptionId = `s_${++window.Feedy.subscriptionCount}`
+      const subscriptionId = `s_${++window.Minato.subscriptionCount}`
 
-      window.Feedy.q.push(['on', subscriptionId, args[1], args[2]])
+      window.Minato.q.push(['on', subscriptionId, args[1], args[2]])
 
       return function unsubscribe() {
-        window.Feedy('off', subscriptionId)
+        window.Minato('off', subscriptionId)
       }
     }
 
-    window.Feedy.q.push(args)
+    window.Minato.q.push(args)
   }
 
   // Initialize the widget with customer's project ID
-  Feedy('init', {
+  Minato('init', {
     projectId: 'NlhWOVQWzIV6g6Jr',
   })
 </script>
-<script src="https://cdn.feedy.com/widget.js"></script> <!-- Bootstrap script -->
+<script src="https://cdn.minato.so/widget.js"></script> <!-- Bootstrap script -->
 ```
 
 ## Bootstrap script
@@ -39,7 +39,7 @@ It does these things:
 
 1. Checks whether the bootstrap has already run so loading the script more than once does not initialize another widget runtime.
 2. Reads the commands and event subscriptions queued by the snippet before the bootstrap script finished loading.
-3. Replaces the temporary `window.Feedy` queue function with the real widget API.
+3. Replaces the temporary `window.Minato` queue function with the real widget API.
 4. Replays the queued calls in order. New calls are added to the same command chain so asynchronous commands, such as `init`, finish before later commands run.
 5. When processing `init`, validates the project ID and loads the project's widget configuration.
 6. Waits until the document is interactive, then adds the widget's root container and styles to the page.
@@ -49,24 +49,24 @@ It does these things:
 
 ## Widget API
 
-`window.Feedy` - the public API
+`window.Minato` - the public API
 
 Supported commands:
 
-- `Feedy('init', config)`
-- `Feedy('openPopup')`
-- `Feedy('closePopup')`
-- `Feedy('showLauncher')`
-- `Feedy('hideLauncher')`
-- `Feedy('destroy')`
-- `Feedy('on', event, handler)`
+- `Minato('init', config)`
+- `Minato('openPopup')`
+- `Minato('closePopup')`
+- `Minato('showLauncher')`
+- `Minato('hideLauncher')`
+- `Minato('destroy')`
+- `Minato('on', event, handler)`
 
 Supported events:
 
-- `const unsubscribe = Feedy('on', 'ready', handler)`
-- `const unsubscribe = Feedy('on', 'popupOpened', handler)`
-- `const unsubscribe = Feedy('on', 'popupClosed', handler)`
-- `const unsubscribe = Feedy('on', 'showLauncher', handler)`
-- `const unsubscribe = Feedy('on', 'hideLauncher', handler)`
+- `const unsubscribe = Minato('on', 'ready', handler)`
+- `const unsubscribe = Minato('on', 'popupOpened', handler)`
+- `const unsubscribe = Minato('on', 'popupClosed', handler)`
+- `const unsubscribe = Minato('on', 'showLauncher', handler)`
+- `const unsubscribe = Minato('on', 'hideLauncher', handler)`
 
 Call the returned `unsubscribe` function to remove that listener.

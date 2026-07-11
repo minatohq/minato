@@ -11,7 +11,7 @@ import type { LauncherMessage } from '../messages'
 const PARENT_ORIGIN = window.parent.location.origin
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
-const LAUNCHER_ROOT_ID = 'feedy-launcher'
+const LAUNCHER_ROOT_ID = 'minato-launcher'
 const LAUNCHER_ICON_PATH =
   'M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719'
 const CLOSE_ICON_PATHS = ['M18 6 6 18', 'm6 6 12 12']
