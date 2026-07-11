@@ -14,8 +14,8 @@ export enum WidgetEvent {
   Ready = 'ready',
   PopupOpened = 'popupOpened',
   PopupClosed = 'popupClosed',
-  ShowLauncher = 'showLauncher',
-  HideLauncher = 'hideLauncher',
+  LauncherShown = 'launcherShown',
+  LauncherHidden = 'launcherHidden',
 }
 
 export type RuntimeStateKey = `__${Lowercase<typeof APP_NAME>}RuntimeState`
