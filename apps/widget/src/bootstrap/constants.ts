@@ -5,8 +5,10 @@ export const APP_NAME_LOWERCASE = APP_NAME.toLowerCase() as Lowercase<typeof APP
 
 export const ROOT_CONTAINER_ID = `${APP_NAME_LOWERCASE}-container`
 export const ROOT_STYLES_ID = `${APP_NAME_LOWERCASE}-styles`
+export const POPUP_FRAME_CLASS = `${APP_NAME_LOWERCASE}-popup-frame`
+export const POPUP_FRAME_TITLE = `${APP_NAME} popup`
 export const LAUNCHER_FRAME_CLASS = `${APP_NAME_LOWERCASE}-launcher-frame`
-export const LAUNCHER_FRAME_TITLE = `${APP_NAME} feedback launcher`
+export const LAUNCHER_FRAME_TITLE = `${APP_NAME} launcher`
 
 export const SUBSCRIPTION_ID_PREFIX = 's_'
 

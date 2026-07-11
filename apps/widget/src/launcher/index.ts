@@ -42,7 +42,7 @@ function createLauncherIcon(paths: Array<string>): SVGSVGElement {
 }
 
 function updateLauncherButton(button: HTMLButtonElement) {
-  button.setAttribute('aria-label', isWidgetOpen ? 'Close feedback widget' : 'Open feedback widget')
+  button.setAttribute('aria-label', isWidgetOpen ? 'Close widget' : 'Open widget')
   button.replaceChildren(createLauncherIcon(isWidgetOpen ? CLOSE_ICON_PATHS : [LAUNCHER_ICON_PATH]))
 }
 

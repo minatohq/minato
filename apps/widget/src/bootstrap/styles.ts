@@ -1,4 +1,4 @@
-import { LAUNCHER_FRAME_CLASS, ROOT_CONTAINER_ID } from './constants'
+import { LAUNCHER_FRAME_CLASS, POPUP_FRAME_CLASS, ROOT_CONTAINER_ID } from './constants'
 
 export const rootStyles = `
 #${ROOT_CONTAINER_ID} {
@@ -18,6 +18,23 @@ export const rootStyles = `
   width: 48px;
   height: 48px;
   border: 0;
+}
+
+#${ROOT_CONTAINER_ID} .${POPUP_FRAME_CLASS} {
+  all: initial;
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 2147483646;
+  display: block;
+  width: 320px;
+  height: 240px;
+  background: #fff;
+  overflow: hidden;
+}
+
+#${ROOT_CONTAINER_ID} .${POPUP_FRAME_CLASS}[hidden] {
+  display: none !important;
 }
 
 #${ROOT_CONTAINER_ID} .${LAUNCHER_FRAME_CLASS}[hidden] {

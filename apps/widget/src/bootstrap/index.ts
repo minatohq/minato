@@ -10,6 +10,8 @@ import {
   APP_NAME,
   LAUNCHER_FRAME_CLASS,
   LAUNCHER_FRAME_TITLE,
+  POPUP_FRAME_CLASS,
+  POPUP_FRAME_TITLE,
   RUNTIME_STATE_KEY,
   SUBSCRIPTION_ID_PREFIX,
 } from './constants'
@@ -43,6 +45,7 @@ interface RuntimeState {
   commandChain: Promise<void>
   config?: WidgetConfig
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
+  popup?: FrameController
   launcher?: FrameController
   subscriptionCount: number
   isBootstrapInitialized: boolean
@@ -100,6 +103,16 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     return
   }
 
+  const popup = createFrame({
+    scriptSrc: env.VITE_POPUP_URL,
+    title: POPUP_FRAME_TITLE,
+    className: POPUP_FRAME_CLASS,
+  })
+
+  popup.element.hidden = true
+  state.popup = popup
+  popup.mount()
+
   if (config.launcher.enabled) {
     const launcher = createFrame({
       scriptSrc: env.VITE_LAUNCHER_URL,
@@ -108,7 +121,6 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     })
 
     state.launcher = launcher
-
     launcher.mount()
   }
 
@@ -129,6 +141,11 @@ function openWidget(state: RuntimeState) {
   }
 
   state.isWidgetOpen = true
+
+  if (state.popup) {
+    state.popup.element.hidden = false
+  }
+
   sendLauncherState(state)
   emitEvent(state, WidgetEvent.Open)
 }
@@ -139,6 +156,11 @@ function closeWidget(state: RuntimeState) {
   }
 
   state.isWidgetOpen = false
+
+  if (state.popup) {
+    state.popup.element.hidden = true
+  }
+
   sendLauncherState(state)
   emitEvent(state, WidgetEvent.Close)
 }
@@ -163,6 +185,7 @@ function hideLauncher(state: RuntimeState) {
 
 function resetWidgetState(state: RuntimeState) {
   delete state.config
+  delete state.popup
   delete state.launcher
   state.eventSubscriptions.clear()
   state.isWidgetOpen = false
@@ -175,6 +198,7 @@ function destroy(state: RuntimeState) {
     return
   }
 
+  state.popup?.destroy()
   state.launcher?.destroy()
   destroyRootContainer()
   resetWidgetState(state)
