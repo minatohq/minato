@@ -66,7 +66,7 @@ Supported events:
 - `const unsubscribe = Minato('on', 'ready', handler)`
 - `const unsubscribe = Minato('on', 'popupOpened', handler)`
 - `const unsubscribe = Minato('on', 'popupClosed', handler)`
-- `const unsubscribe = Minato('on', 'showLauncher', handler)`
-- `const unsubscribe = Minato('on', 'hideLauncher', handler)`
+- `const unsubscribe = Minato('on', 'launcherShown', handler)`
+- `const unsubscribe = Minato('on', 'launcherHidden', handler)`
 
 Call the returned `unsubscribe` function to remove that listener.

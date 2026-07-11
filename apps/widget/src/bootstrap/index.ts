@@ -172,7 +172,7 @@ function showLauncher(state: RuntimeState) {
   }
 
   state.launcher.element.hidden = false
-  emitEvent(state, WidgetEvent.ShowLauncher)
+  emitEvent(state, WidgetEvent.LauncherShown)
 }
 
 function hideLauncher(state: RuntimeState) {
@@ -181,7 +181,7 @@ function hideLauncher(state: RuntimeState) {
   }
 
   state.launcher.element.hidden = true
-  emitEvent(state, WidgetEvent.HideLauncher)
+  emitEvent(state, WidgetEvent.LauncherHidden)
 }
 
 function resetWidgetState(state: RuntimeState) {
