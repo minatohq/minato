@@ -110,7 +110,7 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     className: POPUP_FRAME_CLASS,
   })
 
-  popup.element.hidden = true
+  popup.element.hidden = !state.isPopupOpen
   state.popup = popup
   popup.mount()
 
