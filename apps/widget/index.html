@@ -9,8 +9,8 @@
   <body>
     <div style="margin-bottom: 1rem">
       <button onclick="Minato('init', { projectId: 'project_123' })">Init widget</button>
-      <button onclick="Minato('open')">Open widget</button>
-      <button onclick="Minato('close')">Close widget</button>
+      <button onclick="Minato('openPopup')">Open popup</button>
+      <button onclick="Minato('closePopup')">Close popup</button>
       <button onclick="Minato('showLauncher')">Show launcher</button>
       <button onclick="Minato('hideLauncher')">Hide launcher</button>
       <button onclick="Minato('destroy')">Destroy widget</button>
@@ -30,21 +30,21 @@
       </button>
       <button
         onclick="
-          Minato('on', 'open', () => {
-            console.log('open event handler')
+          Minato('on', 'popupOpened', () => {
+            console.log('popupOpened event handler')
           })
         "
       >
-        `open` event
+        `popupOpened` event
       </button>
       <button
         onclick="
-          Minato('on', 'close', () => {
+          Minato('on', 'popupClosed', () => {
             console.log('close event handler')
           })
         "
       >
-        `close` event
+        `popupClosed` event
       </button>
       <button
         onclick="

@@ -3,6 +3,7 @@ import {
   createLauncherInitMessage,
   createLauncherStateMessage,
   LauncherMessageType,
+  PopupMessageType,
   WIDGET_MESSAGE_SOURCE,
 } from '../messages'
 import { loadConfig } from './config'
@@ -10,6 +11,8 @@ import {
   APP_NAME,
   LAUNCHER_FRAME_CLASS,
   LAUNCHER_FRAME_TITLE,
+  POPUP_FRAME_CLASS,
+  POPUP_FRAME_TITLE,
   RUNTIME_STATE_KEY,
   SUBSCRIPTION_ID_PREFIX,
 } from './constants'
@@ -22,8 +25,8 @@ import {
 } from './dom'
 import { logError, logWarning } from './helpers'
 import { WidgetCommand, WidgetEvent } from './types'
-import type { LauncherMessage } from '../messages'
-import type { WidgetConfig } from '../types'
+import type { WidgetConfig } from '@repo/types/widget'
+import type { LauncherMessage, PopupMessage } from '../messages'
 import type { FrameController } from './dom'
 import type {
   WidgetApi,
@@ -43,11 +46,12 @@ interface RuntimeState {
   commandChain: Promise<void>
   config?: WidgetConfig
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
+  popup?: FrameController
   launcher?: FrameController
   subscriptionCount: number
   isBootstrapInitialized: boolean
   isReady: boolean
-  isWidgetOpen: boolean
+  isPopupOpen: boolean
 }
 
 const supportedCommandNames = Object.values(WidgetCommand)
@@ -68,7 +72,7 @@ function getState() {
     subscriptionCount: 0,
     isBootstrapInitialized: false,
     isReady: false,
-    isWidgetOpen: false,
+    isPopupOpen: false,
   }
 
   return bootstrapWindow[RUNTIME_STATE_KEY]
@@ -100,6 +104,16 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     return
   }
 
+  const popup = createFrame({
+    scriptSrc: env.VITE_POPUP_URL,
+    title: POPUP_FRAME_TITLE,
+    className: POPUP_FRAME_CLASS,
+  })
+
+  popup.element.hidden = !state.isPopupOpen
+  state.popup = popup
+  popup.mount()
+
   if (config.launcher.enabled) {
     const launcher = createFrame({
       scriptSrc: env.VITE_LAUNCHER_URL,
@@ -108,7 +122,6 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     })
 
     state.launcher = launcher
-
     launcher.mount()
   }
 
@@ -118,29 +131,39 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
 
 function sendLauncherState(state: RuntimeState) {
   state.launcher?.element.contentWindow?.postMessage(
-    createLauncherStateMessage(state.isWidgetOpen),
+    createLauncherStateMessage(state.isPopupOpen),
     window.location.origin
   )
 }
 
-function openWidget(state: RuntimeState) {
-  if (state.isWidgetOpen) {
+function openPopup(state: RuntimeState) {
+  if (state.isPopupOpen) {
     return
   }
 
-  state.isWidgetOpen = true
+  state.isPopupOpen = true
+
+  if (state.popup) {
+    state.popup.element.hidden = false
+  }
+
   sendLauncherState(state)
-  emitEvent(state, WidgetEvent.Open)
+  emitEvent(state, WidgetEvent.PopupOpened)
 }
 
-function closeWidget(state: RuntimeState) {
-  if (!state.isWidgetOpen) {
+function closePopup(state: RuntimeState) {
+  if (!state.isPopupOpen) {
     return
   }
 
-  state.isWidgetOpen = false
+  state.isPopupOpen = false
+
+  if (state.popup) {
+    state.popup.element.hidden = true
+  }
+
   sendLauncherState(state)
-  emitEvent(state, WidgetEvent.Close)
+  emitEvent(state, WidgetEvent.PopupClosed)
 }
 
 function showLauncher(state: RuntimeState) {
@@ -163,9 +186,10 @@ function hideLauncher(state: RuntimeState) {
 
 function resetWidgetState(state: RuntimeState) {
   delete state.config
+  delete state.popup
   delete state.launcher
   state.eventSubscriptions.clear()
-  state.isWidgetOpen = false
+  state.isPopupOpen = false
   state.isReady = false
 }
 
@@ -175,6 +199,7 @@ function destroy(state: RuntimeState) {
     return
   }
 
+  state.popup?.destroy()
   state.launcher?.destroy()
   destroyRootContainer()
   resetWidgetState(state)
@@ -261,11 +286,28 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
   }
 
   if (event.data.type === LauncherMessageType.Click) {
-    if (state.isWidgetOpen) {
-      closeWidget(state)
+    if (state.isPopupOpen) {
+      closePopup(state)
     } else {
-      openWidget(state)
+      openPopup(state)
     }
+  }
+}
+
+function handlePopupMessage(state: RuntimeState, event: MessageEvent<PopupMessage>) {
+  const popupWindow = state.popup?.element.contentWindow
+
+  if (
+    !popupWindow ||
+    event.source !== popupWindow ||
+    event.origin !== window.location.origin ||
+    event.data.source !== WIDGET_MESSAGE_SOURCE
+  ) {
+    return
+  }
+
+  if (event.data.type === PopupMessageType.Close) {
+    closePopup(state)
   }
 }
 
@@ -277,12 +319,12 @@ async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand)
       await init(state, command[1])
       break
 
-    case WidgetCommand.Open:
-      openWidget(state)
+    case WidgetCommand.OpenPopup:
+      openPopup(state)
       break
 
-    case WidgetCommand.Close:
-      closeWidget(state)
+    case WidgetCommand.ClosePopup:
+      closePopup(state)
       break
 
     case WidgetCommand.ShowLauncher:
@@ -354,7 +396,10 @@ function start() {
   state.subscriptionCount = getSubscriptionCount(window[APP_NAME])
 
   window[APP_NAME] = createWidgetApi(state)
-  window.addEventListener('message', (event) => handleLauncherMessage(state, event))
+  window.addEventListener('message', (event) => {
+    handleLauncherMessage(state, event)
+    handlePopupMessage(state, event)
+  })
 
   state.isBootstrapInitialized = true
 

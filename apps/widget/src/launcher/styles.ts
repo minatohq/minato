@@ -1,11 +1,14 @@
 export function getLauncherStyles(color: string, iconColor: string) {
   return `
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
   width: max-content;
   height: max-content;
   overflow: hidden;
-  box-sizing: border-box;
 }
 
 .widget-launcher-btn {

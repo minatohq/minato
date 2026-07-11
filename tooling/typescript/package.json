@@ -1,0 +1,6 @@
+{
+  "name": "@repo/typescript",
+  "devDependencies": {
+    "@tsconfig/strictest": "catalog:"
+  }
+}

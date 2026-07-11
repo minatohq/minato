@@ -1,5 +1,5 @@
 import { APP_NAME_LOWERCASE } from './bootstrap/constants'
-import type { WidgetLauncherOptions } from './types'
+import type { WidgetLauncherOptions } from '@repo/types/widget'
 
 export const WIDGET_MESSAGE_SOURCE = APP_NAME_LOWERCASE
 
@@ -8,6 +8,10 @@ export enum LauncherMessageType {
   Init = 'launcher:init',
   Click = 'launcher:click',
   State = 'launcher:state',
+}
+
+export enum PopupMessageType {
+  Close = 'popup:close',
 }
 
 export interface LauncherReadyMessage {
@@ -40,6 +44,13 @@ export type LauncherMessage =
   | LauncherClickMessage
   | LauncherStateMessage
 
+export interface PopupCloseMessage {
+  source: typeof WIDGET_MESSAGE_SOURCE
+  type: PopupMessageType.Close
+}
+
+export type PopupMessage = PopupCloseMessage
+
 export function createLauncherReadyMessage(): LauncherReadyMessage {
   return {
     source: WIDGET_MESSAGE_SOURCE,
@@ -67,5 +78,12 @@ export function createLauncherStateMessage(isOpen: boolean): LauncherStateMessag
     source: WIDGET_MESSAGE_SOURCE,
     type: LauncherMessageType.State,
     payload: { isOpen },
+  }
+}
+
+export function createPopupCloseMessage(): PopupCloseMessage {
+  return {
+    source: WIDGET_MESSAGE_SOURCE,
+    type: PopupMessageType.Close,
   }
 }

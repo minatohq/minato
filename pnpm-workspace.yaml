@@ -1,11 +1,13 @@
 packages:
   - apps/*
   - packages/*
+  - tooling/*
 
 catalogMode: manual
 
 catalog:
   '@t3-oss/env-core': ^0.13.11
+  '@tsconfig/strictest': ^2.0.8
   typescript: ^6.0.3
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vitest: 4.1.9

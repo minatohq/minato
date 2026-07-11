@@ -1,6 +1,6 @@
 import { env } from '../env'
 import { logError } from './helpers'
-import type { WidgetConfig } from '../types'
+import type { WidgetConfig } from '@repo/types/widget'
 
 export async function loadConfig(projectId: string) {
   try {
