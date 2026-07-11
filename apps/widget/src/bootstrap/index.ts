@@ -224,10 +224,10 @@ function hideLauncher(state: RuntimeState) {
 }
 
 function resetWidgetState(state: RuntimeState) {
+  unregisterPopupTriggerListener(state)
   delete state.config
   delete state.popup
   delete state.launcher
-  delete state.popupTriggerClickHandler
   state.eventSubscriptions.clear()
   state.isPopupOpen = false
   state.isReady = false
@@ -239,7 +239,6 @@ function destroy(state: RuntimeState) {
     return
   }
 
-  unregisterPopupTriggerListener(state)
   state.popup?.destroy()
   state.launcher?.destroy()
   destroyRootContainer()
