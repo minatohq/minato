@@ -1,4 +1,4 @@
-import { APP_NAME_LOWERCASE } from './bootstrap/constants'
+import { APP_NAME_LOWERCASE } from '@repo/constants/app'
 import type { WidgetLauncherOptions } from '@repo/types/widget'
 
 export const WIDGET_MESSAGE_SOURCE = APP_NAME_LOWERCASE

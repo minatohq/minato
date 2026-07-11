@@ -1,3 +1,4 @@
+import { APP_NAME } from '@repo/constants/app'
 import { WIDGET_POPUP_TRIGGER_ATTRIBUTE } from '@repo/constants/widget'
 import { env } from '../env'
 import {
@@ -9,7 +10,6 @@ import {
 } from '../messages'
 import { loadConfig } from './config'
 import {
-  APP_NAME,
   LAUNCHER_FRAME_CLASS,
   LAUNCHER_FRAME_TITLE,
   POPUP_FRAME_CLASS,

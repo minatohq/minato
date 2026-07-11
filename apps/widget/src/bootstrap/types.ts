@@ -1,4 +1,4 @@
-import type { APP_NAME } from './constants'
+import type { APP_NAME } from '@repo/constants/app'
 
 export enum WidgetCommand {
   Init = 'init',

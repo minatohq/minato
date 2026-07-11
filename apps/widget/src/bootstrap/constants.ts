@@ -1,7 +1,5 @@
+import { APP_NAME, APP_NAME_LOWERCASE } from '@repo/constants/app'
 import type { RuntimeStateKey } from './types'
-
-export const APP_NAME = 'Minato'
-export const APP_NAME_LOWERCASE = APP_NAME.toLowerCase() as Lowercase<typeof APP_NAME>
 
 export const ROOT_CONTAINER_ID = `${APP_NAME_LOWERCASE}-container`
 export const ROOT_STYLES_ID = `${APP_NAME_LOWERCASE}-styles`
