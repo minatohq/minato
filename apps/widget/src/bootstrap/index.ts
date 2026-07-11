@@ -22,8 +22,8 @@ import {
 } from './dom'
 import { logError, logWarning } from './helpers'
 import { WidgetCommand, WidgetEvent } from './types'
+import type { WidgetConfig } from '@repo/types/widget'
 import type { LauncherMessage } from '../messages'
-import type { WidgetConfig } from '../types'
 import type { FrameController } from './dom'
 import type {
   WidgetApi,

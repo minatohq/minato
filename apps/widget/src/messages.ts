@@ -1,5 +1,5 @@
 import { APP_NAME_LOWERCASE } from './bootstrap/constants'
-import type { WidgetLauncherOptions } from './types'
+import type { WidgetLauncherOptions } from '@repo/types/widget'
 
 export const WIDGET_MESSAGE_SOURCE = APP_NAME_LOWERCASE
 

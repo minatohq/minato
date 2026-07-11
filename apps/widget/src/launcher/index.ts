@@ -5,8 +5,8 @@ import {
   WIDGET_MESSAGE_SOURCE,
 } from '../messages'
 import { getLauncherStyles } from './styles'
+import type { WidgetLauncherOptions } from '@repo/types/widget'
 import type { LauncherMessage } from '../messages'
-import type { WidgetLauncherOptions } from '../types'
 
 const PARENT_ORIGIN = window.parent.location.origin
 
