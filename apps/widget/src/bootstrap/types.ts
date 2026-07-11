@@ -1,4 +1,4 @@
-import type { APP_NAME } from './constants'
+import type { APP_NAME } from '@repo/constants/app'
 
 export enum WidgetCommand {
   Init = 'init',
@@ -16,6 +16,10 @@ export enum WidgetEvent {
   PopupClosed = 'popupClosed',
   LauncherShown = 'launcherShown',
   LauncherHidden = 'launcherHidden',
+}
+
+export enum WidgetTarget {
+  Popup = 'popup',
 }
 
 export type RuntimeStateKey = `__${Lowercase<typeof APP_NAME>}RuntimeState`

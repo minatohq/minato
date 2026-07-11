@@ -1,4 +1,4 @@
-import { APP_NAME } from './bootstrap/constants'
+import { APP_NAME } from '@repo/constants/app'
 import type { WidgetApi } from './bootstrap/types'
 
 declare global {

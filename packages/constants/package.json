@@ -1,0 +1,12 @@
+{
+  "name": "@repo/constants",
+  "type": "module",
+  "exports": {
+    "./app": "./src/app.ts",
+    "./widget": "./src/widget.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

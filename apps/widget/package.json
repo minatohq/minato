@@ -11,6 +11,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@repo/constants": "workspace:*",
     "@repo/types": "workspace:*",
     "typescript": "catalog:",
     "vite": "catalog:",

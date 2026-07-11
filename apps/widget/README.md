@@ -70,3 +70,15 @@ Supported events:
 - `const unsubscribe = Minato('on', 'launcherHidden', handler)`
 
 Call the returned `unsubscribe` function to remove that listener.
+
+## Declarative popup triggers
+
+After the widget initializes successfully, any element on the host page with the
+`data-minato-popup-trigger` attribute opens the popup when clicked.
+
+```html
+<button data-minato-popup-trigger>Send feedback</button>
+```
+
+The attribute is presence-only; any value is ignored. Multiple triggers, nested click targets, and
+triggers added dynamically are supported.

@@ -1,3 +1,5 @@
+import { APP_NAME } from '@repo/constants/app'
+import { WIDGET_POPUP_TRIGGER_ATTRIBUTE } from '@repo/constants/widget'
 import { env } from '../env'
 import {
   createLauncherInitMessage,
@@ -8,7 +10,6 @@ import {
 } from '../messages'
 import { loadConfig } from './config'
 import {
-  APP_NAME,
   LAUNCHER_FRAME_CLASS,
   LAUNCHER_FRAME_TITLE,
   POPUP_FRAME_CLASS,
@@ -24,7 +25,7 @@ import {
   waitForDocumentInteractive,
 } from './dom'
 import { logError, logWarning } from './helpers'
-import { WidgetCommand, WidgetEvent } from './types'
+import { WidgetCommand, WidgetEvent, WidgetTarget } from './types'
 import type { WidgetConfig } from '@repo/types/widget'
 import type { LauncherMessage, PopupMessage } from '../messages'
 import type { FrameController } from './dom'
@@ -47,6 +48,7 @@ interface RuntimeState {
   config?: WidgetConfig
   eventSubscriptions: Map<WidgetEventSubscriptionId, WidgetEventSubscription>
   popup?: FrameController
+  popupTriggerClickHandler?: (event: MouseEvent) => void
   launcher?: FrameController
   subscriptionCount: number
   isBootstrapInitialized: boolean
@@ -125,6 +127,8 @@ async function init(state: RuntimeState, options: WidgetInitOptions) {
     launcher.mount()
   }
 
+  registerPopupTriggerListener(state)
+
   state.isReady = true
   emitEvent(state, WidgetEvent.Ready)
 }
@@ -136,19 +140,54 @@ function sendLauncherState(state: RuntimeState) {
   )
 }
 
-function openPopup(state: RuntimeState) {
-  if (state.isPopupOpen) {
+function open(state: RuntimeState, target: WidgetTarget) {
+  switch (target) {
+    case WidgetTarget.Popup:
+      if (state.isPopupOpen) {
+        return
+      }
+
+      state.isPopupOpen = true
+
+      if (state.popup) {
+        state.popup.element.hidden = false
+      }
+
+      sendLauncherState(state)
+      emitEvent(state, WidgetEvent.PopupOpened)
+      break
+  }
+}
+
+function handlePopupTriggerClick(state: RuntimeState, event: MouseEvent) {
+  // oxfmt-ignore
+  const trigger = event.target instanceof Element
+    ? event.target.closest(`[${WIDGET_POPUP_TRIGGER_ATTRIBUTE}]`)
+    : null
+
+  if (trigger) {
+    open(state, WidgetTarget.Popup)
+  }
+}
+
+function registerPopupTriggerListener(state: RuntimeState) {
+  if (state.popupTriggerClickHandler) {
     return
   }
 
-  state.isPopupOpen = true
+  const handler = (event: MouseEvent) => handlePopupTriggerClick(state, event)
 
-  if (state.popup) {
-    state.popup.element.hidden = false
+  document.addEventListener('click', handler)
+  state.popupTriggerClickHandler = handler
+}
+
+function unregisterPopupTriggerListener(state: RuntimeState) {
+  if (!state.popupTriggerClickHandler) {
+    return
   }
 
-  sendLauncherState(state)
-  emitEvent(state, WidgetEvent.PopupOpened)
+  document.removeEventListener('click', state.popupTriggerClickHandler)
+  delete state.popupTriggerClickHandler
 }
 
 function closePopup(state: RuntimeState) {
@@ -185,6 +224,7 @@ function hideLauncher(state: RuntimeState) {
 }
 
 function resetWidgetState(state: RuntimeState) {
+  unregisterPopupTriggerListener(state)
   delete state.config
   delete state.popup
   delete state.launcher
@@ -289,7 +329,7 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
     if (state.isPopupOpen) {
       closePopup(state)
     } else {
-      openPopup(state)
+      open(state, WidgetTarget.Popup)
     }
   }
 }
@@ -320,7 +360,7 @@ async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand)
       break
 
     case WidgetCommand.OpenPopup:
-      openPopup(state)
+      open(state, WidgetTarget.Popup)
       break
 
     case WidgetCommand.ClosePopup:
