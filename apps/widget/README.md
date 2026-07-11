@@ -43,7 +43,7 @@ It does these things:
 4. Replays the queued calls in order. New calls are added to the same command chain so asynchronous commands, such as `init`, finish before later commands run.
 5. When processing `init`, validates the project ID and loads the project's widget configuration.
 6. Waits until the document is interactive, then adds the widget's root container and styles to the page.
-7. Creates a hidden popup iframe inside the root container. The popup frame is shown or hidden by the widget's open state.
+7. Creates a hidden popup iframe inside the root container. The popup frame is shown or hidden by the widget's open state; its close button sends a message to the bootstrap, which closes the widget through the same state transition used by the public API and launcher.
 8. If the launcher is enabled, creates a launcher iframe inside the root container. The launcher announces when it is ready through `postMessage`, the bootstrap responds with the launcher configuration and current widget state, and launcher clicks are sent back to the bootstrap to toggle the popup frame. Bootstrap sends subsequent open-state changes to the launcher so it can switch between the launcher and close icons.
 9. Marks the widget as ready and emits the `ready` event.
 

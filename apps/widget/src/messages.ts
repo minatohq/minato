@@ -10,6 +10,10 @@ export enum LauncherMessageType {
   State = 'launcher:state',
 }
 
+export enum PopupMessageType {
+  Close = 'popup:close',
+}
+
 export interface LauncherReadyMessage {
   source: typeof WIDGET_MESSAGE_SOURCE
   type: LauncherMessageType.Ready
@@ -40,6 +44,13 @@ export type LauncherMessage =
   | LauncherClickMessage
   | LauncherStateMessage
 
+export interface PopupCloseMessage {
+  source: typeof WIDGET_MESSAGE_SOURCE
+  type: PopupMessageType.Close
+}
+
+export type PopupMessage = PopupCloseMessage
+
 export function createLauncherReadyMessage(): LauncherReadyMessage {
   return {
     source: WIDGET_MESSAGE_SOURCE,
@@ -67,5 +78,12 @@ export function createLauncherStateMessage(isOpen: boolean): LauncherStateMessag
     source: WIDGET_MESSAGE_SOURCE,
     type: LauncherMessageType.State,
     payload: { isOpen },
+  }
+}
+
+export function createPopupCloseMessage(): PopupCloseMessage {
+  return {
+    source: WIDGET_MESSAGE_SOURCE,
+    type: PopupMessageType.Close,
   }
 }

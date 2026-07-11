@@ -12,6 +12,7 @@ html, body {
 }
 
 .popup {
+  position: relative;
   padding: 0.75rem;
   height: 100%;
   border: 1px solid #ccc;
@@ -24,6 +25,19 @@ html, body {
 
 .popup-description {
   margin: 0 0 1rem;
+}
+
+.popup-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  color: inherit;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+  cursor: pointer;
 }
 
 .popup-form {

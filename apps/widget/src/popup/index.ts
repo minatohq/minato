@@ -1,8 +1,12 @@
+import { createPopupCloseMessage } from '../messages'
 import { getPopupStyles } from './styles'
+
+const PARENT_ORIGIN = window.parent.location.origin
 
 const container = document.createElement('div')
 const heading = document.createElement('h1')
 const description = document.createElement('p')
+const closeButton = document.createElement('button')
 const form = document.createElement('form')
 const textarea = document.createElement('textarea')
 const submitButton = document.createElement('button')
@@ -18,6 +22,13 @@ heading.textContent = 'Your feedback'
 description.className = 'popup-description'
 description.textContent = 'Tell us what is on your mind.'
 
+closeButton.className = 'popup-close'
+closeButton.type = 'button'
+closeButton.textContent = 'Close'
+closeButton.addEventListener('click', () => {
+  window.parent.postMessage(createPopupCloseMessage(), PARENT_ORIGIN)
+})
+
 form.className = 'popup-form'
 
 textarea.className = 'popup-textarea'
@@ -31,7 +42,7 @@ form.addEventListener('submit', (event) => {
 })
 
 form.append(textarea, submitButton)
-container.append(heading, description, form)
+container.append(heading, description, closeButton, form)
 
 document.head.append(style)
 document.body.append(container)

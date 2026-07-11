@@ -3,6 +3,7 @@ import {
   createLauncherInitMessage,
   createLauncherStateMessage,
   LauncherMessageType,
+  PopupMessageType,
   WIDGET_MESSAGE_SOURCE,
 } from '../messages'
 import { loadConfig } from './config'
@@ -25,7 +26,7 @@ import {
 import { logError, logWarning } from './helpers'
 import { WidgetCommand, WidgetEvent } from './types'
 import type { WidgetConfig } from '@repo/types/widget'
-import type { LauncherMessage } from '../messages'
+import type { LauncherMessage, PopupMessage } from '../messages'
 import type { FrameController } from './dom'
 import type {
   WidgetApi,
@@ -293,6 +294,23 @@ function handleLauncherMessage(state: RuntimeState, event: MessageEvent<Launcher
   }
 }
 
+function handlePopupMessage(state: RuntimeState, event: MessageEvent<PopupMessage>) {
+  const popupWindow = state.popup?.element.contentWindow
+
+  if (
+    !popupWindow ||
+    event.source !== popupWindow ||
+    event.origin !== window.location.origin ||
+    event.data.source !== WIDGET_MESSAGE_SOURCE
+  ) {
+    return
+  }
+
+  if (event.data.type === PopupMessageType.Close) {
+    closeWidget(state)
+  }
+}
+
 async function executeCommand(state: RuntimeState, command: WidgetQueuedCommand) {
   const commandName = command[0]
 
@@ -378,7 +396,10 @@ function start() {
   state.subscriptionCount = getSubscriptionCount(window[APP_NAME])
 
   window[APP_NAME] = createWidgetApi(state)
-  window.addEventListener('message', (event) => handleLauncherMessage(state, event))
+  window.addEventListener('message', (event) => {
+    handleLauncherMessage(state, event)
+    handlePopupMessage(state, event)
+  })
 
   state.isBootstrapInitialized = true
 
