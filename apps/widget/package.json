@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vp dev",
+    "dev": "infisical run --env=dev -- vp dev",
     "build": "vp build"
   },
   "dependencies": {
