@@ -1,4 +1,5 @@
-import { Outlet, createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
+import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
+import { Devtools } from '@/devtools'
 import type { ReactNode } from 'react'
 
 export const Route = createRootRoute({
@@ -9,26 +10,20 @@ export const Route = createRootRoute({
       { title: 'Minato Dashboard' },
     ],
   }),
-  component: RootComponent,
+  shellComponent: RootDocument,
 })
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  )
-}
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
+
       <body>
         {children}
         <Scripts />
+        <Devtools />
       </body>
     </html>
   )

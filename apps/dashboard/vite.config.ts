@@ -1,3 +1,4 @@
+import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { defineConfig } from 'vite-plus'
@@ -10,6 +11,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   plugins: [
+    devtools(),
     tanstackStart(),
     viteReact(), // React plugin must come after TanStack Start plugin
   ],

@@ -8,7 +8,7 @@
 
     /* Path aliases */
     "paths": {
-      "#/*": ["./src/*"]
+      "@/*": ["./src/*"]
     },
 
     /* JSX */
