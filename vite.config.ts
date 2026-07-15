@@ -8,7 +8,7 @@ export default defineConfig({
     '*': 'vp check --fix',
   },
   fmt: {
-    ignorePatterns: ['**/*.md'],
+    ignorePatterns: ['**/*.md', '*.gen.ts'],
     semi: false,
     singleQuote: true,
     trailingComma: 'es5',
@@ -45,6 +45,17 @@ export default defineConfig({
         'type-index',
       ],
     },
+    overrides: [
+      {
+        files: ['apps/dashboard/**'],
+        options: {
+          sortTailwindcss: {
+            stylesheet: './apps/dashboard/src/styles.css',
+            functions: ['cn'],
+          },
+        },
+      },
+    ],
   },
   lint: {
     jsPlugins: [
