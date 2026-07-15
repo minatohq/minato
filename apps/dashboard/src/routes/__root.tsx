@@ -1,3 +1,5 @@
+import styles from '@/styles.css?url'
+
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { Devtools } from '@/devtools'
 import type { RouterContext } from '@/router'
@@ -9,6 +11,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Minato Dashboard' },
     ],
+    links: [{ rel: 'stylesheet', href: styles }],
   }),
   component: RootComponent,
 })
