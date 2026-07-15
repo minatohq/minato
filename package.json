@@ -10,6 +10,7 @@
     "build:widget": "vp run widget#build"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.101.2",
     "vite-plus": "catalog:"
   },
   "devEngines": {
