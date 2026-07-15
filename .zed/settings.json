@@ -33,32 +33,6 @@
         }
       ]
     },
-    "GraphQL": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
-    "Handlebars": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
     "HTML": {
       "format_on_save": "on",
       "prettier": {
@@ -73,20 +47,6 @@
       ]
     },
     "JavaScript": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ],
-      "code_action": "source.fixAll.oxc"
-    },
-    "JSX": {
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -112,33 +72,7 @@
         }
       ]
     },
-    "JSON5": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
     "JSONC": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
-    "Less": {
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -177,20 +111,8 @@
         }
       ]
     },
-    "SCSS": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
     "TypeScript": {
+      "language_servers": ["typescript-ls", "!vtsls", "!typescript-language-server", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -204,19 +126,7 @@
       ]
     },
     "TSX": {
-      "format_on_save": "on",
-      "prettier": {
-        "allowed": false
-      },
-      "formatter": [
-        {
-          "language_server": {
-            "name": "oxfmt"
-          }
-        }
-      ]
-    },
-    "Vue.js": {
+      "language_servers": ["typescript-ls", "!vtsls", "!typescript-language-server", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
