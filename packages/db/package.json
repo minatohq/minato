@@ -1,0 +1,26 @@
+{
+  "name": "@repo/db",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/client.ts",
+    "./schema": "./src/schema/index.ts"
+  },
+  "scripts": {
+    "check": "infisical run --env=dev -- drizzle-kit check",
+    "generate": "infisical run --env=dev -- drizzle-kit generate",
+    "migrate": "infisical run --env=dev -- drizzle-kit migrate",
+    "push": "infisical run --env=dev -- drizzle-kit push",
+    "studio": "infisical run --env=dev -- drizzle-kit studio"
+  },
+  "dependencies": {
+    "drizzle-orm": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@repo/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:"
+  }
+}

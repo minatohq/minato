@@ -4,6 +4,7 @@ logs
 pnpm-debug.log*
 
 node_modules
+.pnpm-store
 *.local
 
 # Editor directories and files
@@ -28,3 +29,5 @@ node_modules
 .tanstack
 dist
 dist-ssr
+# TEMP
+packages/db/drizzle/

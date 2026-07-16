@@ -1,0 +1,7 @@
+{
+  "extends": "@repo/typescript/shared.json",
+  "include": ["src", "drizzle.config.ts"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}

@@ -7,7 +7,12 @@
     "dev:api": "vp run api#dev",
     "dev:dashboard": "vp run dashboard#dev",
     "dev:widget": "vp run widget#dev",
-    "build:widget": "vp run widget#build"
+    "build:widget": "vp run widget#build",
+    "db:check": "vp run --filter @repo/db check",
+    "db:generate": "vp run --filter @repo/db generate",
+    "db:migrate": "vp run --filter @repo/db migrate",
+    "db:push": "vp run --filter @repo/db push",
+    "db:studio": "vp run --filter @repo/db studio"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.101.2",
