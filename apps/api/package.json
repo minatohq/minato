@@ -2,13 +2,18 @@
   "name": "api",
   "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./src/*.ts"
+  },
   "scripts": {
     "dev": "infisical run --env=dev -- tsx watch src/index.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.5",
     "@repo/db": "workspace:*",
-    "hono": "^4.12.26"
+    "@t3-oss/env-core": "catalog:",
+    "hono": "^4.12.26",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

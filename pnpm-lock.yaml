@@ -268,9 +268,15 @@ importers:
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@t3-oss/env-core':
+        specifier: 'catalog:'
+        version: 0.13.11(typescript@7.0.2)(zod@4.4.3)
       hono:
         specifier: ^4.12.26
         version: 4.12.30
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@types/node':
         specifier: ^20.11.17
