@@ -3,11 +3,12 @@ import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite-plus'
-import { clientEnvSchema, serverEnvSchema } from './src/env/schema.ts'
+import { clientEnvSchema, envKeys, serverEnvSchema } from './src/env/schema.ts'
 
 export default defineConfig(({ mode }) => {
   // Validate environment variables
-  const runtimeEnv = loadEnv(mode, import.meta.dirname, '')
+  const loadedEnv = loadEnv(mode, import.meta.dirname, envKeys)
+  const runtimeEnv = Object.fromEntries(envKeys.map((key) => [key, loadedEnv[key]]))
   serverEnvSchema.parse(runtimeEnv)
   clientEnvSchema.parse(runtimeEnv)
 

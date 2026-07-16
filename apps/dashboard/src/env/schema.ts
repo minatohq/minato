@@ -7,3 +7,9 @@ export const clientEnvSchema = z.object({
 export const serverEnvSchema = z.object({
   DATABASE_URL: z.url(),
 })
+
+// oxfmt-ignore
+export const envKeys = [
+  ...clientEnvSchema.keyof().options,
+  ...serverEnvSchema.keyof().options,
+]
