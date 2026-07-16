@@ -5,5 +5,5 @@ export const clientEnvSchema = z.object({
 })
 
 export const serverEnvSchema = z.object({
-  DATABASE_URL: z.string().min(1),
+  DATABASE_URL: z.url(),
 })
