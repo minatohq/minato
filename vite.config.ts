@@ -10,7 +10,7 @@ export default defineConfig({
     singleQuote: true,
     trailingComma: 'es5',
     sortImports: {
-      internalPattern: ['@/'],
+      internalPattern: ['@/', '#/'],
       newlinesBetween: false,
       partitionByNewline: true,
       customGroups: [

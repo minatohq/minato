@@ -6,6 +6,10 @@ export const env = createEnv({
   emptyStringAsUndefined: true,
 
   server: {
+    AUTH_BASE_URL: z.url(),
+    AUTH_SECRET: z.string().length(64),
     DATABASE_URL: z.url(),
+    GOOGLE_CLIENT_ID: z.string().min(1),
+    GOOGLE_CLIENT_SECRET: z.string().min(1),
   },
 })

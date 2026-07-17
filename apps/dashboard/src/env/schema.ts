@@ -1,11 +1,9 @@
 import { z } from 'zod'
 
-export const clientEnvSchema = z.object({
-  VITE_API_BASE_URL: z.url(),
-})
+export const clientEnvSchema = z.object({})
 
 export const serverEnvSchema = z.object({
-  DATABASE_URL: z.url(),
+  API_PROXY_TARGET: z.url(),
 })
 
 // oxfmt-ignore
