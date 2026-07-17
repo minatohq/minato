@@ -33,11 +33,5 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: 'minato',
     useSecureCookies: true,
-    defaultCookieAttributes: {
-      secure: true,
-      httpOnly: true,
-      sameSite: 'lax',
-      path: '/',
-    },
   },
 })
