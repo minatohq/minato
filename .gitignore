@@ -26,6 +26,7 @@ node_modules
 !.vscode/extensions.json
 
 # Generated files
+.output
 .tanstack
 dist
 dist-ssr

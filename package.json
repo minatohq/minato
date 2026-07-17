@@ -15,7 +15,8 @@
     "db:generate": "vp run --filter @repo/db generate",
     "db:migrate": "vp run --filter @repo/db migrate",
     "db:push": "vp run --filter @repo/db push",
-    "db:studio": "vp run --filter @repo/db studio"
+    "db:studio": "vp run --filter @repo/db studio",
+    "auth:generate": "vp run api#auth:generate"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.101.2",

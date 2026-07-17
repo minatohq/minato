@@ -6,17 +6,22 @@
     "#/*": "./src/*.ts"
   },
   "scripts": {
-    "dev": "infisical run --env=dev -- tsx watch src/index.ts"
+    "dev": "infisical run --env=dev -- tsx watch src/index.ts",
+    "auth:generate": "infisical run --env=dev -- auth generate --config src/auth.ts --output ../../packages/db/src/schema/auth.ts"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "1.7.0-rc.1",
     "@hono/node-server": "^2.0.5",
+    "@repo/constants": "workspace:*",
     "@repo/db": "workspace:*",
     "@t3-oss/env-core": "catalog:",
+    "better-auth": "catalog:",
     "hono": "^4.12.26",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "auth": "1.7.0-rc.1",
     "tsx": "^4.7.1",
     "typescript": "catalog:"
   }
