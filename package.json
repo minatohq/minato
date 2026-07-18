@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config",
+    "dev": "vp run -r --parallel dev",
     "dev:api": "vp run api#dev",
     "dev:dashboard": "vp run dashboard#dev",
     "dev:widget": "vp run widget#dev",
