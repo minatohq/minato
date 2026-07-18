@@ -28,6 +28,12 @@ export const auth = betterAuth({
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       prompt: 'select_account',
     },
+    microsoft: {
+      clientId: env.MICROSOFT_CLIENT_ID,
+      clientSecret: env.MICROSOFT_CLIENT_SECRET,
+      prompt: 'select_account',
+      disableProfilePhoto: true,
+    },
   },
 
   advanced: {
