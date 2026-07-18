@@ -2,13 +2,18 @@ import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { auth } from '#/auth'
+import { env } from '#/env'
 
 const app = new Hono()
 
 app.use(
   '/widget/*',
   cors({
-    origin: 'http://localhost:5173',
+    origin: '*',
+    allowMethods: ['GET', 'OPTIONS'],
+    allowHeaders: ['Content-Type'],
+    maxAge: 86_400,
+    credentials: false,
   })
 )
 
@@ -31,7 +36,7 @@ app.get('/widget/config/:projectId', async (c) => {
 serve(
   {
     fetch: app.fetch,
-    port: 3001,
+    port: env.PORT,
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`)
