@@ -6,6 +6,7 @@ pnpm-debug.log*
 node_modules
 .pnpm-store
 *.local
+.infisical.json
 
 # Editor directories and files
 .vscode/*
