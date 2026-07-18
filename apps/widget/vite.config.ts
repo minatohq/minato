@@ -7,6 +7,9 @@ export default defineConfig(({ mode }) => {
   clientEnvSchema.parse(runtimeEnv)
 
   return {
-    // ...
+    server: {
+      port: 3001,
+      strictPort: true,
+    },
   }
 })
