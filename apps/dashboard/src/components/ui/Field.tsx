@@ -48,7 +48,7 @@ export function FieldGroup({ className, ...props }: React.ComponentProps<'div'>)
   )
 }
 
-const fieldVariants = cva('group/field flex w-full gap-2 data-[invalid=true]:text-destructive', {
+const fieldVariants = cva('group/field flex w-full gap-1.5 data-[invalid=true]:text-destructive', {
   variants: {
     orientation: {
       vertical: 'flex-col *:w-full [&>.sr-only]:w-auto',
@@ -142,7 +142,7 @@ export function FieldSeparator({
   return (
     <div
       className={cn(
-        'relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2',
+        'relative -my-1 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2',
         className
       )}
       data-slot="field-separator"

@@ -17,6 +17,11 @@
           "run": "onSave"
         }
       }
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "classFunctions": ["cva"]
+      }
     }
   },
   "languages": {
