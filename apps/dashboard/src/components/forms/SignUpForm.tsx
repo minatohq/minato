@@ -1,10 +1,13 @@
 import { revalidateLogic, useForm } from '@tanstack/react-form'
-import { useId } from 'react'
+import { useNavigate } from '@tanstack/react-router'
+import { useId, useState } from 'react'
 import { z } from 'zod'
 import { AuthForm } from '@/components/auth/AuthForm'
+import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/Field'
 import { Input } from '@/components/ui/Input'
+import { authClient } from '@/lib/auth/client'
 
 const formSchema = z.object({
   email: z.string().trim().min(1, 'Email is required').pipe(z.email('Enter a valid email address')),
@@ -21,6 +24,9 @@ const formSchema = z.object({
 
 export function SignUpForm() {
   const id = useId()
+  const navigate = useNavigate()
+
+  const [submitError, setSubmitError] = useState<string>()
 
   const form = useForm({
     formId: 'sign-up',
@@ -32,7 +38,30 @@ export function SignUpForm() {
     validators: {
       onDynamic: formSchema,
     },
-    onSubmit: () => undefined,
+    listeners: {
+      onChange: () => setSubmitError(undefined),
+    },
+    onSubmit: async ({ value }) => {
+      setSubmitError(undefined)
+
+      const parsedValue = formSchema.parse(value)
+
+      const { error } = await authClient.signUp.email({
+        name: '',
+        email: parsedValue.email,
+        password: parsedValue.password,
+      })
+
+      if (error) {
+        setSubmitError(error.message ?? 'An unknown error occurred. Please try again.')
+        return
+      }
+
+      await navigate({
+        to: '/',
+        replace: true,
+      })
+    },
   })
 
   return (
@@ -43,6 +72,12 @@ export function SignUpForm() {
         void form.handleSubmit()
       }}
     >
+      {submitError && (
+        <Alert variant="destructive">
+          <AlertDescription>{submitError}</AlertDescription>
+        </Alert>
+      )}
+
       <FieldGroup>
         <form.Field
           name="email"
@@ -89,7 +124,14 @@ export function SignUpForm() {
         />
       </FieldGroup>
 
-      <Button type="submit">Create account</Button>
+      <form.Subscribe
+        selector={(state) => state.isSubmitting}
+        children={(isSubmitting) => (
+          <Button type="submit" isLoading={isSubmitting}>
+            Create account
+          </Button>
+        )}
+      />
     </AuthForm>
   )
 }
