@@ -44,17 +44,22 @@ export function SignUpForm() {
     onSubmit: async ({ value }) => {
       setSubmitError(undefined)
 
-      const parsedValue = formSchema.parse(value)
+      try {
+        const parsedValue = formSchema.parse(value)
 
-      const { error } = await authClient.signUp.email({
-        name: '',
-        email: parsedValue.email,
-        password: parsedValue.password,
-      })
+        const { error } = await authClient.signUp.email({
+          name: '',
+          email: parsedValue.email,
+          password: parsedValue.password,
+        })
 
-      if (error) {
-        setSubmitError(error.message ?? 'An unknown error occurred. Please try again.')
-        return
+        if (error) {
+          throw new Error(error.message)
+        }
+      } catch (error: unknown) {
+        setSubmitError(
+          error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'
+        )
       }
 
       await navigate({

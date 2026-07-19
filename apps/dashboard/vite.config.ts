@@ -30,6 +30,12 @@ export default defineConfig(({ mode }) => {
       tanstackStart(),
       // TEMP: Remove the cast once Nitro and Vite+ resolve to compatible shared Vite types
       ...(nitro({
+        devProxy: {
+          '/api/**': {
+            target: serverEnv.API_PROXY_TARGET,
+            changeOrigin: true,
+          },
+        },
         routeRules: {
           '/api/**': {
             proxy: `${serverEnv.API_PROXY_TARGET}/api/**`,
