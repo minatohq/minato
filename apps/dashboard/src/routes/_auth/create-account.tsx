@@ -1,14 +1,25 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { APP_NAME } from '@repo/constants/app'
 import { AuthParagraph } from '@/components/auth/AuthParagraph'
 import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
 import { SignUpForm } from '@/components/forms/SignUpForm'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { FieldSeparator } from '@/components/ui/Field'
+import { createPageTitle } from '@/lib/metadata'
 
 const termsOfServiceUrl = new URL('/terms', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 const privacyPolicyUrl = new URL('/privacy', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 
 export const Route = createFileRoute('/_auth/create-account')({
+  head: () => ({
+    meta: [
+      { title: createPageTitle('Create account') },
+      {
+        name: 'description',
+        content: `Create a ${APP_NAME} account and start collecting customer feedback.`,
+      },
+    ],
+  }),
   component: RouteComponent,
 })
 
