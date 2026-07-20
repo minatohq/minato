@@ -6,7 +6,9 @@ import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/Field'
 import { Input } from '@/components/ui/Input'
+import { env } from '@/env'
 import { authClient } from '@/lib/auth/client'
+import { Route as resetPasswordRoute } from '@/routes/_auth/reset-password'
 
 const formSchema = z.object({
   email: z.string().trim().min(1, 'Email is required').pipe(z.email('Enter a valid email address')),
@@ -41,7 +43,7 @@ export function ForgotPasswordForm({ onSent }: Props) {
 
         const { error } = await authClient.requestPasswordReset({
           email: parsedValue.email,
-          redirectTo: '/reset-password',
+          redirectTo: new URL(resetPasswordRoute.to, env.VITE_DASHBOARD_BASE_URL).toString(),
         })
 
         if (error) {

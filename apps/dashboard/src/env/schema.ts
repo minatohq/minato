@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const clientEnvSchema = z.object({
+  VITE_DASHBOARD_BASE_URL: z.url(),
   VITE_WEBSITE_BASE_URL: z.url(),
 })
 
