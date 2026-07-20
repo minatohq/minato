@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowLeftIcon, MailCheckIcon } from 'lucide-react'
 import { useState } from 'react'
 import { AuthCard } from '@/components/auth/AuthCard'
-import { ForgotPasswordForm } from '@/components/forms/ForgotPasswordForm'
+import { ForgotPasswordForm } from '@/components/auth/forms/ForgotPasswordForm'
 import { Button } from '@/components/ui/Button'
 import { createPageTitle } from '@/lib/metadata'
 
@@ -27,7 +27,7 @@ function RouteComponent() {
     >
       <ForgotPasswordForm onSent={setEmailSent} />
 
-      <Button variant="ghost" render={<Link to="/login" />}>
+      <Button variant="ghost" nativeButton={false} render={<Link to="/login" />}>
         <ArrowLeftIcon />
         Back to login
       </Button>

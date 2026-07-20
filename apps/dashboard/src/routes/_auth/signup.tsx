@@ -3,7 +3,7 @@ import { APP_NAME } from '@repo/constants/app'
 import { AuthCard } from '@/components/auth/AuthCard'
 import { AuthParagraph } from '@/components/auth/AuthParagraph'
 import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
-import { SignUpForm } from '@/components/forms/SignUpForm'
+import { SignUpForm } from '@/components/auth/forms/SignUpForm'
 import { FieldSeparator } from '@/components/ui/Field'
 import { createPageTitle } from '@/lib/metadata'
 
