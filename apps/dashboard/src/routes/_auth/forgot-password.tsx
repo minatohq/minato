@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowLeftIcon, MailCheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { AuthCard } from '@/components/auth/AuthCard'
-import { ForgotPasswordForm } from '@/components/auth/forms/ForgotPasswordForm'
 import { Button } from '@/components/ui/Button'
+import { AuthCard } from '@/features/auth/components/AuthCard'
+import { ForgotPasswordForm } from '@/features/auth/components/forms/ForgotPasswordForm'
 import { createPageTitle } from '@/lib/metadata'
 
 export const Route = createFileRoute('/_auth/forgot-password')({

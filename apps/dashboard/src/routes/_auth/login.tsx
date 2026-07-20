@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { APP_NAME } from '@repo/constants/app'
-import { AuthCard } from '@/components/auth/AuthCard'
-import { AuthParagraph } from '@/components/auth/AuthParagraph'
-import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
-import { LoginForm } from '@/components/auth/forms/LoginForm'
 import { FieldSeparator } from '@/components/ui/Field'
+import { AuthCard } from '@/features/auth/components/AuthCard'
+import { AuthParagraph } from '@/features/auth/components/AuthParagraph'
+import { AuthSocialButtonGroup } from '@/features/auth/components/AuthSocialButtonGroup'
+import { LoginForm } from '@/features/auth/components/forms/LoginForm'
 import { createPageTitle } from '@/lib/metadata'
 
 export const Route = createFileRoute('/_auth/login')({

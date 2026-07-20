@@ -1,12 +1,12 @@
 import { revalidateLogic } from '@tanstack/react-form'
 import { useState } from 'react'
 import { z } from 'zod'
-import { AuthForm, useAuthForm } from '@/components/auth/AuthForm'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { FieldGroup } from '@/components/ui/Field'
 import { env } from '@/env'
-import { authClient } from '@/lib/auth/client'
-import { emailSchema } from '@/lib/auth/schemas'
+import { authClient } from '@/features/auth/client'
+import { AuthForm, useAuthForm } from '@/features/auth/components/AuthForm'
+import { emailSchema } from '@/features/auth/schemas'
 import { Route as resetPasswordRoute } from '@/routes/_auth/reset-password'
 
 const formSchema = z.object({

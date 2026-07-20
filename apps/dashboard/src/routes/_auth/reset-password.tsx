@@ -2,10 +2,10 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { BASE_ERROR_CODES } from 'better-auth'
 import { ArrowLeftIcon } from 'lucide-react'
 import { z } from 'zod'
-import { AuthCard } from '@/components/auth/AuthCard'
-import { ResetPasswordForm } from '@/components/auth/forms/ResetPasswordForm'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
+import { AuthCard } from '@/features/auth/components/AuthCard'
+import { ResetPasswordForm } from '@/features/auth/components/forms/ResetPasswordForm'
 import { createPageTitle } from '@/lib/metadata'
 
 const searchSchema = z.object({

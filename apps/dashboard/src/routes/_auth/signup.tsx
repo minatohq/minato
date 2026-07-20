@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { APP_NAME } from '@repo/constants/app'
-import { AuthCard } from '@/components/auth/AuthCard'
-import { AuthParagraph } from '@/components/auth/AuthParagraph'
-import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
-import { SignUpForm } from '@/components/auth/forms/SignUpForm'
 import { FieldSeparator } from '@/components/ui/Field'
+import { AuthCard } from '@/features/auth/components/AuthCard'
+import { AuthParagraph } from '@/features/auth/components/AuthParagraph'
+import { AuthSocialButtonGroup } from '@/features/auth/components/AuthSocialButtonGroup'
+import { SignUpForm } from '@/features/auth/components/forms/SignUpForm'
 import { createPageTitle } from '@/lib/metadata'
 
 const termsOfServiceUrl = new URL('/terms', import.meta.env.VITE_WEBSITE_BASE_URL).toString()

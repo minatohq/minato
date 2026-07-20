@@ -2,11 +2,11 @@ import { revalidateLogic } from '@tanstack/react-form'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { z } from 'zod'
-import { AuthForm, useAuthForm } from '@/components/auth/AuthForm'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { FieldGroup } from '@/components/ui/Field'
-import { authClient } from '@/lib/auth/client'
-import { passwordSchema } from '@/lib/auth/schemas'
+import { authClient } from '@/features/auth/client'
+import { AuthForm, useAuthForm } from '@/features/auth/components/AuthForm'
+import { passwordSchema } from '@/features/auth/schemas'
 
 const formSchema = z
   .object({

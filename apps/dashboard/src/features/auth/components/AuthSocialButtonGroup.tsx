@@ -3,7 +3,7 @@ import IconBrandGoogle from '@/assets/icons/icon-brand-google.svg?react'
 import IconBrandMicrosoft from '@/assets/icons/icon-brand-microsoft.svg?react'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
-import { authClient } from '@/lib/auth/client'
+import { authClient } from '@/features/auth/client'
 import { cn } from '@/lib/utils'
 import type { SocialProvider } from 'better-auth'
 
