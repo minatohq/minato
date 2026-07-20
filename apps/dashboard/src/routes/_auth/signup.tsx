@@ -40,7 +40,9 @@ function RouteComponent() {
         <CardContent className="grid gap-6">
           <AuthSocialButtonGroup mode="signup" />
 
-          <FieldSeparator>or</FieldSeparator>
+          <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+            or
+          </FieldSeparator>
 
           <SignUpForm />
 
