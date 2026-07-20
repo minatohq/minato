@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { APP_NAME } from '@repo/constants/app'
+import { AuthCard } from '@/components/auth/AuthCard'
 import { AuthParagraph } from '@/components/auth/AuthParagraph'
 import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
 import { SignUpForm } from '@/components/forms/SignUpForm'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { FieldSeparator } from '@/components/ui/Field'
 import { createPageTitle } from '@/lib/metadata'
 
@@ -26,31 +26,22 @@ export const Route = createFileRoute('/_auth/signup')({
 function RouteComponent() {
   return (
     <>
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle>
-            <h1>Create your account</h1>
-          </CardTitle>
+      <AuthCard
+        title="Create your account"
+        description="Start collecting feedback in just a few minutes."
+      >
+        <AuthSocialButtonGroup mode="signup" />
 
-          <CardDescription className="text-balance">
-            Start collecting feedback in just a few minutes.
-          </CardDescription>
-        </CardHeader>
+        <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+          or
+        </FieldSeparator>
 
-        <CardContent className="grid gap-6">
-          <AuthSocialButtonGroup mode="signup" />
+        <SignUpForm />
 
-          <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-            or
-          </FieldSeparator>
-
-          <SignUpForm />
-
-          <AuthParagraph className="text-center">
-            Already have an account? <Link to="/login">Log in</Link>
-          </AuthParagraph>
-        </CardContent>
-      </Card>
+        <AuthParagraph className="text-center">
+          Already have an account? <Link to="/login">Log in</Link>
+        </AuthParagraph>
+      </AuthCard>
 
       <AuthParagraph className="px-12 text-center">
         By creating an account, you agree to our{' '}

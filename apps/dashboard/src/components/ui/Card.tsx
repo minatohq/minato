@@ -31,6 +31,16 @@ export function CardHeader({ className, ...props }: React.ComponentProps<'div'>)
   )
 }
 
+export function CardMedia({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      className={cn('mb-2 [&_svg]:mx-auto [&_svg]:size-9', className)}
+      data-slot="card-media"
+      {...props}
+    />
+  )
+}
+
 export function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div

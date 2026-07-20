@@ -2,10 +2,10 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { BASE_ERROR_CODES } from 'better-auth'
 import { ArrowLeftIcon } from 'lucide-react'
 import { z } from 'zod'
+import { AuthCard } from '@/components/auth/AuthCard'
 import { ResetPasswordForm } from '@/components/forms/ResetPasswordForm'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { createPageTitle } from '@/lib/metadata'
 
 const searchSchema = z.object({
@@ -29,47 +29,26 @@ function RouteComponent() {
   }
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>
-          <h1>Reset your password</h1>
-        </CardTitle>
-
-        <CardDescription className="text-balance">
-          Enter a new password for your account.
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent>
-        <ResetPasswordForm token={token} />
-      </CardContent>
-    </Card>
+    <AuthCard title="Reset your password" description="Enter a new password for your account.">
+      <ResetPasswordForm token={token} />
+    </AuthCard>
   )
 }
 
 function InvalidTokenState() {
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle>
-          <h1>Reset link expired</h1>
-        </CardTitle>
+    <AuthCard
+      title="Reset link expired"
+      description="This password reset link is invalid or has expired."
+    >
+      <Alert variant="destructive">
+        <AlertDescription>Request a new link to reset your password.</AlertDescription>
+      </Alert>
 
-        <CardDescription className="text-balance">
-          This password reset link is invalid or has expired.
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="grid gap-6">
-        <Alert variant="destructive">
-          <AlertDescription>Request a new link to reset your password.</AlertDescription>
-        </Alert>
-
-        <Button variant="ghost" nativeButton={false} render={<Link to="/forgot-password" />}>
-          <ArrowLeftIcon />
-          Request a new link
-        </Button>
-      </CardContent>
-    </Card>
+      <Button variant="ghost" nativeButton={false} render={<Link to="/forgot-password" />}>
+        <ArrowLeftIcon />
+        Request a new link
+      </Button>
+    </AuthCard>
   )
 }
