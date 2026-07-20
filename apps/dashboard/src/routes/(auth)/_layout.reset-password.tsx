@@ -13,7 +13,7 @@ const searchSchema = z.object({
   error: z.string().optional(),
 })
 
-export const Route = createFileRoute('/_auth/reset-password')({
+export const Route = createFileRoute('/(auth)/_layout/reset-password')({
   head: () => ({
     meta: [{ title: createPageTitle('Reset password') }],
   }),

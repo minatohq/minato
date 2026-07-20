@@ -6,7 +6,7 @@ import { AuthCard } from '@/features/auth/components/AuthCard'
 import { ForgotPasswordForm } from '@/features/auth/components/forms/ForgotPasswordForm'
 import { createPageTitle } from '@/lib/metadata'
 
-export const Route = createFileRoute('/_auth/forgot-password')({
+export const Route = createFileRoute('/(auth)/_layout/forgot-password')({
   head: () => ({
     meta: [{ title: createPageTitle('Forgot password') }],
   }),

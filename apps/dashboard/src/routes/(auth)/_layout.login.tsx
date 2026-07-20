@@ -7,7 +7,7 @@ import { AuthSocialButtonGroup } from '@/features/auth/components/AuthSocialButt
 import { LoginForm } from '@/features/auth/components/forms/LoginForm'
 import { createPageTitle } from '@/lib/metadata'
 
-export const Route = createFileRoute('/_auth/login')({
+export const Route = createFileRoute('/(auth)/_layout/login')({
   head: () => ({
     meta: [
       { title: createPageTitle('Login') },

@@ -10,7 +10,7 @@ import { createPageTitle } from '@/lib/metadata'
 const termsOfServiceUrl = new URL('/terms', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 const privacyPolicyUrl = new URL('/privacy', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 
-export const Route = createFileRoute('/_auth/signup')({
+export const Route = createFileRoute('/(auth)/_layout/signup')({
   head: () => ({
     meta: [
       { title: createPageTitle('Create account') },

@@ -7,7 +7,7 @@ import { env } from '@/env'
 import { authClient } from '@/features/auth/client'
 import { AuthForm, useAuthForm } from '@/features/auth/components/AuthForm'
 import { emailSchema } from '@/features/auth/schemas'
-import { Route as resetPasswordRoute } from '@/routes/_auth/reset-password'
+import { Route as resetPasswordRoute } from '@/routes/(auth)/_layout.reset-password'
 
 const formSchema = z.object({
   email: emailSchema,
