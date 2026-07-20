@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <mask id="icon-brand-google-a" width="22" height="22" x="1" y="1" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+    <path fill="#fff" d="M22.789 9.96H12.234v4.228H18.3a4.9 4.9 0 0 1-.637 1.724 5.1 5.1 0 0 1-1.287 1.44c-1.394 1.069-3.02 1.287-4.148 1.287-2.852 0-5.288-1.843-6.231-4.347-.038-.09-.063-.185-.094-.277a6.46 6.46 0 0 1 .026-4.103c.887-2.604 3.378-4.548 6.301-4.548q.884 0 1.691.21a6.1 6.1 0 0 1 2.627 1.443l3.21-3.142C17.803 2.085 15.258 1 12.223 1c-2.427 0-4.667.756-6.504 2.034A11.1 11.1 0 0 0 2.186 7.07 10.7 10.7 0 0 0 1 12c0 1.78.42 3.453 1.187 4.934v.01a11.2 11.2 0 0 0 3.433 3.955A11.3 11.3 0 0 0 12.224 23c1.778 0 3.355-.32 4.745-.922a9.7 9.7 0 0 0 2.695-1.725 9.7 9.7 0 0 0 2.464-3.515c.568-1.366.872-2.911.872-4.586 0-.78-.078-1.573-.211-2.293"/>
+  </mask>
+  <g mask="url(#icon-brand-google-a)">
+    <g filter="url(#icon-brand-google-b)">
+      <path fill="url(#icon-brand-google-c)" d="M.838 12.074c.012 1.752.511 3.56 1.267 5.02v.01C2.65 18.162 3.397 19 4.247 19.83l5.134-1.873c-.971-.494-1.12-.796-1.816-1.348a6.5 6.5 0 0 1-1.572-2.507H5.98l.013-.01c-.217-.638-.238-1.315-.246-2.018z"/>
+    </g>
+    <g filter="url(#icon-brand-google-d)">
+      <path fill="url(#icon-brand-google-e)" d="M12.234.92c-.507 1.783-.313 3.516 0 4.524q.88 0 1.686.21a6.1 6.1 0 0 1 2.627 1.444l3.291-3.223C17.888 2.087 15.542.923 12.234.92"/>
+    </g>
+    <g filter="url(#icon-brand-google-f)">
+      <path fill="url(#icon-brand-google-g)" d="M12.223.906a11.64 11.64 0 0 0-6.67 2.086 11.5 11.5 0 0 0-1.912 1.674c-.15 1.404 1.12 3.13 3.636 3.116 1.22-1.42 3.025-2.338 5.034-2.338h.005L12.234.906z"/>
+    </g>
+    <g filter="url(#icon-brand-google-h)">
+      <path fill="url(#icon-brand-google-i)" d="m20.439 12.582-2.222 1.526a4.9 4.9 0 0 1-.637 1.724 5.1 5.1 0 0 1-1.287 1.44c-1.391 1.066-3.012 1.286-4.14 1.287-1.167 1.986-1.372 2.981.081 4.585 1.798-.002 3.392-.326 4.798-.934a9.9 9.9 0 0 0 2.732-1.749A9.9 9.9 0 0 0 22.26 16.9c.575-1.385.883-2.95.883-4.648z"/>
+    </g>
+    <g filter="url(#icon-brand-google-j)">
+      <path fill="#3086ff" d="M12.07 9.799v4.55h10.69c.093-.623.404-1.43.404-2.097 0-.78-.078-1.733-.211-2.453z"/>
+    </g>
+    <g filter="url(#icon-brand-google-k)">
+      <path fill="url(#icon-brand-google-l)" d="M3.692 4.505c-.66.722-1.223 1.53-1.67 2.403C1.256 8.403.836 10.218.836 12l.002.075c.34.65 4.69.526 4.909 0l-.003-.073c0-.73.123-1.269.348-1.929a6.7 6.7 0 0 1 1.267-2.21c.126-.16.462-.506.56-.713.037-.08-.068-.124-.074-.151-.007-.031-.148-.006-.18-.03-.1-.073-.298-.112-.418-.146-.258-.073-.685-.233-.922-.4-.75-.527-1.919-1.156-2.633-1.917"/>
+    </g>
+    <g filter="url(#icon-brand-google-m)">
+      <path fill="url(#icon-brand-google-n)" d="M6.341 7C8.08 8.054 8.58 6.47 9.734 5.975l-2.01-4.168c-.733.308-1.432.693-2.086 1.148a11.2 11.2 0 0 0-2.528 2.43z"/>
+    </g>
+    <g filter="url(#icon-brand-google-o)">
+      <path fill="url(#icon-brand-google-p)" d="M7.049 17.634c-2.333.843-2.698.873-2.913 2.319q.619.602 1.32 1.106c1.257.901 3.675 2.101 6.768 2.101h.01v-4.682h-.007c-1.158 0-2.084-.304-3.032-.833-.234-.13-.659.22-.875.064-.297-.216-1.013.186-1.271-.075"/>
+    </g>
+    <g filter="url(#icon-brand-google-q)" opacity=".5">
+      <path fill="url(#icon-brand-google-r)" d="M10.868 18.331v4.748c.433.05.883.081 1.356.081q.709 0 1.377-.069v-4.728a8 8 0 0 1-1.374.116c-.466 0-.92-.055-1.359-.148"/>
+    </g>
+  </g>
+  <defs>
+    <filter id="icon-brand-google-b" width="9.483" height="8.696" x=".368" y="11.604" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-d" width="8.856" height="7.118" x="11.452" y=".45" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-f" width="9.628" height="7.816" x="3.159" y=".436" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-h" width="12.874" height="11.832" x="10.74" y="11.782" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-j" width="12.034" height="5.491" x="11.6" y="9.328" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-k" width="8.031" height="8.951" x=".366" y="4.035" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-m" width="13.235" height="12.159" x="-.195" y="-1.499" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation="1.653"/>
+    </filter>
+    <filter id="icon-brand-google-o" width="9.039" height="6.485" x="3.666" y="17.145" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <filter id="icon-brand-google-q" width="3.673" height="5.77" x="10.398" y="17.861" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur result="effect1_foregroundBlur_2_17" stdDeviation=".235"/>
+    </filter>
+    <radialGradient id="icon-brand-google-c" cx="0" cy="0" r="1" gradientTransform="matrix(-.45715 -10.9557 16.4368 -.65744 9.278 19.665)" gradientUnits="userSpaceOnUse">
+      <stop offset=".142" stop-color="#1abd4d"/>
+      <stop offset=".248" stop-color="#6ec30d"/>
+      <stop offset=".312" stop-color="#8ac502"/>
+      <stop offset=".366" stop-color="#a2c600"/>
+      <stop offset=".446" stop-color="#c8c903"/>
+      <stop offset=".54" stop-color="#ebcb03"/>
+      <stop offset=".616" stop-color="#f7cd07"/>
+      <stop offset=".699" stop-color="#fdcd04"/>
+      <stop offset=".771" stop-color="#fdce05"/>
+      <stop offset=".861" stop-color="#ffce0a"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-e" cx="0" cy="0" r="1" gradientTransform="matrix(7.76374 0 0 9.81654 19.53 6.865)" gradientUnits="userSpaceOnUse">
+      <stop offset=".408" stop-color="#fb4e5a"/>
+      <stop offset="1" stop-color="#ff4540"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-g" cx="0" cy="0" r="1" gradientTransform="matrix(-10.8777 5.89856 8.17548 14.4519 15.29 -.515)" gradientUnits="userSpaceOnUse">
+      <stop offset=".231" stop-color="#ff4541"/>
+      <stop offset=".312" stop-color="#ff4540"/>
+      <stop offset=".458" stop-color="#ff4640"/>
+      <stop offset=".54" stop-color="#ff473f"/>
+      <stop offset=".699" stop-color="#ff5138"/>
+      <stop offset=".771" stop-color="#ff5b33"/>
+      <stop offset=".861" stop-color="#ff6c29"/>
+      <stop offset="1" stop-color="#ff8c18"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-i" cx="0" cy="0" r="1" gradientTransform="matrix(-19.727 -25.2122 -9.50548 7.12928 12.396 21.72)" gradientUnits="userSpaceOnUse">
+      <stop offset=".132" stop-color="#0cba65"/>
+      <stop offset=".21" stop-color="#0bb86d"/>
+      <stop offset=".297" stop-color="#09b479"/>
+      <stop offset=".396" stop-color="#08ad93"/>
+      <stop offset=".477" stop-color="#0aa6a9"/>
+      <stop offset=".568" stop-color="#0d9cc6"/>
+      <stop offset=".667" stop-color="#1893dd"/>
+      <stop offset=".769" stop-color="#258bf1"/>
+      <stop offset=".859" stop-color="#3086ff"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-l" cx="0" cy="0" r="1" gradientTransform="matrix(-1.39604 11.7809 16.6376 1.88986 11.27 2.984)" gradientUnits="userSpaceOnUse">
+      <stop offset=".366" stop-color="#ff4e3a"/>
+      <stop offset=".458" stop-color="#ff8a1b"/>
+      <stop offset=".54" stop-color="#ffa312"/>
+      <stop offset=".616" stop-color="#ffb60c"/>
+      <stop offset=".771" stop-color="#ffcd0a"/>
+      <stop offset=".861" stop-color="#fecf0a"/>
+      <stop offset=".915" stop-color="#fecf08"/>
+      <stop offset="1" stop-color="#fdcd01"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-n" cx="0" cy="0" r="1" gradientTransform="matrix(-4.03519 4.3694 -12.5877 -11.1432 9.307 2.862)" gradientUnits="userSpaceOnUse">
+      <stop offset=".316" stop-color="#ff4c3c"/>
+      <stop offset=".604" stop-color="#ff692c"/>
+      <stop offset=".727" stop-color="#ff7825"/>
+      <stop offset=".885" stop-color="#ff8d1b"/>
+      <stop offset="1" stop-color="#ff9f13"/>
+    </radialGradient>
+    <radialGradient id="icon-brand-google-p" cx="0" cy="0" r="1" gradientTransform="matrix(-10.8777 -5.89856 8.17548 -14.4519 15.29 24.515)" gradientUnits="userSpaceOnUse">
+      <stop offset=".231" stop-color="#0fbc5f"/>
+      <stop offset=".312" stop-color="#0fbc5f"/>
+      <stop offset=".366" stop-color="#0fbc5e"/>
+      <stop offset=".458" stop-color="#0fbc5d"/>
+      <stop offset=".54" stop-color="#12bc58"/>
+      <stop offset=".699" stop-color="#28bf3c"/>
+      <stop offset=".771" stop-color="#38c02b"/>
+      <stop offset=".861" stop-color="#52c218"/>
+      <stop offset=".915" stop-color="#67c30f"/>
+      <stop offset="1" stop-color="#86c504"/>
+    </radialGradient>
+    <linearGradient id="icon-brand-google-r" x1="10.868" x2="13.601" y1="20.746" y2="20.746" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0fbc5c"/>
+      <stop offset="1" stop-color="#0cba65"/>
+    </linearGradient>
+  </defs>
+</svg>

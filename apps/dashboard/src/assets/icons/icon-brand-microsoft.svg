@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <g clip-path="url(#icon-brand-microsoft-a)">
+    <path fill="#f1511b" d="M11.5 11.5H1V1h10.5z"/>
+    <path fill="#80cc28" d="M23 11.5H12.5V1H23z"/>
+    <path fill="#00adef" d="M11.5 23H1V12.5h10.5z"/>
+    <path fill="#fbbc09" d="M23 23H12.5V12.5H23z"/>
+  </g>
+  <defs>
+    <clipPath id="icon-brand-microsoft-a">
+      <path fill="#fff" d="M1 1h22v22H1z"/>
+    </clipPath>
+  </defs>
+</svg>

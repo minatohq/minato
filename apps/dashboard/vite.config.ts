@@ -1,10 +1,12 @@
+import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import viteReact from '@vitejs/plugin-react'
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
+import svgr from 'vite-plugin-svgr'
 import { defineConfig, loadEnv } from 'vite-plus'
-import { clientEnvSchema, envKeys, serverEnvSchema } from './src/env/schema.ts'
+import { clientEnvSchema, envKeys, serverEnvSchema } from './src/lib/env/schema.ts'
 import type { PluginOption } from 'vite-plus'
 
 export default defineConfig(({ mode }) => {
@@ -16,7 +18,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      port: 3000,
+      port: 3001,
       strictPort: true,
     },
     resolve: {
@@ -24,16 +26,26 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       devtools(),
+      svgr(),
       tanstackStart(),
       // TEMP: Remove the cast once Nitro and Vite+ resolve to compatible shared Vite types
       ...(nitro({
+        devProxy: {
+          '/api/**': {
+            target: serverEnv.API_PROXY_TARGET,
+            changeOrigin: true,
+          },
+        },
         routeRules: {
           '/api/**': {
             proxy: `${serverEnv.API_PROXY_TARGET}/api/**`,
           },
         },
       }) as unknown as Array<PluginOption>),
-      viteReact(), // React plugin must come after TanStack Start plugin
+      react(), // React plugin must come after TanStack Start plugin
+      babel({
+        presets: [reactCompilerPreset()],
+      }),
       tailwindcss(),
     ],
   }

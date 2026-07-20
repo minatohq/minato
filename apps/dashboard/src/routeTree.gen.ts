@@ -10,33 +10,84 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as authLayoutRouteImport } from './routes/(auth)/_layout'
+import { Route as authLayoutSignupRouteImport } from './routes/(auth)/_layout.signup'
+import { Route as authLayoutResetPasswordRouteImport } from './routes/(auth)/_layout.reset-password'
+import { Route as authLayoutLoginRouteImport } from './routes/(auth)/_layout.login'
+import { Route as authLayoutForgotPasswordRouteImport } from './routes/(auth)/_layout.forgot-password'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authLayoutRoute = authLayoutRouteImport.update({
+  id: '/(auth)/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLayoutSignupRoute = authLayoutSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => authLayoutRoute,
+} as any)
+const authLayoutResetPasswordRoute = authLayoutResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => authLayoutRoute,
+} as any)
+const authLayoutLoginRoute = authLayoutLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => authLayoutRoute,
+} as any)
+const authLayoutForgotPasswordRoute =
+  authLayoutForgotPasswordRouteImport.update({
+    id: '/forgot-password',
+    path: '/forgot-password',
+    getParentRoute: () => authLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof authLayoutForgotPasswordRoute
+  '/login': typeof authLayoutLoginRoute
+  '/reset-password': typeof authLayoutResetPasswordRoute
+  '/signup': typeof authLayoutSignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof authLayoutForgotPasswordRoute
+  '/login': typeof authLayoutLoginRoute
+  '/reset-password': typeof authLayoutResetPasswordRoute
+  '/signup': typeof authLayoutSignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/(auth)/_layout': typeof authLayoutRouteWithChildren
+  '/(auth)/_layout/forgot-password': typeof authLayoutForgotPasswordRoute
+  '/(auth)/_layout/login': typeof authLayoutLoginRoute
+  '/(auth)/_layout/reset-password': typeof authLayoutResetPasswordRoute
+  '/(auth)/_layout/signup': typeof authLayoutSignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/forgot-password' | '/login' | '/reset-password' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/forgot-password' | '/login' | '/reset-password' | '/signup'
+  id:
+    | '__root__'
+    | '/'
+    | '/(auth)/_layout'
+    | '/(auth)/_layout/forgot-password'
+    | '/(auth)/_layout/login'
+    | '/(auth)/_layout/reset-password'
+    | '/(auth)/_layout/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  authLayoutRoute: typeof authLayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +99,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/_layout': {
+      id: '/(auth)/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/_layout/signup': {
+      id: '/(auth)/_layout/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof authLayoutSignupRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/(auth)/_layout/reset-password': {
+      id: '/(auth)/_layout/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authLayoutResetPasswordRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/(auth)/_layout/login': {
+      id: '/(auth)/_layout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLayoutLoginRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
+    '/(auth)/_layout/forgot-password': {
+      id: '/(auth)/_layout/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authLayoutForgotPasswordRouteImport
+      parentRoute: typeof authLayoutRoute
+    }
   }
 }
 
+interface authLayoutRouteChildren {
+  authLayoutForgotPasswordRoute: typeof authLayoutForgotPasswordRoute
+  authLayoutLoginRoute: typeof authLayoutLoginRoute
+  authLayoutResetPasswordRoute: typeof authLayoutResetPasswordRoute
+  authLayoutSignupRoute: typeof authLayoutSignupRoute
+}
+
+const authLayoutRouteChildren: authLayoutRouteChildren = {
+  authLayoutForgotPasswordRoute: authLayoutForgotPasswordRoute,
+  authLayoutLoginRoute: authLayoutLoginRoute,
+  authLayoutResetPasswordRoute: authLayoutResetPasswordRoute,
+  authLayoutSignupRoute: authLayoutSignupRoute,
+}
+
+const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
+  authLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  authLayoutRoute: authLayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

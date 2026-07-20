@@ -11,6 +11,7 @@ Development ports are assigned by application type and remain stable once assign
 
 | Application | Port |
 | --- | ---: |
-| Dashboard | 3000 |
-| Widget | 3001 |
+| Website | 3000 |
+| Dashboard | 3001 |
+| Widget | 3002 |
 | API | 4000 |

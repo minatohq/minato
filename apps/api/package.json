@@ -17,6 +17,7 @@
     "@t3-oss/env-core": "catalog:",
     "better-auth": "catalog:",
     "hono": "^4.12.26",
+    "resend": "^6.17.2",
     "zod": "catalog:"
   },
   "devDependencies": {
