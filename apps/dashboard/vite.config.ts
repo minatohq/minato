@@ -6,7 +6,7 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import { nitro } from 'nitro/vite'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig, loadEnv } from 'vite-plus'
-import { clientEnvSchema, envKeys, serverEnvSchema } from './src/env/schema.ts'
+import { clientEnvSchema, envKeys, serverEnvSchema } from './src/lib/env/schema.ts'
 import type { PluginOption } from 'vite-plus'
 
 export default defineConfig(({ mode }) => {
