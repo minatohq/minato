@@ -8,10 +8,11 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/Field
 import { Input } from '@/components/ui/Input'
 import { env } from '@/env'
 import { authClient } from '@/lib/auth/client'
+import { emailSchema } from '@/lib/auth/schemas'
 import { Route as resetPasswordRoute } from '@/routes/_auth/reset-password'
 
 const formSchema = z.object({
-  email: z.string().trim().min(1, 'Email is required').pipe(z.email('Enter a valid email address')),
+  email: emailSchema,
 })
 
 interface Props {

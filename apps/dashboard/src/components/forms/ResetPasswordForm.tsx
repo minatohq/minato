@@ -8,16 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/Field'
 import { Input } from '@/components/ui/Input'
 import { authClient } from '@/lib/auth/client'
-
-const passwordSchema = z
-  .string()
-  .min(1, 'Password is required')
-  .pipe(
-    z
-      .string()
-      .min(8, 'Password must be at least 8 characters')
-      .max(128, 'Password must be at most 128 characters')
-  )
+import { passwordSchema } from '@/lib/auth/schemas'
 
 const formSchema = z
   .object({
