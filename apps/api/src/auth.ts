@@ -4,6 +4,7 @@ import { APP_NAME } from '@repo/constants/app'
 import { createDatabaseClient } from '@repo/db'
 import * as schema from '@repo/db/schema'
 import { env } from '#/env'
+import { sendPasswordResetEmail } from '#/lib/email/transactional'
 
 const db = createDatabaseClient(env.DATABASE_URL)
 
@@ -21,6 +22,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     revokeSessionsOnPasswordReset: true,
+    sendResetPassword: async ({ user, url }) => {
+      await sendPasswordResetEmail({
+        recipient: user.email,
+        resetUrl: url,
+      })
+    },
   },
 
   socialProviders: {

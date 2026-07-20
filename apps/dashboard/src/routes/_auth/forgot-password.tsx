@@ -61,7 +61,12 @@ function SentState({ email }: { email: string }) {
       </CardHeader>
 
       <CardContent>
-        <Button className="w-full" variant="ghost" render={<Link to="/login" />}>
+        <Button
+          className="w-full"
+          variant="ghost"
+          nativeButton={false}
+          render={<Link to="/login" />}
+        >
           <ArrowLeftIcon />
           Back to login
         </Button>
