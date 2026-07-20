@@ -31,11 +31,17 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export function AuthSocialButtonGroup({ className, mode }: Props) {
+  const [isLocked, setIsLocked] = useState(false)
   const [providerError, setProviderError] = useState<string>()
 
   const buttonText = mode === 'login' ? 'Sign in' : 'Sign up'
 
-  async function handleSocialAuth(provider: SocialProvider) {
+  async function handleSocialAuth(provider: SupportedProvider) {
+    if (isLocked) {
+      return
+    }
+
+    setIsLocked(true)
     setProviderError(undefined)
 
     try {
@@ -49,6 +55,7 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
         throw new Error(error.message)
       }
     } catch (error: unknown) {
+      setIsLocked(false)
       setProviderError(
         error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'
       )
@@ -69,6 +76,7 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
             key={provider}
             type="button"
             variant="outline"
+            disabled={isLocked}
             onClick={() => handleSocialAuth(provider)}
           >
             <Icon />
