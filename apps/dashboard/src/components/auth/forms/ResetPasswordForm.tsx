@@ -1,12 +1,10 @@
-import { revalidateLogic, useForm } from '@tanstack/react-form'
+import { revalidateLogic } from '@tanstack/react-form'
 import { useNavigate } from '@tanstack/react-router'
-import { useId, useState } from 'react'
+import { useState } from 'react'
 import { z } from 'zod'
-import { AuthForm } from '@/components/auth/AuthForm'
+import { AuthForm, useAuthForm } from '@/components/auth/AuthForm'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
-import { Button } from '@/components/ui/Button'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/Field'
-import { Input } from '@/components/ui/Input'
+import { FieldGroup } from '@/components/ui/Field'
 import { authClient } from '@/lib/auth/client'
 import { passwordSchema } from '@/lib/auth/schemas'
 
@@ -21,12 +19,11 @@ const formSchema = z
   })
 
 export function ResetPasswordForm({ token }: { token: string }) {
-  const id = useId()
   const navigate = useNavigate()
 
   const [submitError, setSubmitError] = useState<string>()
 
-  const form = useForm({
+  const form = useAuthForm({
     formId: 'reset-password',
     defaultValues: {
       newPassword: '',
@@ -81,61 +78,28 @@ export function ResetPasswordForm({ token }: { token: string }) {
       )}
 
       <FieldGroup>
-        <form.Field
+        <form.AppField
           name="newPassword"
           children={(field) => (
-            <Field data-invalid={!field.state.meta.isValid}>
-              <FieldLabel htmlFor={`${id}-new-password`}>New password</FieldLabel>
-              <Input
-                id={`${id}-new-password`}
-                name={field.name}
-                type="password"
-                autoComplete="new-password"
-                value={field.state.value}
-                aria-invalid={!field.state.meta.isValid}
-                aria-describedby={
-                  !field.state.meta.isValid ? `${id}-new-password-error` : undefined
-                }
-                onBlur={field.handleBlur}
-                onChange={(event) => field.handleChange(event.target.value)}
-              />
-              <FieldError id={`${id}-new-password-error`} errors={field.state.meta.errors} />
-            </Field>
+            <field.InputField label="New password" type="password" autoComplete="new-password" />
           )}
         />
 
-        <form.Field
+        <form.AppField
           name="confirmPassword"
           children={(field) => (
-            <Field data-invalid={!field.state.meta.isValid}>
-              <FieldLabel htmlFor={`${id}-confirm-password`}>Confirm password</FieldLabel>
-              <Input
-                id={`${id}-confirm-password`}
-                name={field.name}
-                type="password"
-                autoComplete="new-password"
-                value={field.state.value}
-                aria-invalid={!field.state.meta.isValid}
-                aria-describedby={
-                  !field.state.meta.isValid ? `${id}-confirm-password-error` : undefined
-                }
-                onBlur={field.handleBlur}
-                onChange={(event) => field.handleChange(event.target.value)}
-              />
-              <FieldError id={`${id}-confirm-password-error`} errors={field.state.meta.errors} />
-            </Field>
+            <field.InputField
+              label="Confirm password"
+              type="password"
+              autoComplete="new-password"
+            />
           )}
         />
       </FieldGroup>
 
-      <form.Subscribe
-        selector={(state) => state.isSubmitting}
-        children={(isSubmitting) => (
-          <Button type="submit" isLoading={isSubmitting}>
-            Reset password
-          </Button>
-        )}
-      />
+      <form.AppForm>
+        <form.SubmitButton>Reset password</form.SubmitButton>
+      </form.AppForm>
     </AuthForm>
   )
 }
