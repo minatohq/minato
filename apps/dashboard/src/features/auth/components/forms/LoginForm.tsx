@@ -5,8 +5,9 @@ import { z } from 'zod'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { FieldGroup } from '@/components/ui/Field'
 import { authClient } from '@/features/auth/client'
-import { AuthForm, useAuthForm } from '@/features/auth/components/AuthForm'
-import { emailSchema, passwordSchema } from '@/features/auth/schemas'
+import { AuthForm } from '@/features/auth/components/AuthForm'
+import { useAuthForm } from '@/features/auth/form'
+import { emailSchema, passwordSchema } from '@/features/auth/schema'
 
 const formSchema = z.object({
   email: emailSchema,

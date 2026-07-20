@@ -1,28 +1,9 @@
-import { createFormHook, createFormHookContexts } from '@tanstack/react-form'
 import { useId } from 'react'
 import { Button } from '@/components/ui/Button'
 import { Field, FieldError, FieldLabel } from '@/components/ui/Field'
 import { Input } from '@/components/ui/Input'
+import { useFieldContext, useFormContext } from '@/features/auth/form'
 import { cn } from '@/lib/utils'
-
-// oxfmt-ignore
-const {
-  fieldContext,
-  formContext,
-  useFieldContext,
-  useFormContext,
-} = createFormHookContexts()
-
-export const { useAppForm: useAuthForm } = createFormHook({
-  fieldContext,
-  formContext,
-  fieldComponents: {
-    InputField: AuthFormInputField,
-  },
-  formComponents: {
-    SubmitButton: AuthFormSubmitButton,
-  },
-})
 
 export function AuthForm({ className, ...props }: React.ComponentProps<'form'>) {
   return <form className={cn('flex flex-col gap-6', className)} {...props} />
