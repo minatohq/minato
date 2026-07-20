@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils'
 import type { SocialProvider } from 'better-auth'
 
 interface Props extends React.ComponentProps<'div'> {
-  mode: 'signin' | 'signup'
+  mode: 'login' | 'signup'
 }
 
 export function AuthSocialButtonGroup({ className, mode }: Props) {
   const [providerError, setProviderError] = useState<string>()
 
-  const buttonText = mode === 'signin' ? 'Sign in' : 'Sign up'
+  const buttonText = mode === 'login' ? 'Sign in' : 'Sign up'
 
   async function handleSocialAuth(provider: SocialProvider) {
     setProviderError(undefined)

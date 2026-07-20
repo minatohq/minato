@@ -22,14 +22,14 @@ const formSchema = z.object({
     ),
 })
 
-export function SignUpForm() {
+export function LoginForm() {
   const id = useId()
   const navigate = useNavigate()
 
   const [submitError, setSubmitError] = useState<string>()
 
   const form = useForm({
-    formId: 'sign-up',
+    formId: 'login',
     defaultValues: {
       email: '',
       password: '',
@@ -47,8 +47,7 @@ export function SignUpForm() {
       try {
         const parsedValue = formSchema.parse(value)
 
-        const { error } = await authClient.signUp.email({
-          name: '',
+        const { error } = await authClient.signIn.email({
           email: parsedValue.email,
           password: parsedValue.password,
         })
@@ -116,7 +115,7 @@ export function SignUpForm() {
                 id={`${id}-password`}
                 name={field.name}
                 type="password"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 value={field.state.value}
                 aria-invalid={!field.state.meta.isValid}
                 aria-describedby={!field.state.meta.isValid ? `${id}-password-error` : undefined}

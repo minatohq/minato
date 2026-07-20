@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { APP_NAME } from '@repo/constants/app'
 import { AuthParagraph } from '@/components/auth/AuthParagraph'
 import { AuthSocialButtonGroup } from '@/components/auth/AuthSocialButtonGroup'
@@ -10,7 +10,7 @@ import { createPageTitle } from '@/lib/metadata'
 const termsOfServiceUrl = new URL('/terms', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 const privacyPolicyUrl = new URL('/privacy', import.meta.env.VITE_WEBSITE_BASE_URL).toString()
 
-export const Route = createFileRoute('/_auth/create-account')({
+export const Route = createFileRoute('/_auth/signup')({
   head: () => ({
     meta: [
       { title: createPageTitle('Create account') },
@@ -40,12 +40,12 @@ function RouteComponent() {
         <CardContent className="grid gap-6">
           <AuthSocialButtonGroup mode="signup" />
 
-          <FieldSeparator>or continue with email</FieldSeparator>
+          <FieldSeparator>or</FieldSeparator>
 
           <SignUpForm />
 
           <AuthParagraph className="text-center">
-            Already have an account? <a href="#">Sign in</a>
+            Already have an account? <Link to="/login">Log in</Link>
           </AuthParagraph>
         </CardContent>
       </Card>
