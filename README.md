@@ -15,3 +15,8 @@ Development ports are assigned by application type and remain stable once assign
 | Dashboard | 3001 |
 | Widget | 3002 |
 | API | 4000 |
+
+## License
+
+Minato is licensed under the GNU Affero General Public License
+v3.0. See [LICENSE](./LICENSE) for the full license text.
