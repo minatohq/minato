@@ -7,7 +7,7 @@ export function AuthLastUsedBadge({ method }: { method: string }) {
   }
 
   return (
-    <Badge className="absolute -top-2.5 -right-2.5 border-border" variant="secondary">
+    <Badge className="absolute -top-2 -right-1.5 border-border" variant="secondary">
       Last used
     </Badge>
   )

@@ -109,12 +109,12 @@ export function LoginForm() {
       </FieldGroup>
 
       <form.AppForm>
-        <div className="relative">
-          <form.SubmitButton className="w-full">Continue</form.SubmitButton>
+        <form.SubmitButton className="relative">
+          Continue
           <ClientOnly fallback={null}>
             <AuthLastUsedBadge method="email" />
           </ClientOnly>
-        </div>
+        </form.SubmitButton>
       </form.AppForm>
     </AuthForm>
   )
