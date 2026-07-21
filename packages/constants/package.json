@@ -3,6 +3,7 @@
   "type": "module",
   "exports": {
     "./app": "./src/app.ts",
+    "./cookies": "./src/cookies.ts",
     "./widget": "./src/widget.ts"
   },
   "devDependencies": {
