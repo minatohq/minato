@@ -1,5 +1,6 @@
 import { drizzleAdapter } from '@better-auth/drizzle-adapter/relations-v2'
 import { betterAuth } from 'better-auth'
+import { lastLoginMethod } from 'better-auth/plugins'
 import { APP_NAME } from '@repo/constants/app'
 import { createDatabaseClient } from '@repo/db'
 import * as schema from '@repo/db/schema'
@@ -47,4 +48,10 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: 'minato',
   },
+
+  plugins: [
+    lastLoginMethod({
+      storeInDatabase: false,
+    }),
+  ],
 })

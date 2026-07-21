@@ -1,9 +1,11 @@
+import { ClientOnly } from '@tanstack/react-router'
 import { useState } from 'react'
 import IconBrandGoogle from '@/assets/icons/icon-brand-google.svg?react'
 import IconBrandMicrosoft from '@/assets/icons/icon-brand-microsoft.svg?react'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { Button } from '@/components/ui/Button'
 import { authClient } from '@/features/auth/client'
+import { AuthLastUsedBadge } from '@/features/auth/components/AuthLastUsedBadge'
 import { cn } from '@/lib/utils'
 import type { SocialProvider } from 'better-auth'
 
@@ -74,6 +76,7 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
         {socialProviders.map(({ provider, label, Icon }) => (
           <Button
             key={provider}
+            className="relative"
             type="button"
             variant="outline"
             disabled={isLocked}
@@ -81,6 +84,11 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
           >
             <Icon />
             {buttonText} with {label}
+            {mode === 'login' && (
+              <ClientOnly fallback={null}>
+                <AuthLastUsedBadge method={provider} />
+              </ClientOnly>
+            )}
           </Button>
         ))}
       </div>

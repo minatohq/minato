@@ -1,11 +1,12 @@
 import { revalidateLogic } from '@tanstack/react-form'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { ClientOnly, Link, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { z } from 'zod'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
 import { FieldGroup } from '@/components/ui/Field'
 import { authClient } from '@/features/auth/client'
 import { AuthForm } from '@/features/auth/components/AuthForm'
+import { AuthLastUsedBadge } from '@/features/auth/components/AuthLastUsedBadge'
 import { useAuthForm } from '@/features/auth/form'
 import { emailSchema, passwordSchema } from '@/features/auth/schema'
 
@@ -108,7 +109,12 @@ export function LoginForm() {
       </FieldGroup>
 
       <form.AppForm>
-        <form.SubmitButton>Continue</form.SubmitButton>
+        <div className="relative">
+          <form.SubmitButton className="w-full">Continue</form.SubmitButton>
+          <ClientOnly fallback={null}>
+            <AuthLastUsedBadge method="email" />
+          </ClientOnly>
+        </div>
       </form.AppForm>
     </AuthForm>
   )
