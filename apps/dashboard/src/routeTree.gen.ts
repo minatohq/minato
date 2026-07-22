@@ -9,17 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
+import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
 import { Route as authLayoutRouteImport } from './routes/(auth)/_layout'
 import { Route as authLayoutSignupRouteImport } from './routes/(auth)/_layout.signup'
 import { Route as authLayoutResetPasswordRouteImport } from './routes/(auth)/_layout.reset-password'
 import { Route as authLayoutLoginRouteImport } from './routes/(auth)/_layout.login'
 import { Route as authLayoutForgotPasswordRouteImport } from './routes/(auth)/_layout.forgot-password'
 
-const IndexRoute = IndexRouteImport.update({
+const dashboardRouteRoute = dashboardRouteRouteImport.update({
+  id: '/(dashboard)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardIndexRoute = dashboardIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => dashboardRouteRoute,
 } as any)
 const authLayoutRoute = authLayoutRouteImport.update({
   id: '/(auth)/_layout',
@@ -48,14 +53,14 @@ const authLayoutForgotPasswordRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authLayoutForgotPasswordRoute
   '/login': typeof authLayoutLoginRoute
   '/reset-password': typeof authLayoutResetPasswordRoute
   '/signup': typeof authLayoutSignupRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof dashboardIndexRoute
   '/forgot-password': typeof authLayoutForgotPasswordRoute
   '/login': typeof authLayoutLoginRoute
   '/reset-password': typeof authLayoutResetPasswordRoute
@@ -63,8 +68,9 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/_layout': typeof authLayoutRouteWithChildren
+  '/(dashboard)/': typeof dashboardIndexRoute
   '/(auth)/_layout/forgot-password': typeof authLayoutForgotPasswordRoute
   '/(auth)/_layout/login': typeof authLayoutLoginRoute
   '/(auth)/_layout/reset-password': typeof authLayoutResetPasswordRoute
@@ -77,8 +83,9 @@ export interface FileRouteTypes {
   to: '/' | '/forgot-password' | '/login' | '/reset-password' | '/signup'
   id:
     | '__root__'
-    | '/'
+    | '/(dashboard)'
     | '/(auth)/_layout'
+    | '/(dashboard)/'
     | '/(auth)/_layout/forgot-password'
     | '/(auth)/_layout/login'
     | '/(auth)/_layout/reset-password'
@@ -86,18 +93,25 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
   authLayoutRoute: typeof authLayoutRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(dashboard)': {
+      id: '/(dashboard)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof dashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/': {
+      id: '/(dashboard)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof dashboardIndexRouteImport
+      parentRoute: typeof dashboardRouteRoute
     }
     '/(auth)/_layout': {
       id: '/(auth)/_layout'
@@ -137,6 +151,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface dashboardRouteRouteChildren {
+  dashboardIndexRoute: typeof dashboardIndexRoute
+}
+
+const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardIndexRoute: dashboardIndexRoute,
+}
+
+const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
+  dashboardRouteRouteChildren,
+)
+
 interface authLayoutRouteChildren {
   authLayoutForgotPasswordRoute: typeof authLayoutForgotPasswordRoute
   authLayoutLoginRoute: typeof authLayoutLoginRoute
@@ -156,7 +182,7 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  dashboardRouteRoute: dashboardRouteRouteWithChildren,
   authLayoutRoute: authLayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport
