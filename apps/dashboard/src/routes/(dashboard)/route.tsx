@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(dashboard)')({
 function DashboardLayout() {
   return (
     <div className="grid min-h-svh grid-rows-[auto_1fr]">
-      <Header className="sticky" />
+      <Header className="sticky top-0 z-(--z-index-header)" />
       <div className="grid h-full grid-cols-[auto_1fr]">
         <Sidebar />
         <Outlet />
