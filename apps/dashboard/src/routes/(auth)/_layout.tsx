@@ -7,6 +7,7 @@ import { env } from '@/lib/env'
 export const Route = createFileRoute('/(auth)/_layout')({
   validateSearch: z.object({
     reauth: z.boolean().optional().catch(false),
+    redirect: z.string().optional().catch(undefined),
   }),
   beforeLoad: async ({ search }) => {
     if (!search.reauth && (await hasSessionCookie())) {

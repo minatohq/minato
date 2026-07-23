@@ -1,4 +1,4 @@
-import { ClientOnly } from '@tanstack/react-router'
+import { ClientOnly, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 import IconBrandGoogle from '@/assets/icons/icon-brand-google.svg?react'
 import IconBrandMicrosoft from '@/assets/icons/icon-brand-microsoft.svg?react'
@@ -33,6 +33,8 @@ interface Props extends React.ComponentProps<'div'> {
 }
 
 export function AuthSocialButtonGroup({ className, mode }: Props) {
+  const { redirect } = useSearch({ from: '/(auth)/_layout' })
+
   const [isLocked, setIsLocked] = useState(false)
   const [providerError, setProviderError] = useState<string>()
 
@@ -49,7 +51,7 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
     try {
       const { error } = await authClient.signIn.social({
         provider,
-        callbackURL: '/',
+        callbackURL: redirect ?? '/',
         requestSignUp: mode === 'signup',
       })
 
