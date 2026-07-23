@@ -32,7 +32,7 @@ export function UserProfile() {
   }
 
   if (isPending) {
-    return <Skeleton className="size-8 rounded-full" />
+    return <Skeleton className="size-6 rounded-full" />
   }
 
   if (!data || error) {

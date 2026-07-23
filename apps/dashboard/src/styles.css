@@ -107,7 +107,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply relative bg-background text-foreground;
+  }
+
+  #root {
+    @apply isolate;
   }
 
   button:not(:disabled),

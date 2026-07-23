@@ -32,7 +32,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
 
       <body>
-        {children}
+        <div id="root">{children}</div>
         <Scripts />
         <Devtools />
       </body>
