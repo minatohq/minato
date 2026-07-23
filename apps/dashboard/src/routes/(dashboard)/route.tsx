@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/sidebar/Sidebar'
 
@@ -12,7 +12,7 @@ function DashboardLayout() {
       <Header className="sticky" />
       <div className="grid h-full grid-cols-[auto_1fr]">
         <Sidebar />
-        <div></div>
+        <Outlet />
       </div>
     </div>
   )
