@@ -1,6 +1,7 @@
 import styles from '@/styles.css?url'
 
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
+import { Toaster } from '@/components/ui/Toast'
 import { Devtools } from '@/devtools'
 import { ThemeProvider } from '@/features/theme'
 import type { RouterContext } from '@/router'
@@ -35,6 +36,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <div id="root">
           <ThemeProvider>{children}</ThemeProvider>
+          <Toaster />
         </div>
 
         <Scripts />
