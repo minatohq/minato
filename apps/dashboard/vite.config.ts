@@ -1,4 +1,5 @@
 import babel from '@rolldown/plugin-babel'
+import { sentryTanstackStart } from '@sentry/tanstackstart-react/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
@@ -26,8 +27,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       devtools(),
-      svgr(),
       tanstackStart(),
+      react(), // React plugin must come after TanStack Start plugin
+      babel({ presets: [reactCompilerPreset()] }),
+      svgr(),
+      tailwindcss(),
+
       // TEMP: Remove the cast once Nitro and Vite+ resolve to compatible shared Vite types
       ...(nitro({
         devProxy: {
@@ -42,11 +47,14 @@ export default defineConfig(({ mode }) => {
           },
         },
       }) as unknown as Array<PluginOption>),
-      react(), // React plugin must come after TanStack Start plugin
-      babel({
-        presets: [reactCompilerPreset()],
+
+      // Sentry must be the last plugin
+      sentryTanstackStart({
+        org: serverEnv.SENTRY_ORG_NAME,
+        project: serverEnv.SENTRY_DASHBOARD_PROJECT_NAME,
+        authToken: serverEnv.SENTRY_AUTH_TOKEN,
+        tunnelRoute: true,
       }),
-      tailwindcss(),
     ],
   }
 })

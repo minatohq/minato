@@ -36,4 +36,5 @@ peerDependencyRules:
     vitest: '*'
 
 allowBuilds:
+  '@sentry/cli': false
   esbuild: false

@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/tanstackstart-react'
 import { useNavigate } from '@tanstack/react-router'
 import { LogOutIcon, MonitorIcon, MoonIcon, SunIcon, SunMoonIcon, UserIcon } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
@@ -35,7 +36,9 @@ export function UserProfile() {
       if (error) {
         throw error
       }
-    } catch {
+    } catch (error: unknown) {
+      captureException(error)
+
       toast.add({
         type: 'error',
         title: 'Failed to sign you out',
