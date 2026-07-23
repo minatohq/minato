@@ -1,9 +1,15 @@
 import type { Theme } from '@/features/theme/types'
 
 export function applyInitialTheme(storageKey: string, defaultTheme: Theme) {
-  try {
-    let theme = localStorage.getItem(storageKey)
+  let theme: string | null = defaultTheme
 
+  try {
+    theme = localStorage.getItem(storageKey)
+  } catch {
+    // Use the default theme when storage is unavailable.
+  }
+
+  try {
     if (theme !== 'light' && theme !== 'dark' && theme !== 'system') {
       theme = defaultTheme
     }
@@ -20,6 +26,6 @@ export function applyInitialTheme(storageKey: string, defaultTheme: Theme) {
     root.classList.add(resolvedTheme)
     root.style.colorScheme = resolvedTheme
   } catch {
-    //
+    // Ignore initial theme failures
   }
 }

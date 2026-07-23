@@ -1,5 +1,5 @@
 import { ScriptOnce } from '@tanstack/react-router'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useSyncExternalStore } from 'react'
 import { THEME_STORAGE_KEY } from '@repo/constants/storages'
 import { applyInitialTheme } from '@/features/theme/script'
 import { Theme, ThemeProviderProps, ThemeProviderState } from '@/features/theme/types'
@@ -8,6 +8,60 @@ const MEDIA_QUERY = '(prefers-color-scheme: dark)'
 const DISABLE_TRANSITIONS_CSS = '*,*::before,*::after{transition:none!important;}'
 
 const ThemeContext = createContext<ThemeProviderState | undefined>(undefined)
+const themeListeners = new Set<() => void>()
+
+let inMemoryTheme: Theme | undefined
+
+function isTheme(value: string | null): value is Theme {
+  return value === Theme.Light || value === Theme.Dark || value === Theme.System
+}
+
+function getThemeSnapshot(defaultTheme: Theme) {
+  if (inMemoryTheme !== undefined) {
+    return inMemoryTheme
+  }
+
+  try {
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+
+    return isTheme(storedTheme) ? storedTheme : defaultTheme
+  } catch {
+    return defaultTheme
+  }
+}
+
+function subscribeToTheme(onStoreChange: () => void) {
+  function onStorage(event: StorageEvent) {
+    if (event.key !== THEME_STORAGE_KEY && event.key !== null) {
+      return
+    }
+
+    inMemoryTheme = undefined
+    onStoreChange()
+  }
+
+  themeListeners.add(onStoreChange)
+  window.addEventListener('storage', onStorage)
+
+  return () => {
+    themeListeners.delete(onStoreChange)
+    window.removeEventListener('storage', onStorage)
+  }
+}
+
+function updateTheme(nextTheme: Theme) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme)
+    inMemoryTheme = undefined
+  } catch {
+    // Keep the preference in memory when storage is unavailable.
+    inMemoryTheme = nextTheme
+  }
+
+  for (const listener of themeListeners) {
+    listener()
+  }
+}
 
 function disableTransitions() {
   const style = document.createElement('style')
@@ -44,42 +98,20 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme)
-  const [isMounted, setIsMounted] = useState(false)
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    () => getThemeSnapshot(defaultTheme),
+    () => defaultTheme
+  )
 
-  // Restore the persisted preference after hydration.
+  // Keep the document synchronized with the selected preference.
   useEffect(() => {
-    queueMicrotask(() => {
-      let storedTheme: string | null = null
-
-      try {
-        storedTheme = localStorage.getItem(THEME_STORAGE_KEY)
-      } catch {
-        // Unsupported
-      }
-
-      setThemeState(
-        storedTheme === Theme.Light || storedTheme === Theme.Dark || storedTheme === Theme.System
-          ? storedTheme
-          : defaultTheme
-      )
-
-      setIsMounted(true)
-    })
-  }, [defaultTheme])
-
-  // Apply the selected preference once the provider has mounted.
-  useEffect(() => {
-    if (!isMounted) {
-      return
-    }
-
-    applyTheme(theme)
-  }, [theme, isMounted])
+    applyTheme(getThemeSnapshot(defaultTheme))
+  }, [theme, defaultTheme])
 
   // Follow OS color-scheme changes if the user preference is System.
   useEffect(() => {
-    if (!isMounted || theme !== Theme.System) {
+    if (theme !== Theme.System) {
       return
     }
 
@@ -89,37 +121,10 @@ export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemePr
     media.addEventListener('change', onChange)
 
     return () => media.removeEventListener('change', onChange)
-  }, [theme, isMounted])
-
-  // Synchronize the preference when it is changed in another browser tab.
-  useEffect(() => {
-    function onStorage(event: StorageEvent) {
-      if (event.key !== THEME_STORAGE_KEY) {
-        return
-      }
-
-      const nextTheme = event.newValue
-
-      setThemeState(
-        nextTheme === Theme.Light || nextTheme === Theme.Dark || nextTheme === Theme.System
-          ? nextTheme
-          : defaultTheme
-      )
-    }
-
-    window.addEventListener('storage', onStorage)
-
-    return () => window.removeEventListener('storage', onStorage)
-  }, [defaultTheme])
+  }, [theme])
 
   function setTheme(next: Theme) {
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, next)
-    } catch {
-      // Unsupported
-    }
-
-    setThemeState(next)
+    updateTheme(next)
   }
 
   return (
