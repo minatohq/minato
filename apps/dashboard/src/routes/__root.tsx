@@ -35,8 +35,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
       <body>
         <div id="root">
-          <ThemeProvider>{children}</ThemeProvider>
-          <Toaster />
+          <ThemeProvider>
+            {children}
+            <Toaster />
+          </ThemeProvider>
         </div>
 
         <Scripts />
