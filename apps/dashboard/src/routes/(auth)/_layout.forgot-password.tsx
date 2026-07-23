@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ArrowLeftIcon, MailCheckIcon } from 'lucide-react'
+import { ArrowLeftIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { AuthCard } from '@/features/auth/components/AuthCard'
@@ -45,7 +45,6 @@ function SentState({ email }: { email: string }) {
           you&apos;ll receive a password reset link shortly.
         </>
       }
-      media={<MailCheckIcon className="text-green-600" />}
     >
       <Button className="w-full" variant="ghost" nativeButton={false} render={<Link to="/login" />}>
         <ArrowLeftIcon />
