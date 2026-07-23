@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/tanstackstart-react'
 import { ClientOnly, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 import IconBrandGoogle from '@/assets/icons/icon-brand-google.svg?react'
@@ -59,6 +60,8 @@ export function AuthSocialButtonGroup({ className, mode }: Props) {
         throw new Error(error.message)
       }
     } catch (error: unknown) {
+      captureException(error)
+
       setIsLocked(false)
       setProviderError(
         error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'

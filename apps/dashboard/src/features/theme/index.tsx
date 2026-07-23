@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/tanstackstart-react'
 import { ScriptOnce } from '@tanstack/react-router'
 import { createContext, useContext, useEffect, useSyncExternalStore } from 'react'
 import { THEME_STORAGE_KEY } from '@repo/constants/storages'
@@ -25,7 +26,9 @@ function getThemeSnapshot(defaultTheme: Theme) {
     const storedTheme = localStorage.getItem(THEME_STORAGE_KEY)
 
     return isTheme(storedTheme) ? storedTheme : defaultTheme
-  } catch {
+  } catch (error: unknown) {
+    captureException(error)
+
     return defaultTheme
   }
 }
@@ -53,7 +56,9 @@ function updateTheme(nextTheme: Theme) {
   try {
     localStorage.setItem(THEME_STORAGE_KEY, nextTheme)
     inMemoryTheme = undefined
-  } catch {
+  } catch (error: unknown) {
+    captureException(error)
+
     // Keep the preference in memory when storage is unavailable.
     inMemoryTheme = nextTheme
   }

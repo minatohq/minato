@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/tanstackstart-react'
 import { revalidateLogic } from '@tanstack/react-form'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -46,6 +47,8 @@ export function ForgotPasswordForm({ onSent }: { onSent: (email: string) => void
 
         onSent(parsedValue.email)
       } catch (error: unknown) {
+        captureException(error)
+
         setSubmitError(
           error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'
         )

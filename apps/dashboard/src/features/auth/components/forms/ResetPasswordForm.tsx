@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/tanstackstart-react'
 import { revalidateLogic } from '@tanstack/react-form'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
@@ -57,6 +58,8 @@ export function ResetPasswordForm({ token }: { token: string }) {
           replace: true,
         })
       } catch (error: unknown) {
+        captureException(error)
+
         setSubmitError(
           error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'
         )
