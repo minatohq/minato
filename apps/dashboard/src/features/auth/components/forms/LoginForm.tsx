@@ -1,5 +1,5 @@
 import { revalidateLogic } from '@tanstack/react-form'
-import { ClientOnly, Link, useNavigate } from '@tanstack/react-router'
+import { ClientOnly, Link, useNavigate, useRouter, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 import { z } from 'zod'
 import { Alert, AlertDescription } from '@/components/ui/Alert'
@@ -17,6 +17,9 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const navigate = useNavigate()
+  const router = useRouter()
+
+  const { redirect } = useSearch({ from: '/(auth)/_layout' })
 
   const [submitError, setSubmitError] = useState<string>()
 
@@ -48,10 +51,14 @@ export function LoginForm() {
           throw new Error(error.message)
         }
 
-        await navigate({
-          to: '/',
-          replace: true,
-        })
+        if (redirect) {
+          router.history.replace(redirect)
+        } else {
+          await navigate({
+            to: '/',
+            replace: true,
+          })
+        }
       } catch (error: unknown) {
         setSubmitError(
           error instanceof Error ? error.message : 'An unknown error occurred. Please try again.'

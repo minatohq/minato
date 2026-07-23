@@ -1,8 +1,23 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { z } from 'zod'
 import { Logo } from '@/components/Logo'
+import { hasSessionCookie } from '@/features/auth/functions'
+import { redirectSchema } from '@/features/auth/schema'
 import { env } from '@/lib/env'
 
 export const Route = createFileRoute('/(auth)/_layout')({
+  validateSearch: z.object({
+    reauth: z.boolean().optional().catch(false),
+    redirect: redirectSchema,
+  }),
+  beforeLoad: async ({ search }) => {
+    if (!search.reauth && (await hasSessionCookie())) {
+      throw redirect({
+        to: '/',
+        replace: true,
+      })
+    }
+  },
   component: AuthLayout,
 })
 
