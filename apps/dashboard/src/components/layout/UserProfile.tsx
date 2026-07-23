@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { toast } from '@/components/ui/Toast'
 import { authClient, useSession } from '@/features/auth/client'
 import { useTheme } from '@/features/theme'
 import { Theme } from '@/features/theme/types'
@@ -27,16 +28,26 @@ export function UserProfile() {
   const { data, error, isPending } = useSession()
   const { theme, setTheme } = useTheme()
 
-  function handleSignOut() {
-    void authClient.signOut({
-      fetchOptions: {
-        onSuccess: async () => {
-          await navigate({
-            to: '/login',
-            replace: true,
-          })
-        },
-      },
+  async function handleSignOut() {
+    try {
+      const { error } = await authClient.signOut()
+
+      if (error) {
+        throw error
+      }
+    } catch {
+      toast.add({
+        type: 'error',
+        title: 'Failed to sign you out',
+        description: 'Please try again.',
+      })
+
+      return
+    }
+
+    await navigate({
+      to: '/login',
+      replace: true,
     })
   }
 
