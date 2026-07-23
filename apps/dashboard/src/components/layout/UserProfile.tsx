@@ -4,11 +4,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -79,27 +80,23 @@ export function UserProfile() {
             </DropdownMenuSubTrigger>
 
             <DropdownMenuSubContent>
-              <DropdownMenuCheckboxItem
-                checked={theme === Theme.Light}
-                onCheckedChange={() => setTheme(Theme.Light)}
+              <DropdownMenuRadioGroup
+                value={theme}
+                onValueChange={(value) => setTheme(value as Theme)}
               >
-                <SunIcon />
-                Light
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={theme === Theme.Dark}
-                onCheckedChange={() => setTheme(Theme.Dark)}
-              >
-                <MoonIcon />
-                Dark
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={theme === Theme.System}
-                onCheckedChange={() => setTheme(Theme.System)}
-              >
-                <MonitorIcon />
-                System
-              </DropdownMenuCheckboxItem>
+                <DropdownMenuRadioItem value={Theme.Light}>
+                  <SunIcon />
+                  Light
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value={Theme.Dark}>
+                  <MoonIcon />
+                  Dark
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value={Theme.System}>
+                  <MonitorIcon />
+                  System
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
 
