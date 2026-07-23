@@ -106,7 +106,7 @@ export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemePr
 
   // Keep the document synchronized with the selected preference.
   useEffect(() => {
-    applyTheme(getThemeSnapshot(defaultTheme))
+    applyTheme(theme)
   }, [theme, defaultTheme])
 
   // Follow OS color-scheme changes if the user preference is System.
