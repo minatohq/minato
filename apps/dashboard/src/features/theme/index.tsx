@@ -81,7 +81,7 @@ function disableTransitions() {
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement
-  const resolvedTheme: Theme =
+  const resolvedTheme: Theme.Light | Theme.Dark =
     theme === Theme.System
       ? window.matchMedia(MEDIA_QUERY).matches
         ? Theme.Dark
