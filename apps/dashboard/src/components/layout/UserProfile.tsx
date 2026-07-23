@@ -1,22 +1,30 @@
 import { useNavigate } from '@tanstack/react-router'
-import { LogOutIcon, UserIcon } from 'lucide-react'
+import { LogOutIcon, MonitorIcon, MoonIcon, SunIcon, SunMoonIcon, UserIcon } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/DropdownMenu'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { authClient, useSession } from '@/features/auth/client'
+import { useTheme } from '@/features/theme'
+import { Theme } from '@/features/theme/types'
 
 export function UserProfile() {
   const navigate = useNavigate()
+
   const { data, error, isPending } = useSession()
+  const { theme, setTheme } = useTheme()
 
   function handleSignOut() {
     void authClient.signOut({
@@ -64,6 +72,39 @@ export function UserProfile() {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <SunMoonIcon />
+              Theme
+            </DropdownMenuSubTrigger>
+
+            <DropdownMenuSubContent>
+              <DropdownMenuCheckboxItem
+                checked={theme === Theme.Light}
+                onCheckedChange={() => setTheme(Theme.Light)}
+              >
+                <SunIcon />
+                Light
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={theme === Theme.Dark}
+                onCheckedChange={() => setTheme(Theme.Dark)}
+              >
+                <MoonIcon />
+                Dark
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={theme === Theme.System}
+                onCheckedChange={() => setTheme(Theme.System)}
+              >
+                <MonitorIcon />
+                System
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
+          <DropdownMenuSeparator />
+
           <DropdownMenuItem onClick={handleSignOut}>
             <LogOutIcon />
             Log out

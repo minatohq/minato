@@ -2,6 +2,7 @@ import styles from '@/styles.css?url'
 
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { Devtools } from '@/devtools'
+import { ThemeProvider } from '@/features/theme'
 import type { RouterContext } from '@/router'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -26,13 +27,16 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
 
       <body>
-        <div id="root">{children}</div>
+        <div id="root">
+          <ThemeProvider>{children}</ThemeProvider>
+        </div>
+
         <Scripts />
         <Devtools />
       </body>
