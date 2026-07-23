@@ -4,6 +4,7 @@
   "exports": {
     "./app": "./src/app.ts",
     "./cookies": "./src/cookies.ts",
+    "./storages": "./src/storages.ts",
     "./widget": "./src/widget.ts"
   },
   "devDependencies": {

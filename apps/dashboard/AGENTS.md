@@ -15,3 +15,4 @@ This file provides guidance to AI coding agents when working with code for this 
 #### React
 
 - This project uses React 19 with React Compiler enabled
+- Do not use useMemo and useCallback hooks, or memo function
