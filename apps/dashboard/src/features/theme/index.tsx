@@ -47,10 +47,16 @@ export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemePr
   const [theme, setThemeState] = useState<Theme>(defaultTheme)
   const [isMounted, setIsMounted] = useState(false)
 
-  // Restore the persisted preference after hydration without changing the server-rendered state.
+  // Restore the persisted preference after hydration.
   useEffect(() => {
     queueMicrotask(() => {
-      const storedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+      let storedTheme: string | null = null
+
+      try {
+        storedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+      } catch {
+        // Unsupported
+      }
 
       setThemeState(
         storedTheme === Theme.Light || storedTheme === Theme.Dark || storedTheme === Theme.System
@@ -62,7 +68,7 @@ export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemePr
     })
   }, [defaultTheme])
 
-  // Apply the selected preference to the document once the provider has mounted.
+  // Apply the selected preference once the provider has mounted.
   useEffect(() => {
     if (!isMounted) {
       return
@@ -107,7 +113,12 @@ export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemePr
   }, [defaultTheme])
 
   function setTheme(next: Theme) {
-    localStorage.setItem(THEME_STORAGE_KEY, next)
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next)
+    } catch {
+      // Unsupported
+    }
+
     setThemeState(next)
   }
 
