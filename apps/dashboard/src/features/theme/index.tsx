@@ -5,13 +5,28 @@ import { applyInitialTheme } from '@/features/theme/script'
 import { Theme, ThemeProviderProps, ThemeProviderState } from '@/features/theme/types'
 
 const MEDIA_QUERY = '(prefers-color-scheme: dark)'
+const DISABLE_TRANSITIONS_CSS = '*,*::before,*::after{transition:none!important;}'
 
 const ThemeContext = createContext<ThemeProviderState | undefined>(undefined)
 
+function disableTransitions() {
+  const style = document.createElement('style')
+  style.textContent = DISABLE_TRANSITIONS_CSS
+  document.head.appendChild(style)
+
+  return () => {
+    // Force restyle
+    window.getComputedStyle(document.body)
+
+    // Wait for next tick before removing
+    setTimeout(() => {
+      style.remove()
+    }, 1)
+  }
+}
+
 function applyTheme(theme: Theme) {
   const root = document.documentElement
-  root.classList.remove(Theme.Light, Theme.Dark)
-
   const resolvedTheme: Theme =
     theme === Theme.System
       ? window.matchMedia(MEDIA_QUERY).matches
@@ -19,8 +34,13 @@ function applyTheme(theme: Theme) {
         : Theme.Light
       : theme
 
+  const restoreTransitions = disableTransitions()
+
+  root.classList.remove(Theme.Light, Theme.Dark)
   root.classList.add(resolvedTheme)
   root.style.colorScheme = resolvedTheme
+
+  restoreTransitions()
 }
 
 export function ThemeProvider({ children, defaultTheme = Theme.System }: ThemeProviderProps) {
